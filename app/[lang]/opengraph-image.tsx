@@ -12,10 +12,9 @@ export default async function OGImage({
   const { lang } = await params
   const isFr = lang !== "en"
 
-  // Load Inter from jsDelivr — supports French accented characters
-  const [interRegular, interBold] = await Promise.all([
+  const [interRegular, playfairBold] = await Promise.all([
     fetch("https://cdn.jsdelivr.net/npm/@fontsource/inter@5.0.16/files/inter-latin-400-normal.woff2").then((r) => r.arrayBuffer()),
-    fetch("https://cdn.jsdelivr.net/npm/@fontsource/inter@5.0.16/files/inter-latin-700-normal.woff2").then((r) => r.arrayBuffer()),
+    fetch("https://cdn.jsdelivr.net/npm/@fontsource/playfair-display@5.0.8/files/playfair-display-latin-700-normal.woff2").then((r) => r.arrayBuffer()),
   ])
 
   return new ImageResponse(
@@ -28,89 +27,69 @@ export default async function OGImage({
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
-          background: "linear-gradient(150deg, #FAF8F4 0%, #EDE0CA 100%)",
+          background: "#FAF8F4",
           fontFamily: "Inter, sans-serif",
         }}
       >
-        {/* Logo mark */}
+        {/* Wordmark */}
         <div
           style={{
-            width: 96,
-            height: 96,
-            borderRadius: 18,
-            background: "#F8F2EC",
-            border: "2px solid #C9A864",
             display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            marginBottom: 32,
+            alignItems: "baseline",
+            marginBottom: 40,
           }}
         >
-          <div
+          <span
             style={{
-              fontSize: 62,
+              fontSize: 120,
               fontWeight: 700,
-              color: "#C9A864",
+              color: "#1A1714",
+              fontFamily: "Playfair Display, serif",
+              letterSpacing: "-2px",
               lineHeight: 1,
             }}
           >
-            V
-          </div>
+            Vocali
+          </span>
+          <span
+            style={{
+              fontSize: 120,
+              fontWeight: 700,
+              color: "#C9A864",
+              fontFamily: "Playfair Display, serif",
+              lineHeight: 1,
+              marginLeft: 2,
+            }}
+          >
+            .
+          </span>
         </div>
 
-        {/* Brand name */}
+        {/* Divider */}
         <div
           style={{
-            fontSize: 84,
-            fontWeight: 700,
-            color: "#1C1916",
-            letterSpacing: "-3px",
-            marginBottom: 22,
-          }}
-        >
-          Vocali
-        </div>
-
-        {/* Separator */}
-        <div
-          style={{
-            width: 52,
+            width: 48,
             height: 2,
             background: "#C9A864",
             borderRadius: 999,
-            marginBottom: 28,
+            marginBottom: 36,
           }}
         />
 
         {/* Tagline */}
         <div
           style={{
-            fontSize: 28,
-            fontWeight: 600,
-            color: "#C9A864",
-            textAlign: "center",
-            maxWidth: 720,
-            marginBottom: 16,
-          }}
-        >
-          {isFr
-            ? "Réceptionniste IA 24/7 pour cliniques esthétiques"
-            : "24/7 AI Receptionist for Aesthetic Clinics"}
-        </div>
-
-        {/* Subtitle */}
-        <div
-          style={{
-            fontSize: 22,
+            fontSize: 26,
             fontWeight: 400,
-            color: "#7A7068",
+            color: "#6B6460",
             textAlign: "center",
-            maxWidth: 600,
+            maxWidth: 640,
+            lineHeight: 1.5,
           }}
         >
           {isFr
-            ? "Ne manquez plus jamais un appel client. Au Québec."
-            : "Never miss another client call. Across Quebec."}
+            ? "Réceptionniste IA 24/7 pour cliniques esthétiques au Québec"
+            : "24/7 AI Receptionist for Aesthetic Clinics in Quebec"}
         </div>
       </div>
     ),
@@ -118,7 +97,7 @@ export default async function OGImage({
       ...size,
       fonts: [
         { name: "Inter", data: interRegular, weight: 400, style: "normal" },
-        { name: "Inter", data: interBold, weight: 700, style: "normal" },
+        { name: "Playfair Display", data: playfairBold, weight: 700, style: "normal" },
       ],
     },
   )
