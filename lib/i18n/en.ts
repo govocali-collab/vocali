@@ -187,7 +187,7 @@ export const en: Dictionary = {
     badge: "Now deploying",
     title: "Quebec Pilot Program",
     subtitle:
-      "Currently being deployed with beauty clinics and service businesses across Quebec.",
+      "Currently being deployed with beauty clinics, medical spas, and aesthetic studios across Quebec.",
     testimonialPlaceholder:
       "Testimonials from our pilot partners are coming soon. Join the program to be among the first.",
     cta: "Join the pilot program",
