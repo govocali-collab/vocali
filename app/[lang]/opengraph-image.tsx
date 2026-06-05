@@ -1,6 +1,4 @@
 import { ImageResponse } from "next/og"
-import { readFile } from "fs/promises"
-import { join } from "path"
 
 export const alt = "Vocali"
 export const size = { width: 1200, height: 630 }
@@ -15,8 +13,8 @@ export default async function OGImage({
   const isFr = lang !== "en"
 
   const [interRegular, playfairBold] = await Promise.all([
-    readFile(join(process.cwd(), "public/fonts/Inter-Regular.ttf")),
-    readFile(join(process.cwd(), "public/fonts/PlayfairDisplay-Bold.ttf")),
+    fetch(new URL("../og-fonts/Inter-Regular.ttf", import.meta.url)).then((r) => r.arrayBuffer()),
+    fetch(new URL("../og-fonts/PlayfairDisplay-Bold.ttf", import.meta.url)).then((r) => r.arrayBuffer()),
   ])
 
   return new ImageResponse(
