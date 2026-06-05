@@ -11,7 +11,7 @@ export function Pilot({ dict }: Props) {
   const p = dict.pilot
 
   return (
-    <section id="pilote" className="bg-ivory-100 py-28 lg:py-36">
+    <section id="pilote" className="bg-ivory-100 py-16 lg:py-36">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <AnimateOnScroll variant="fadeUp" className="text-center mb-16">
           <span className="section-badge mb-6 inline-flex">

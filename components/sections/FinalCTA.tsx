@@ -11,7 +11,7 @@ export function FinalCTA({ dict }: Props) {
   const c = dict.finalCta
 
   return (
-    <section className="py-28 lg:py-36 relative overflow-hidden">
+    <section className="py-16 lg:py-36 relative overflow-hidden">
       <div className="absolute inset-0 bg-gold-gradient" />
       <div
         className="absolute inset-0 opacity-[0.06]"

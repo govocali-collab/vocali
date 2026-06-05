@@ -9,7 +9,7 @@ export function HowItWorks({ dict }: Props) {
   const h = dict.howItWorks
 
   return (
-    <section id="fonctionnement" className="bg-ivory-100 py-28 lg:py-36">
+    <section id="fonctionnement" className="bg-ivory-100 py-16 lg:py-36">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <AnimateOnScroll variant="fadeUp" className="text-center mb-20">
           <span className="section-badge mb-6 inline-flex">

@@ -13,14 +13,14 @@ export function Franchise({ dict }: Props) {
   const f = dict.franchise
 
   return (
-    <section id="franchises" className="bg-dark-warm py-28 lg:py-36 relative overflow-hidden">
+    <section id="franchises" className="bg-dark-warm py-16 lg:py-36 relative overflow-hidden">
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gold-700/50 to-transparent" />
 
       <div className="absolute top-1/2 right-0 w-96 h-96 bg-gold-500/5 rounded-full -translate-y-1/2 translate-x-1/3 pointer-events-none blur-3xl" />
 
       <div className="relative max-w-7xl mx-auto px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
-          <AnimateOnScroll variant="fadeLeft">
+          <AnimateOnScroll variant="fadeUp">
             <span className="section-badge-dark mb-6 inline-flex">
               <span className="w-1.5 h-1.5 rounded-full bg-gold-500" />
               {f.badge}

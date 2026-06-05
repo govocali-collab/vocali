@@ -69,7 +69,7 @@ export function FAQ({ dict }: Props) {
   const f = dict.faq
 
   return (
-    <section id="faq" className="bg-white py-28 lg:py-36">
+    <section id="faq" className="bg-white py-16 lg:py-36">
       <div className="max-w-3xl mx-auto px-6 lg:px-8">
         <AnimateOnScroll variant="fadeUp" className="text-center mb-14">
           <span className="section-badge mb-6 inline-flex">
