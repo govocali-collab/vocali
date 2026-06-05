@@ -21,8 +21,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     openGraph: {
       title: dict.meta.title,
       description: dict.meta.description,
+      url: `/${lang}`,
+      siteName: "Vocali",
       locale: lang === "fr" ? "fr_CA" : "en_CA",
       type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: dict.meta.title,
+      description: dict.meta.description,
     },
     alternates: {
       languages: {

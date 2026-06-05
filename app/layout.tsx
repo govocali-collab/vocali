@@ -16,7 +16,7 @@ const inter = Inter({
 })
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://vocali.ai"),
+  metadataBase: new URL("https://vocali.ca"),
   icons: { icon: "/favicon.svg" },
 }
 
