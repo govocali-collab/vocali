@@ -192,6 +192,8 @@ export const en: Dictionary = {
       "Testimonials from our pilot partners are coming soon. Join the program to be among the first.",
     cta: "Join the pilot program",
     spotsLeft: "Limited spots available",
+    ctaTitle: "Ready to never miss another call?",
+    ctaSubtitle: "Join the first clinics to deploy Vocali across Quebec.",
   },
   faq: {
     badge: "FAQ",

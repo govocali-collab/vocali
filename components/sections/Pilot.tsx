@@ -46,9 +46,9 @@ export function Pilot({ dict }: Props) {
               {p.spotsLeft}
             </div>
             <h3 className="font-serif text-2xl lg:text-3xl font-bold text-charcoal-900 mb-3">
-              {p.title}
+              {p.ctaTitle}
             </h3>
-            <p className="text-charcoal-500 mb-8 max-w-md mx-auto">{p.subtitle}</p>
+            <p className="text-charcoal-500 mb-8 max-w-md mx-auto">{p.ctaSubtitle}</p>
             <CalPopupButton size="lg">
               {p.cta}
               <ArrowRight size={18} />

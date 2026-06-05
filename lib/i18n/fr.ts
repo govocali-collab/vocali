@@ -192,6 +192,8 @@ export const fr: Dictionary = {
       "Les témoignages de nos partenaires pilotes arrivent bientôt. Rejoignez le programme pour être parmi les premiers.",
     cta: "Rejoindre le programme pilote",
     spotsLeft: "Places limitées disponibles",
+    ctaTitle: "Prêt à ne plus manquer un seul appel ?",
+    ctaSubtitle: "Rejoignez les premières cliniques à déployer Vocali au Québec.",
   },
   faq: {
     badge: "Questions fréquentes",

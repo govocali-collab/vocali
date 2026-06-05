@@ -77,6 +77,8 @@ export type Dictionary = {
     testimonialPlaceholder: string
     cta: string
     spotsLeft: string
+    ctaTitle: string
+    ctaSubtitle: string
   }
   faq: {
     badge: string
