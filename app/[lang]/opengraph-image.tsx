@@ -4,6 +4,22 @@ export const alt = "Vocali"
 export const size = { width: 1200, height: 630 }
 export const contentType = "image/png"
 
+async function loadGoogleFont(name: string, weight: number): Promise<ArrayBuffer> {
+  const css = await fetch(
+    `https://fonts.googleapis.com/css2?family=${encodeURIComponent(name)}:wght@${weight}`,
+    {
+      headers: {
+        "User-Agent":
+          "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+      },
+    }
+  ).then((r) => r.text())
+
+  const url = css.match(/src: url\(([^)]+)\) format\('woff2'\)/)?.[1]
+  if (!url) throw new Error(`Font URL not found for ${name}`)
+  return fetch(url).then((r) => r.arrayBuffer())
+}
+
 export default async function OGImage({
   params,
 }: {
@@ -13,8 +29,8 @@ export default async function OGImage({
   const isFr = lang !== "en"
 
   const [interRegular, playfairBold] = await Promise.all([
-    fetch("https://cdn.jsdelivr.net/npm/@fontsource/inter@5.0.16/files/inter-latin-400-normal.woff2").then((r) => r.arrayBuffer()),
-    fetch("https://cdn.jsdelivr.net/npm/@fontsource/playfair-display@5.0.8/files/playfair-display-latin-700-normal.woff2").then((r) => r.arrayBuffer()),
+    loadGoogleFont("Inter", 400),
+    loadGoogleFont("Playfair Display", 700),
   ])
 
   return new ImageResponse(
