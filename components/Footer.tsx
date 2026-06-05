@@ -67,15 +67,13 @@ export function Footer({ dict, lang }: Props) {
 
         <div className="border-t border-charcoal-800 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4">
           <p className="text-charcoal-500 text-sm">{dict.footer.copyright}</p>
-          <div className="flex items-center gap-4 text-charcoal-500 text-sm">
-            <a href="mailto:contact@vocali.ca" className="flex items-center gap-1.5 hover:text-gold-400 transition-colors">
-              <Mail size={12} className="text-gold-600" />
-              <span>contact@vocali.ca</span>
-            </a>
-            <div className="flex items-center gap-1.5">
-              <MapPin size={12} className="text-gold-600" />
-              <span>{dict.footer.madeIn}</span>
-            </div>
+          <a href="mailto:contact@vocali.ca" className="flex items-center gap-1.5 text-charcoal-500 text-sm hover:text-gold-400 transition-colors">
+            <Mail size={12} className="text-gold-600" />
+            <span>contact@vocali.ca</span>
+          </a>
+          <div className="flex items-center gap-1.5 text-charcoal-500 text-sm">
+            <MapPin size={12} className="text-gold-600" />
+            <span>{dict.footer.madeIn}</span>
           </div>
         </div>
       </div>
