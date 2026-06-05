@@ -12,11 +12,6 @@ export default async function OGImage({
   const { lang } = await params
   const isFr = lang !== "en"
 
-  const [interRegular, playfairBold] = await Promise.all([
-    fetch(new URL("../og-fonts/Inter-Regular.ttf", import.meta.url)).then((r) => r.arrayBuffer()),
-    fetch(new URL("../og-fonts/PlayfairDisplay-Bold.ttf", import.meta.url)).then((r) => r.arrayBuffer()),
-  ])
-
   return new ImageResponse(
     (
       <div
@@ -28,62 +23,47 @@ export default async function OGImage({
           alignItems: "center",
           justifyContent: "center",
           background: "#FAF8F4",
-          fontFamily: "Inter, sans-serif",
         }}
       >
-        {/* Wordmark */}
+        {/* Logo mark */}
         <div
           style={{
+            width: 100,
+            height: 100,
+            borderRadius: 20,
+            background: "#F0E6D3",
+            border: "2px solid #C9A864",
             display: "flex",
-            alignItems: "baseline",
-            marginBottom: 40,
+            alignItems: "center",
+            justifyContent: "center",
+            marginBottom: 36,
           }}
         >
-          <span
-            style={{
-              fontSize: 120,
-              fontWeight: 700,
-              color: "#1A1714",
-              fontFamily: "Playfair Display, serif",
-              letterSpacing: "-2px",
-              lineHeight: 1,
-            }}
-          >
+          <span style={{ fontSize: 64, fontWeight: 900, color: "#C9A864", lineHeight: 1 }}>
+            V
+          </span>
+        </div>
+
+        {/* Brand name */}
+        <div style={{ display: "flex", alignItems: "baseline", marginBottom: 24 }}>
+          <span style={{ fontSize: 96, fontWeight: 900, color: "#1A1714", letterSpacing: "-3px", lineHeight: 1 }}>
             Vocali
           </span>
-          <span
-            style={{
-              fontSize: 120,
-              fontWeight: 700,
-              color: "#C9A864",
-              fontFamily: "Playfair Display, serif",
-              lineHeight: 1,
-              marginLeft: 2,
-            }}
-          >
+          <span style={{ fontSize: 96, fontWeight: 900, color: "#C9A864", lineHeight: 1, marginLeft: 4 }}>
             .
           </span>
         </div>
 
         {/* Divider */}
-        <div
-          style={{
-            width: 48,
-            height: 2,
-            background: "#C9A864",
-            borderRadius: 999,
-            marginBottom: 36,
-          }}
-        />
+        <div style={{ width: 48, height: 2, background: "#C9A864", borderRadius: 999, marginBottom: 32 }} />
 
         {/* Tagline */}
         <div
           style={{
             fontSize: 26,
-            fontWeight: 400,
             color: "#6B6460",
             textAlign: "center",
-            maxWidth: 640,
+            maxWidth: 620,
             lineHeight: 1.5,
           }}
         >
@@ -93,12 +73,6 @@ export default async function OGImage({
         </div>
       </div>
     ),
-    {
-      ...size,
-      fonts: [
-        { name: "Inter", data: interRegular, weight: 400, style: "normal" },
-        { name: "Playfair Display", data: playfairBold, weight: 700, style: "normal" },
-      ],
-    },
+    size,
   )
 }
