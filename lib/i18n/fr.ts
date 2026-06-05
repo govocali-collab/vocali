@@ -187,7 +187,7 @@ export const fr: Dictionary = {
     badge: "Déploiement en cours",
     title: "Programme pilote au Québec",
     subtitle:
-      "Actuellement en déploiement auprès de cliniques de beauté et d'entreprises de services au Québec.",
+      "Actuellement en déploiement auprès de cliniques de beauté, spas médicaux et studios d'esthétique au Québec.",
     testimonialPlaceholder:
       "Les témoignages de nos partenaires pilotes arrivent bientôt. Rejoignez le programme pour être parmi les premiers.",
     cta: "Rejoindre le programme pilote",
