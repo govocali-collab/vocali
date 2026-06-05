@@ -17,7 +17,7 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://vocali.ai"),
-  icons: { icon: "/favicon.ico" },
+  icons: { icon: "/favicon.svg" },
 }
 
 export default async function RootLayout({
