@@ -2,7 +2,7 @@ import type { Dictionary } from "./types"
 
 export const fr: Dictionary = {
   meta: {
-    title: "Vocali — Réceptionniste IA 24/7 pour cliniques de beauté au Québec",
+    title: "Vocali — Réceptionniste IA 24/7 pour cliniques esthétiques au Québec",
     description:
       "Ne manquez plus jamais un appel client. Vocali fournit une réceptionniste IA disponible 24/7 qui répond aux appels, qualifie les demandes et aide à remplir votre agenda.",
     keywords:
