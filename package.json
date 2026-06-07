@@ -10,13 +10,19 @@
   },
   "dependencies": {
     "@calcom/embed-react": "^1.5.3",
+    "@react-pdf/renderer": "^4.5.1",
+    "@supabase/ssr": "^0.10.3",
+    "@supabase/supabase-js": "^2.107.0",
     "clsx": "^2.1.1",
     "framer-motion": "^11.15.0",
     "lucide-react": "^0.462.0",
     "next": "^15.0.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "tailwind-merge": "^2.5.4"
+    "resend": "^6.12.4",
+    "stripe": "^22.2.0",
+    "tailwind-merge": "^2.5.4",
+    "twilio": "^6.0.2"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",

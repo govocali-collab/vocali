@@ -28,6 +28,14 @@ const config: Config = {
           800: "#5C4820",
           900: "#3D3018",
         },
+        ink: {
+          DEFAULT: "#09090f",
+          card: "#13131f",
+          sidebar: "#0d0d16",
+          hover: "#1a1a2a",
+        },
+        "dash-gold": "#d4af6e",
+        "dash-green": "#6ed4a4",
         charcoal: {
           50: "#F7F7F8",
           100: "#EDEDEE",
@@ -44,6 +52,8 @@ const config: Config = {
       fontFamily: {
         serif: ["var(--font-playfair)", "Georgia", "serif"],
         sans: ["var(--font-inter)", "system-ui", "sans-serif"],
+        display: ["var(--font-cormorant)", "Georgia", "serif"],
+        body: ["var(--font-dm-sans)", "system-ui", "sans-serif"],
       },
       backgroundImage: {
         "gold-gradient": "linear-gradient(135deg, #C9A864 0%, #A88840 50%, #8A6E2F 100%)",
