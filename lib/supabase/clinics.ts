@@ -187,12 +187,53 @@ export async function createLocation(data: {
   return row.id
 }
 
+const FR_TO_EN_DAY: Record<string, string> = {
+  lundi: "monday", mardi: "tuesday", mercredi: "wednesday",
+  jeudi: "thursday", vendredi: "friday", samedi: "saturday", dimanche: "sunday",
+}
+
+function transformHours(
+  raw: Record<string, { open: string; close: string; closed: boolean }>
+): Record<string, string | null> {
+  const result: Record<string, string | null> = {
+    monday: null, tuesday: null, wednesday: null, thursday: null,
+    friday: null, saturday: null, sunday: null, notes: null,
+  }
+  for (const [frDay, enDay] of Object.entries(FR_TO_EN_DAY)) {
+    const h = raw[frDay]
+    if (!h) continue
+    result[enDay] = h.closed ? null : `${h.open}–${h.close}`
+  }
+  return result
+}
+
+function transformServices(names: string[]): Array<{
+  name: string; description: string; price_range: string; duration: string
+}> {
+  return names.map((name) => ({
+    name,
+    description: "Traitement disponible sur rendez-vous",
+    price_range: "Sur demande",
+    duration: "Sur demande",
+  }))
+}
+
+function toSlug(name: string): string {
+  return name
+    .toLowerCase()
+    .normalize("NFD").replace(/[̀-ͯ]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "")
+}
+
 export async function syncLocationFromClinic(clinicId: string): Promise<void> {
   const supabase = getAdminClient()
   const clinic = await getClinicById(clinicId)
   if (!clinic) return
 
   const config = (clinic.clinic_config ?? {}) as Record<string, unknown>
+  const rawHours = (clinic.hours ?? {}) as Record<string, { open: string; close: string; closed: boolean }>
+  const rawServices = (clinic.services ?? []) as string[]
 
   const { data: existing } = await supabase
     .from("locations")
@@ -200,24 +241,34 @@ export async function syncLocationFromClinic(clinicId: string): Promise<void> {
     .eq("clinic_id", clinicId)
     .maybeSingle()
 
+  const ownerPhone = (config.owner_phone as string) ?? null
+
   const payload = {
+    clinic_id: clinicId,
     name: clinic.name,
+    slug: toSlug(clinic.name),
     is_active: clinic.is_active,
-    services: clinic.services,
-    hours: clinic.hours,
+    twilio_phone_number: clinic.twilio_phone_number ?? null,
+    staff_sms_phone: ownerPhone,
+    transfer_phone: ownerPhone,
+    address: (config.address as string) ?? "",
+    city: (config.city as string) ?? "",
+    timezone: "America/Toronto",
+    hours: transformHours(rawHours),
+    services: transformServices(rawServices),
+    faq: [],
     prompt_additions: clinic.system_prompt_override ?? null,
-    ...(clinic.twilio_phone_number ? { twilio_phone_number: clinic.twilio_phone_number } : {}),
-    ...(config.agent_name ? { agent_name: config.agent_name } : {}),
-    ...(config.tone ? { tone: config.tone } : {}),
-    ...(config.booking_system ? { booking_system: config.booking_system } : {}),
-    ...(config.booking_api_url ? { booking_api_url: config.booking_api_url } : {}),
-    ...(config.booking_api_key ? { booking_api_key: config.booking_api_key } : {}),
+    agent_name: (config.agent_name as string) ?? "Sofia",
+    tone: (config.tone as string) ?? "Chaleureuse",
+    booking_system: (config.booking_system as string) ?? "manual",
+    booking_api_url: (config.booking_api_url as string) ?? null,
+    booking_api_key: (config.booking_api_key as string) ?? null,
   }
 
   if (existing) {
     await supabase.from("locations").update(payload).eq("clinic_id", clinicId)
   } else {
-    await supabase.from("locations").insert({ clinic_id: clinicId, ...payload })
+    await supabase.from("locations").insert(payload)
   }
 }
 
