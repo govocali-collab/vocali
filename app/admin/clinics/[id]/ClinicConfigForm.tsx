@@ -8,14 +8,6 @@ import type { ClinicRow } from "@/lib/supabase/clinics"
 const inputClass =
   "w-full bg-ivory-50 border border-ivory-300 rounded-lg px-4 py-2.5 text-charcoal-900 text-sm font-body placeholder-charcoal-300 focus:outline-none focus:border-gold-400 transition-colors"
 
-const chipClass = (active: boolean) =>
-  cn(
-    "flex items-center justify-center px-4 py-2.5 rounded-lg border text-sm font-body cursor-pointer transition-colors",
-    active
-      ? "bg-gold-50 border-gold-400 text-gold-700 font-medium"
-      : "bg-white border-ivory-300 text-charcoal-500 hover:border-gold-300"
-  )
-
 function Field({ label, children, hint }: { label: string; children: React.ReactNode; hint?: string }) {
   return (
     <div>
@@ -30,8 +22,6 @@ export default function ClinicConfigForm({ clinic }: { clinic: ClinicRow }) {
   const router = useRouter()
   const config = (clinic.clinic_config ?? {}) as Record<string, unknown>
 
-  const [agentName, setAgentName] = useState((config.agent_name as string) || "Sofia")
-  const [tone, setTone] = useState<"Chaleureuse" | "Professionnelle" | "Mixte">((config.tone as "Chaleureuse" | "Professionnelle" | "Mixte") || "Chaleureuse")
   const [systemPrompt, setSystemPrompt] = useState(clinic.system_prompt_override ?? "")
   const [bookingCreds, setBookingCreds] = useState((config.booking_creds as string) ?? "")
   const [bookingSystem, setBookingSystem] = useState((config.booking_system as string) || "manual")
@@ -81,7 +71,7 @@ export default function ClinicConfigForm({ clinic }: { clinic: ClinicRow }) {
       const res = await fetch(`/api/admin/clinics/${clinic.id}/configure`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ agentName, tone, systemPromptOverride: systemPrompt, bookingCreds, bookingSystem, bookingApiUrl, bookingApiKey, activate }),
+        body: JSON.stringify({ systemPromptOverride: systemPrompt, bookingCreds, bookingSystem, bookingApiUrl, bookingApiKey, activate }),
       })
       const data = await res.json()
       if (!data.success) throw new Error(data.error)
@@ -107,27 +97,6 @@ export default function ClinicConfigForm({ clinic }: { clinic: ClinicRow }) {
       </p>
 
       <div className="space-y-4">
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <Field label="Nom de l'agent">
-            <input
-              className={inputClass}
-              value={agentName}
-              onChange={(e) => setAgentName(e.target.value)}
-              placeholder="Sofia"
-            />
-          </Field>
-          <Field label="Ton">
-            <div className="flex gap-2">
-              {(["Chaleureuse", "Professionnelle", "Mixte"] as const).map((t) => (
-                <label key={t} className={chipClass(tone === t)}>
-                  <input type="radio" name="tone" value={t} checked={tone === t} onChange={() => setTone(t)} className="sr-only" />
-                  {t}
-                </label>
-              ))}
-            </div>
-          </Field>
-        </div>
-
         <Field label="Instructions spéciales" hint="Comportements spécifiques, promotions, restrictions...">
           <textarea
             className={cn(inputClass, "min-h-[100px] resize-y")}
