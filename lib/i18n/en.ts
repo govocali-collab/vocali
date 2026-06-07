@@ -23,7 +23,7 @@ export const en: Dictionary = {
       "A 24/7 AI receptionist that answers calls, qualifies leads, and helps keep your appointment calendar full.",
     ctaPrimary: "Book a Demo",
     ctaSecondary: "Hear a Sample Call",
-    trustedBy: "For beauty clinics, med spas, and aesthetic studios across Quebec",
+    trustedBy: "For aesthetic and medico-aesthetic clinics.",
     callCard: {
       live: "Live",
       incomingCall: "Incoming Call",
@@ -187,7 +187,7 @@ export const en: Dictionary = {
     badge: "Now deploying",
     title: "Quebec Pilot Program",
     subtitle:
-      "Currently being deployed with beauty clinics, medical spas, and aesthetic studios across Quebec.",
+      "Currently being deployed with aesthetic clinics and medical aesthetic clinics.",
     testimonialPlaceholder:
       "Testimonials from our pilot partners are coming soon. Join the program to be among the first.",
     cta: "Join the pilot program",

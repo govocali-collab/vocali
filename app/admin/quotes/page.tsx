@@ -65,7 +65,7 @@ export default function AdminQuotesPage() {
       <div className="max-w-xl mx-auto px-5 py-10">
 
         <div className="mb-8">
-          <Image src="/vocali-logo-black.png" alt="Vocali" width={90} height={28} className="mb-4" />
+          <Image src="/vocali-logo-black.png" alt="Vocali" width={104} height={32} className="mb-4" />
           <Link href="/admin/clinics" className="text-charcoal-400 text-sm hover:text-gold-600 transition-colors mb-4 inline-block">
             ← Cliniques
           </Link>

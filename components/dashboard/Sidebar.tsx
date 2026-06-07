@@ -51,8 +51,8 @@ export default function Sidebar({ clinic }: { clinic: Clinic }) {
         <Image
           src="/vocali-logo-black.png"
           alt="Vocali"
-          width={90}
-          height={28}
+          width={104}
+          height={32}
           className="mb-4"
         />
         <p className="text-charcoal-800 text-sm font-body font-semibold truncate">{clinic.name}</p>
@@ -90,7 +90,7 @@ export default function Sidebar({ clinic }: { clinic: Clinic }) {
       </aside>
 
       <div className="lg:hidden flex items-center justify-between px-4 py-3 bg-white border-b border-ivory-300">
-        <Image src="/vocali-logo-black.png" alt="Vocali" width={70} height={22} />
+        <Image src="/vocali-logo-black.png" alt="Vocali" width={81} height={25} />
         <button onClick={() => setOpen(true)} className="text-charcoal-500 hover:text-charcoal-800 p-1">
           <Menu size={20} />
         </button>

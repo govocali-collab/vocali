@@ -23,7 +23,7 @@ export const fr: Dictionary = {
       "Une réceptionniste IA disponible 24/7 pour répondre aux appels, qualifier les demandes et aider à remplir votre agenda.",
     ctaPrimary: "Demander une démonstration",
     ctaSecondary: "Écouter un appel exemple",
-    trustedBy: "Pour les cliniques de beauté, spas médicaux et studios d'esthétique au Québec",
+    trustedBy: "Pour les cliniques esthétiques et médico-esthétiques.",
     callCard: {
       live: "En direct",
       incomingCall: "Appel entrant",
@@ -187,7 +187,7 @@ export const fr: Dictionary = {
     badge: "Déploiement en cours",
     title: "Programme pilote au Québec",
     subtitle:
-      "Actuellement en déploiement auprès de cliniques de beauté, spas médicaux et studios d'esthétique au Québec.",
+      "Actuellement en déploiement auprès de cliniques esthétiques et cliniques médico-esthétiques.",
     testimonialPlaceholder:
       "Les témoignages de nos partenaires pilotes arrivent bientôt. Rejoignez le programme pour être parmi les premiers.",
     cta: "Rejoindre le programme pilote",

@@ -26,7 +26,7 @@ function CallCard({ c }: { c: Dictionary["hero"]["callCard"] }) {
       />
 
       <motion.div
-        className="relative bg-white rounded-3xl shadow-luxury border border-ivory-300/80 p-6 w-[310px]"
+        className="relative bg-white rounded-3xl shadow-luxury border border-ivory-300/80 p-7 w-[360px]"
         animate={{ y: [0, -8, 0] }}
         transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
       >

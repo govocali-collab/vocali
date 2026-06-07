@@ -32,7 +32,7 @@ export default function LoginPage() {
     <div className="min-h-screen bg-ivory-100 flex items-center justify-center px-4 font-body">
       <div className="w-full max-w-sm">
         <div className="flex justify-center mb-8">
-          <Image src="/vocali-logo-black.png" alt="Vocali" width={110} height={34} priority />
+          <Image src="/vocali-logo-black.png" alt="Vocali" width={127} height={39} priority />
         </div>
 
         <div className="bg-white border border-ivory-300 rounded-2xl p-8 shadow-card">

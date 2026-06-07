@@ -54,12 +54,18 @@ export default function CallsTable({ calls }: Props) {
             <table className="w-full">
               <thead>
                 <tr className="border-b border-ivory-200 bg-ivory-50">
-                  {["Date / Heure", "Numéro", "Durée", "Lead capturé", "Langue"].map((h) => (
+                  {[
+                    { label: "Date / Heure", cls: "" },
+                    { label: "Numéro", cls: "" },
+                    { label: "Durée", cls: "hidden sm:table-cell" },
+                    { label: "Lead capturé", cls: "" },
+                    { label: "Langue", cls: "hidden md:table-cell" },
+                  ].map(({ label, cls }) => (
                     <th
-                      key={h}
-                      className="px-4 py-3 text-left text-charcoal-400 text-[11px] font-body font-medium uppercase tracking-wider"
+                      key={label}
+                      className={cn("px-4 py-3 text-left text-charcoal-400 text-[11px] font-body font-medium uppercase tracking-wider", cls)}
                     >
-                      {h}
+                      {label}
                     </th>
                   ))}
                   <th className="w-8" />
@@ -83,7 +89,7 @@ export default function CallsTable({ calls }: Props) {
                       <td className="px-4 py-3.5 text-charcoal-500 text-sm font-body font-mono">
                         {call.caller_number}
                       </td>
-                      <td className="px-4 py-3.5 text-charcoal-500 text-sm font-body">
+                      <td className="px-4 py-3.5 text-charcoal-500 text-sm font-body hidden sm:table-cell">
                         {formatDuration(call.duration_seconds)}
                       </td>
                       <td className="px-4 py-3.5">
@@ -97,7 +103,7 @@ export default function CallsTable({ calls }: Props) {
                           </span>
                         )}
                       </td>
-                      <td className="px-4 py-3.5 text-charcoal-500 text-sm font-body capitalize">
+                      <td className="px-4 py-3.5 text-charcoal-500 text-sm font-body capitalize hidden md:table-cell">
                         {call.language ?? "—"}
                       </td>
                       <td className="px-4 py-3.5">

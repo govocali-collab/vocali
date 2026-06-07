@@ -13,7 +13,7 @@ export function Footer({ dict, lang }: Props) {
       <div className="max-w-7xl mx-auto px-6 lg:px-8 py-16">
         <div className="flex flex-col md:flex-row justify-between gap-10 mb-12">
           <div className="max-w-xs">
-            <div className="font-serif text-2xl font-bold text-white mb-3">
+            <div className="font-serif text-[1.725rem] font-bold text-white mb-3">
               {dict.nav.logo}
               <span className="text-gold-500">.</span>
             </div>
@@ -46,12 +46,12 @@ export function Footer({ dict, lang }: Props) {
               </p>
               <ul className="space-y-2.5">
                 <li>
-                  <Link href="#" className="text-charcoal-400 text-sm hover:text-gold-400 transition-colors">
+                  <Link href={`/${lang}/privacy`} className="text-charcoal-400 text-sm hover:text-gold-400 transition-colors">
                     {dict.footer.links.privacy}
                   </Link>
                 </li>
                 <li>
-                  <Link href="#" className="text-charcoal-400 text-sm hover:text-gold-400 transition-colors">
+                  <Link href={`/${lang}/terms`} className="text-charcoal-400 text-sm hover:text-gold-400 transition-colors">
                     {dict.footer.links.terms}
                   </Link>
                 </li>

@@ -112,7 +112,7 @@ export default async function DashboardPage() {
         )}
       </div>
 
-      <div className="flex gap-3 mt-4">
+      <div className="flex flex-wrap gap-3 mt-4">
         <Link
           href="/dashboard/leads"
           className="flex items-center gap-2 px-4 py-2.5 bg-white border border-ivory-300 hover:border-gold-300 rounded-lg text-charcoal-500 hover:text-charcoal-800 text-sm font-body transition-all shadow-card"

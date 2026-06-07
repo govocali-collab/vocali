@@ -13,7 +13,7 @@ export default async function ConfirmationPage({ searchParams }: Props) {
   return (
     <div className="min-h-screen bg-ivory-100 font-body flex items-center justify-center px-5">
       <div className="max-w-md w-full text-center">
-        <Image src="/vocali-logo-black.png" alt="Vocali" width={100} height={32} className="mx-auto mb-8" />
+        <Image src="/vocali-logo-black.png" alt="Vocali" width={115} height={37} className="mx-auto mb-8" />
 
         <div className="bg-white rounded-2xl border border-ivory-300 shadow-card p-8 mb-6">
           <div className="flex justify-center mb-4">

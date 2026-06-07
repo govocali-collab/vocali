@@ -117,7 +117,7 @@ export default function OnboardingForm({ prefill }: { prefill?: Prefill }) {
       <div className="max-w-2xl mx-auto px-5 py-10">
 
         <div className="text-center mb-10">
-          <Image src="/vocali-logo-black.png" alt="Vocali" width={100} height={32} className="mx-auto mb-6" />
+          <Image src="/vocali-logo-black.png" alt="Vocali" width={115} height={37} className="mx-auto mb-6" />
           <h1 className="text-charcoal-900 font-display text-3xl font-semibold mb-2">
             Bienvenue chez Vocali
           </h1>

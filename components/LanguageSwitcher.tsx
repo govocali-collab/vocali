@@ -11,6 +11,8 @@ export function LanguageSwitcher({ currentLang }: Props) {
   const pathname = usePathname()
   const router = useRouter()
 
+  const activeLang = pathname.match(/^\/(fr|en)/)?.[1] ?? currentLang
+
   function switchLang(lang: string) {
     const newPath = pathname.replace(/^\/(fr|en)/, `/${lang}`)
     router.push(newPath)
@@ -24,7 +26,7 @@ export function LanguageSwitcher({ currentLang }: Props) {
           onClick={() => switchLang(lang)}
           className={cn(
             "px-3 py-1 rounded-full text-xs font-semibold tracking-wider uppercase transition-all duration-200",
-            currentLang === lang
+            activeLang === lang
               ? "bg-charcoal-900 text-white shadow-sm"
               : "text-charcoal-500 hover:text-charcoal-800"
           )}

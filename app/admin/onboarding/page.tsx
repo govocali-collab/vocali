@@ -135,7 +135,7 @@ export default function OnboardingPage() {
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div>
-            <Image src="/vocali-logo-black.png" alt="Vocali" width={90} height={28} className="mb-3" />
+            <Image src="/vocali-logo-black.png" alt="Vocali" width={104} height={32} className="mb-3" />
             <h1 className="text-charcoal-900 font-display text-2xl font-semibold">
               Nouvelle clinique
             </h1>

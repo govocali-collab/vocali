@@ -47,7 +47,7 @@ export function Navbar({ dict, lang }: Props) {
         <nav className="max-w-7xl mx-auto px-6 lg:px-8 flex items-center justify-between h-18 py-4">
           <Link
             href={`/${lang}`}
-            className="font-serif text-[1.725rem] font-bold tracking-tight text-charcoal-900"
+            className="font-serif text-[1.984rem] font-bold tracking-tight text-charcoal-900"
           >
             {dict.nav.logo}
             <span className="text-gold-500">.</span>

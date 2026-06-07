@@ -3,6 +3,7 @@ import { notFound } from "next/navigation"
 import Image from "next/image"
 import Link from "next/link"
 import ClinicConfigForm from "./ClinicConfigForm"
+import NotesForm from "./NotesForm"
 import { formatPhone } from "@/lib/utils"
 
 interface Props {
@@ -26,7 +27,7 @@ export default async function ClinicDetailPage({ params }: Props) {
 
         {/* Header */}
         <div className="mb-8">
-          <Image src="/vocali-logo-black.png" alt="Vocali" width={90} height={28} className="mb-6" />
+          <Image src="/vocali-logo-black.png" alt="Vocali" width={104} height={32} className="mb-6" />
           <Link href="/admin/clinics" className="text-charcoal-400 text-sm font-body hover:text-gold-600 transition-colors mb-4 inline-block">
             ← Toutes les cliniques
           </Link>
@@ -99,6 +100,14 @@ export default async function ClinicDetailPage({ params }: Props) {
 
         {/* Formulaire de configuration admin */}
         <ClinicConfigForm clinic={clinic} />
+
+        {/* Notes internes */}
+        <div className="mt-5">
+          <NotesForm
+            clinicId={clinic.id}
+            initialNotes={(clinic as unknown as { internal_notes?: string }).internal_notes ?? ""}
+          />
+        </div>
       </div>
     </div>
   )
