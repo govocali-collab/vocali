@@ -26,11 +26,11 @@ function CallCard({ c }: { c: Dictionary["hero"]["callCard"] }) {
       />
 
       <motion.div
-        className="relative bg-white rounded-3xl shadow-luxury border border-ivory-300/80 p-7 w-[360px]"
+        className="relative bg-white rounded-3xl shadow-luxury border border-ivory-300/80 p-9 w-[420px]"
         animate={{ y: [0, -8, 0] }}
         transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
       >
-        <div className="flex items-center justify-between mb-5">
+        <div className="flex items-center justify-between mb-7">
           <div className="flex items-center gap-2">
             <motion.div
               className="w-2 h-2 rounded-full bg-emerald-400"
@@ -42,7 +42,7 @@ function CallCard({ c }: { c: Dictionary["hero"]["callCard"] }) {
           <span className="text-xs text-charcoal-400">Maintenant</span>
         </div>
 
-        <div className="flex items-center gap-3 p-3 bg-ivory-100 rounded-2xl mb-5">
+        <div className="flex items-center gap-3 p-3 bg-ivory-100 rounded-2xl mb-7">
           <div className="relative shrink-0">
             <div className="w-11 h-11 bg-gradient-to-br from-gold-100 to-gold-200 rounded-full flex items-center justify-center">
               <User size={18} className="text-gold-700" />
@@ -65,15 +65,15 @@ function CallCard({ c }: { c: Dictionary["hero"]["callCard"] }) {
           </div>
         </div>
 
-        <div className="mb-5">
-          <div className="flex items-center gap-2 mb-2">
+        <div className="mb-7">
+          <div className="flex items-center gap-2 mb-3">
             <div className="w-6 h-6 bg-gradient-to-br from-gold-400 to-gold-600 rounded-full flex items-center justify-center shrink-0">
               <Sparkles size={12} className="text-white" />
             </div>
             <span className="text-xs font-semibold text-gold-600">{c.aiName}</span>
           </div>
           <motion.div
-            className="bg-ivory-100 rounded-2xl rounded-tl-sm px-4 py-3"
+            className="bg-ivory-100 rounded-2xl rounded-tl-sm px-5 py-4"
             initial={{ opacity: 0, x: -8 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, delay: 1.4 }}
@@ -84,7 +84,7 @@ function CallCard({ c }: { c: Dictionary["hero"]["callCard"] }) {
           </motion.div>
         </div>
 
-        <div className="grid grid-cols-3 gap-2 pt-4 border-t border-ivory-300">
+        <div className="grid grid-cols-3 gap-2 pt-6 border-t border-ivory-300">
           {[
             { label: c.stat1Label, value: c.stat1Value },
             { label: c.stat2Label, value: c.stat2Value },
@@ -92,7 +92,7 @@ function CallCard({ c }: { c: Dictionary["hero"]["callCard"] }) {
           ].map((stat, i) => (
             <motion.div
               key={stat.label}
-              className="text-center py-1"
+              className="text-center py-2"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 1.8 + i * 0.15 }}
@@ -133,7 +133,7 @@ export function Hero({ dict, lang }: Props) {
       <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-gradient-radial from-gold-100/30 to-transparent rounded-full -translate-y-1/4 translate-x-1/4 pointer-events-none" />
 
       <div className="relative max-w-7xl mx-auto px-6 lg:px-8 pt-32 pb-20 w-full">
-        <div className="grid lg:grid-cols-[minmax(0,560px)_auto] gap-16 items-center justify-center">
+        <div className="grid lg:grid-cols-[minmax(0,560px)_auto] gap-16 items-start justify-center">
           <div>
             <motion.div
               initial={{ opacity: 0, y: 16 }}
@@ -207,7 +207,7 @@ export function Hero({ dict, lang }: Props) {
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
-            className="flex justify-center"
+            className="flex justify-center pt-16"
           >
             <CallCard c={h.callCard} />
           </motion.div>
