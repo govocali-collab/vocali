@@ -183,7 +183,7 @@ export function Hero({ dict, lang }: Props) {
               transition={{ duration: 0.5, delay: 0.4 }}
               className="flex flex-col gap-4 mb-10 max-w-sm"
             >
-              <CalPopupButton size="lg">
+              <CalPopupButton size="lg" lang={lang}>
                 {h.ctaPrimary}
                 <ArrowRight size={18} />
               </CalPopupButton>

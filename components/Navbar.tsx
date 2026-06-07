@@ -67,7 +67,7 @@ export function Navbar({ dict, lang }: Props) {
 
           <div className="hidden lg:flex items-center gap-4">
             <LanguageSwitcher currentLang={lang} />
-            <CalPopupButton size="sm">
+            <CalPopupButton size="sm" lang={lang}>
               {dict.nav.cta}
             </CalPopupButton>
           </div>
@@ -107,7 +107,7 @@ export function Navbar({ dict, lang }: Props) {
               <LanguageSwitcher currentLang={lang} />
             </div>
             <div className="mt-6 px-4">
-              <CalPopupButton size="lg" className="w-full">
+              <CalPopupButton size="lg" className="w-full" lang={lang}>
                 {dict.nav.cta}
               </CalPopupButton>
             </div>

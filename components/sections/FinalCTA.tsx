@@ -5,9 +5,10 @@ import type { Dictionary } from "@/lib/i18n"
 
 interface Props {
   dict: Dictionary
+  lang?: string
 }
 
-export function FinalCTA({ dict }: Props) {
+export function FinalCTA({ dict, lang = "fr" }: Props) {
   const c = dict.finalCta
 
   return (
@@ -29,7 +30,7 @@ export function FinalCTA({ dict }: Props) {
           </h2>
           <p className="text-white/75 text-lg mb-10">{c.subtitle}</p>
 
-          <CalPopupButton variant="white" size="lg">
+          <CalPopupButton variant="white" size="lg" lang={lang}>
             {c.cta}
             <ArrowRight size={20} />
           </CalPopupButton>

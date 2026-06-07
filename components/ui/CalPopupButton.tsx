@@ -4,7 +4,10 @@ import { useEffect } from "react"
 import { getCalApi } from "@calcom/embed-react"
 import { cn } from "@/lib/utils"
 
-const CAL_LINK = "jonathan-vocali/appel-demo"
+const CAL_LINKS: Record<string, string> = {
+  fr: "jonathan-vocali/appel-demo",
+  en: "jonathan-vocali/demo-call",
+}
 
 type Variant = "primary" | "secondary" | "white"
 type Size = "sm" | "md" | "lg"
@@ -28,10 +31,13 @@ interface Props {
   variant?: Variant
   size?: Size
   className?: string
+  lang?: string
   children: React.ReactNode
 }
 
-export function CalPopupButton({ variant = "primary", size = "md", className, children }: Props) {
+export function CalPopupButton({ variant = "primary", size = "md", className, lang = "fr", children }: Props) {
+  const calLink = CAL_LINKS[lang] ?? CAL_LINKS.fr
+
   useEffect(() => {
     ;(async () => {
       const cal = await getCalApi({ namespace: "demo-vocali" })
@@ -42,7 +48,7 @@ export function CalPopupButton({ variant = "primary", size = "md", className, ch
   return (
     <button
       data-cal-namespace="demo-vocali"
-      data-cal-link={CAL_LINK}
+      data-cal-link={calLink}
       data-cal-config='{"layout":"month_view"}'
       className={cn(
         "inline-flex items-center justify-center font-semibold rounded-full transition-all duration-200 cursor-pointer select-none",

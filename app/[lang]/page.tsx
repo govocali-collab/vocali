@@ -29,9 +29,9 @@ export default async function Page({ params }: Props) {
         <HowItWorks dict={dict} />
         <Benefits dict={dict} />
         <Franchise dict={dict} />
-        <Pilot dict={dict} />
+        <Pilot dict={dict} lang={lang} />
         <FAQ dict={dict} />
-        <FinalCTA dict={dict} />
+        <FinalCTA dict={dict} lang={lang} />
       </main>
       <Footer dict={dict} lang={lang} />
     </>

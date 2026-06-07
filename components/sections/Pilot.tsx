@@ -5,9 +5,10 @@ import type { Dictionary } from "@/lib/i18n"
 
 interface Props {
   dict: Dictionary
+  lang?: string
 }
 
-export function Pilot({ dict }: Props) {
+export function Pilot({ dict, lang = "fr" }: Props) {
   const p = dict.pilot
 
   return (
@@ -49,7 +50,7 @@ export function Pilot({ dict }: Props) {
               {p.ctaTitle}
             </h3>
             <p className="text-charcoal-500 mb-8">{p.ctaSubtitle}</p>
-            <CalPopupButton size="lg">
+            <CalPopupButton size="lg" lang={lang}>
               {p.cta}
               <ArrowRight size={18} />
             </CalPopupButton>
