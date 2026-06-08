@@ -12,7 +12,7 @@ export async function GET() {
 
     const results = invoices.data.map((invoice) => {
       const customer = invoice.customer as Stripe.Customer | null
-      const subscription = invoice.subscription as Stripe.Subscription | null
+      const subscription = (invoice as unknown as { subscription: Stripe.Subscription | null }).subscription
 
       return {
         id: invoice.id,
