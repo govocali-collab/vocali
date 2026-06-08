@@ -16,13 +16,13 @@ interface Props {
 
 const SIZES = {
   preview: {
-    square: "w-[270px] h-[270px]",
+    square: "w-[216px] h-[270px]",
     story:  "w-[152px] h-[270px]",
     text:   { headline: "text-[13px]", body: "text-[9px]", logo: "text-[8px]", num: "text-[8px]" },
     pad:    "p-5",
   },
   export: {
-    square: "w-[1080px] h-[1080px]",
+    square: "w-[1080px] h-[1350px]",
     story:  "w-[608px] h-[1080px]",
     text:   { headline: "text-[52px]", body: "text-[36px]", logo: "text-[32px]", num: "text-[30px]" },
     pad:    "p-20",
