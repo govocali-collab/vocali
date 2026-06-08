@@ -1,9 +1,9 @@
 "use client"
 
 import { useRef, useState } from "react"
-import { Download, Trash2, ChevronLeft, ChevronRight, Copy, Check } from "lucide-react"
+import { Download, Trash2, ChevronLeft, ChevronRight, Copy, Check, Pencil, X } from "lucide-react"
 import { cn } from "@/lib/utils"
-import type { SocialPost } from "@/lib/supabase/social"
+import type { SocialPost, Slide } from "@/lib/supabase/social"
 import { PostSlide } from "./PostSlide"
 
 interface Props {
@@ -15,7 +15,13 @@ interface Props {
 export default function PostCard({ post, onDelete, photoUrl }: Props) {
   const [activeSlide, setActiveSlide] = useState(0)
   const [copied, setCopied] = useState(false)
+  const [editing, setEditing] = useState(false)
+  const [slides, setSlides] = useState<Slide[]>(post.slides)
   const slideRefs = useRef<(HTMLDivElement | null)[]>([])
+
+  function updateSlide(index: number, field: keyof Slide, value: string) {
+    setSlides(prev => prev.map((s, i) => i === index ? { ...s, [field]: value } : s))
+  }
 
   async function downloadSlide(index: number) {
     const el = slideRefs.current[index]
@@ -34,7 +40,7 @@ export default function PostCard({ post, onDelete, photoUrl }: Props) {
   }
 
   async function downloadAll() {
-    for (let i = 0; i < post.slides.length; i++) {
+    for (let i = 0; i < slides.length; i++) {
       await downloadSlide(i)
     }
   }
@@ -80,13 +86,13 @@ export default function PostCard({ post, onDelete, photoUrl }: Props) {
       <div className="px-4 pb-2">
         {/* Hidden export-size slides for download */}
         <div className="absolute pointer-events-none opacity-0 overflow-hidden" style={{ left: -9999 }}>
-          {post.slides.map((slide, i) => (
+          {slides.map((slide, i) => (
             <PostSlide
               key={i}
               ref={(el) => { slideRefs.current[i] = el }}
               slide={slide}
               index={i}
-              total={post.slides.length}
+              total={slides.length}
               postType={post.post_type}
               style={post.style}
               size="export"
@@ -96,10 +102,10 @@ export default function PostCard({ post, onDelete, photoUrl }: Props) {
         </div>
 
         {/* Visible preview */}
-        {post.slides.length === 1 ? (
+        {slides.length === 1 ? (
           <div className="flex justify-center">
             <PostSlide
-              slide={post.slides[0]}
+              slide={slides[0]}
               index={0}
               total={1}
               postType={post.post_type}
@@ -111,9 +117,9 @@ export default function PostCard({ post, onDelete, photoUrl }: Props) {
           <div>
             <div className="flex justify-center">
               <PostSlide
-                slide={post.slides[activeSlide]}
+                slide={slides[activeSlide]}
                 index={activeSlide}
-                total={post.slides.length}
+                total={slides.length}
                 postType={post.post_type}
                 style={post.style}
                 photoUrl={photoUrl}
@@ -129,7 +135,7 @@ export default function PostCard({ post, onDelete, photoUrl }: Props) {
                 <ChevronLeft size={16} />
               </button>
               <div className="flex gap-1">
-                {post.slides.map((_, i) => (
+                {slides.map((_, i) => (
                   <button
                     key={i}
                     onClick={() => setActiveSlide(i)}
@@ -152,6 +158,40 @@ export default function PostCard({ post, onDelete, photoUrl }: Props) {
         )}
       </div>
 
+      {/* Edit panel */}
+      {editing && (
+        <div className="px-4 py-3 border-t border-ivory-200 bg-ivory-50">
+          <div className="flex items-center justify-between mb-3">
+            <p className="text-xs font-semibold text-charcoal-500 uppercase tracking-widest">
+              Slide {activeSlide + 1} / {slides.length}
+            </p>
+            <button onClick={() => setEditing(false)} className="text-charcoal-400 hover:text-charcoal-700 p-0.5">
+              <X size={14} />
+            </button>
+          </div>
+          <div className="space-y-2">
+            <div>
+              <label className="block text-xs text-charcoal-400 mb-1">Titre</label>
+              <input
+                type="text"
+                value={slides[activeSlide].headline}
+                onChange={e => updateSlide(activeSlide, "headline", e.target.value)}
+                className="w-full border border-ivory-300 rounded-lg px-3 py-2 text-sm text-charcoal-800 focus:outline-none focus:border-gold-400 bg-white"
+              />
+            </div>
+            <div>
+              <label className="block text-xs text-charcoal-400 mb-1">Corps</label>
+              <textarea
+                value={slides[activeSlide].body ?? ""}
+                onChange={e => updateSlide(activeSlide, "body", e.target.value)}
+                rows={3}
+                className="w-full border border-ivory-300 rounded-lg px-3 py-2 text-sm text-charcoal-800 focus:outline-none focus:border-gold-400 bg-white resize-none"
+              />
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Caption */}
       <div className="px-4 py-3 border-t border-ivory-200">
         <p className="text-xs text-charcoal-600 font-body leading-relaxed line-clamp-3">{post.caption}</p>
@@ -167,24 +207,34 @@ export default function PostCard({ post, onDelete, photoUrl }: Props) {
           className="flex items-center gap-1.5 text-xs font-medium text-charcoal-500 hover:text-charcoal-800 transition-colors px-3 py-1.5 rounded-lg hover:bg-ivory-100"
         >
           {copied ? <Check size={12} className="text-emerald-500" /> : <Copy size={12} />}
-          {copied ? "Copié !" : "Copier caption"}
+          {copied ? "Copié !" : "Caption"}
+        </button>
+        <button
+          onClick={() => setEditing(v => !v)}
+          className={cn(
+            "flex items-center gap-1.5 text-xs font-medium transition-colors px-3 py-1.5 rounded-lg",
+            editing ? "bg-gold-100 text-gold-700" : "text-charcoal-500 hover:text-charcoal-800 hover:bg-ivory-100"
+          )}
+        >
+          <Pencil size={12} />
+          Éditer
         </button>
         <div className="flex-1" />
-        {post.slides.length > 1 && (
+        {slides.length > 1 && (
           <button
             onClick={downloadAll}
             className="flex items-center gap-1.5 text-xs font-medium text-charcoal-500 hover:text-charcoal-800 transition-colors px-3 py-1.5 rounded-lg hover:bg-ivory-100"
           >
             <Download size={12} />
-            Tout télécharger
+            Tout
           </button>
         )}
         <button
-          onClick={() => downloadSlide(post.slides.length === 1 ? 0 : activeSlide)}
+          onClick={() => downloadSlide(slides.length === 1 ? 0 : activeSlide)}
           className="flex items-center gap-1.5 text-xs font-medium bg-gold-600 hover:bg-gold-700 text-white px-3 py-1.5 rounded-lg transition-colors"
         >
           <Download size={12} />
-          {post.slides.length > 1 ? `Slide ${activeSlide + 1}` : "Télécharger"}
+          {slides.length > 1 ? `Slide ${activeSlide + 1}` : "Télécharger"}
         </button>
       </div>
     </div>
