@@ -49,7 +49,7 @@ Résume tes découvertes en 5-6 points concrets.`
   return textBlock?.text ?? ""
 }
 
-function buildPrompt(topic: string, postType: PostType, trends: string): string {
+function buildPrompt(topic: string, postType: PostType, trends: string, customContent?: string): string {
   const slideCount =
     postType === "single"    ? 1 :
     postType === "story"     ? 1 :
@@ -62,16 +62,17 @@ function buildPrompt(topic: string, postType: PostType, trends: string): string 
 SUJET : "${topic}"
 NOMBRE DE SLIDES : ${slideCount}
 
+${customContent ? `TEXTE / CONTENU FOURNI (utilise ce contenu comme base principale, reformule et adapte au format):\n${customContent}\n` : ""}
 ${trends ? `TENDANCES ACTUELLES (basées sur recherche) :\n${trends}\n` : ""}
 
 Instructions de création :
 ${slideCount === 1 ? "- 1 slide : titre accrocheur basé sur une tendance + texte percutant (2-3 phrases)" : ""}
 ${slideCount === 3 ? "- Slide 1 : hook viral en titre (couverture, pas de body)\n- Slide 2 : contenu principal qui répond à une question ou pain point (2-3 phrases)\n- Slide 3 : call-to-action fort" : ""}
 ${slideCount === 6 ? "- Slide 1 : hook viral en titre (couverture, pas de body)\n- Slides 2-5 : contenu éducatif/valeur développé (1-2 phrases chacune)\n- Slide 6 : call-to-action fort" : ""}
-- Applique les formats et angles viraux identifiés dans les tendances
+${customContent ? "- Respecte les idées et le sens du texte fourni, mais adapte le format et le ton" : "- Applique les formats et angles viraux identifiés dans les tendances"}
 - Tone : professionnel, chaleureux, luxueux mais accessible
 - Langue : français québécois naturel et authentique
-- Titres courts et impactants (max 8 mots), inspirés des hooks qui performent
+- Titres courts et impactants (max 8 mots)
 - Contenu des slides : 1-3 phrases max
 
 Génère aussi :
@@ -97,8 +98,8 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   }
 
-  const body = await req.json() as { topic?: string; postType?: PostType; style?: PostStyle; useTrends?: boolean }
-  const { topic = "", postType = "single", style = "light", useTrends = true } = body
+  const body = await req.json() as { topic?: string; postType?: PostType; style?: PostStyle; useTrends?: boolean; customContent?: string }
+  const { topic = "", postType = "single", style = "light", useTrends = true, customContent } = body
 
   if (!topic.trim()) {
     return NextResponse.json({ error: "Sujet requis" }, { status: 400 })
@@ -109,7 +110,7 @@ export async function POST(req: NextRequest) {
   const message = await client.messages.create({
     model: "claude-opus-4-8",
     max_tokens: 1024,
-    messages: [{ role: "user", content: buildPrompt(topic, postType, trends) }],
+    messages: [{ role: "user", content: buildPrompt(topic, postType, trends, customContent) }],
   })
 
   const text = message.content[0].type === "text" ? message.content[0].text : ""

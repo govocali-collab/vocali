@@ -20,6 +20,7 @@ interface Props {
 export default function SocialView({ initialPosts }: Props) {
   const [tab, setTab] = useState<"generate" | "history">("generate")
   const [topic, setTopic] = useState("")
+  const [customContent, setCustomContent] = useState("")
   const [postType, setPostType] = useState<PostType>("single")
   const [style, setStyle] = useState<PostStyle>("light")
   const [useTrends, setUseTrends] = useState(true)
@@ -34,7 +35,7 @@ export default function SocialView({ initialPosts }: Props) {
       const res = await fetch("/api/admin/social/generate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ topic, postType, style, useTrends }),
+        body: JSON.stringify({ topic, postType, style, useTrends, customContent: customContent.trim() || undefined }),
       })
       if (!res.ok) {
         const err = await res.json() as { error?: string }
@@ -109,6 +110,21 @@ export default function SocialView({ initialPosts }: Props) {
                 placeholder="ex. Botox, soins du visage, promotion été…"
                 disabled={generating}
                 className="w-full border border-ivory-300 rounded-lg px-3 py-2.5 text-sm font-body text-charcoal-800 focus:outline-none focus:border-gold-400 placeholder:text-charcoal-300"
+              />
+            </div>
+
+            {/* Custom content */}
+            <div className="mb-4">
+              <label className="block text-xs font-semibold text-charcoal-400 uppercase tracking-widest mb-1.5">
+                Texte ou prompt <span className="normal-case font-normal text-charcoal-300">(optionnel)</span>
+              </label>
+              <textarea
+                value={customContent}
+                onChange={e => setCustomContent(e.target.value)}
+                placeholder="Colle un texte déjà écrit, des points clés, ou une directive précise pour la génération…"
+                disabled={generating}
+                rows={4}
+                className="w-full border border-ivory-300 rounded-lg px-3 py-2.5 text-sm font-body text-charcoal-800 focus:outline-none focus:border-gold-400 placeholder:text-charcoal-300 resize-none"
               />
             </div>
 
