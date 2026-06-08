@@ -109,7 +109,7 @@ export const PostSlide = forwardRef<HTMLDivElement, Props>(
           {slide.body && (
             <p
               className={cn(
-                "leading-relaxed mt-3",
+                "leading-relaxed mt-3 whitespace-pre-line",
                 s.text.body,
                 isLight ? "text-[#4A4535]" : "text-[#C8C0AC]",
                 isCover && "text-center"
