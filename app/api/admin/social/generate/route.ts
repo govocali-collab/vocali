@@ -74,6 +74,7 @@ ${customContent ? "- Respecte les idées et le sens du texte fourni, mais adapte
 - Langue : français québécois naturel et authentique
 - Titres courts et impactants (max 8 mots)
 - Contenu des slides : 1-3 phrases max
+- INTERDIT : n'utilise JAMAIS le tiret long « — » (em dash) dans les titres, corps de texte, captions ou hashtags. Remplace-le par une virgule, un point, ou reformule la phrase.
 
 Génère aussi :
 - Une caption Instagram engageante qui crée de l'engagement (question, émotion, ou valeur — 2-3 phrases + emoji)
