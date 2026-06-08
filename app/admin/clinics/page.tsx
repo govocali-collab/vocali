@@ -42,31 +42,13 @@ export default async function AdminClinicsPage() {
   const totalCallsThisMonth = clinics.reduce((s, c) => s + c.calls_this_month, 0)
 
   return (
-    <div className="min-h-screen bg-ivory-100 font-body">
-      <div className="max-w-5xl mx-auto px-5 py-10">
-
-        {/* Header */}
+    <div>
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
           <div>
-            <Image src="/vocali-logo-black.png" alt="Vocali" width={104} height={32} className="mb-3" />
             <h1 className="text-charcoal-900 font-display text-2xl font-semibold">Vue d'ensemble</h1>
             <p className="text-charcoal-500 text-sm mt-1">
               {clinics.length} clinique{clinics.length !== 1 ? "s" : ""} · {totalCallsThisMonth} appel{totalCallsThisMonth !== 1 ? "s" : ""} ce mois
             </p>
-          </div>
-          <div className="flex items-center gap-3 flex-shrink-0">
-            <Link
-              href="/admin/stats"
-              className="bg-white border border-ivory-300 text-charcoal-600 font-body font-semibold text-sm rounded-lg px-4 py-2.5 hover:border-gold-300 hover:text-gold-700 transition-colors"
-            >
-              Statistiques
-            </Link>
-            <Link
-              href="/admin/onboarding"
-              className="bg-gold-gradient text-white font-body font-semibold text-sm rounded-lg px-5 py-2.5 hover:opacity-90 transition-opacity"
-            >
-              + Nouvelle clinique
-            </Link>
           </div>
         </div>
 
@@ -125,7 +107,6 @@ export default async function AdminClinicsPage() {
             <p className="text-charcoal-400 text-sm">Aucune clinique pour l'instant.</p>
           </div>
         )}
-      </div>
     </div>
   )
 }

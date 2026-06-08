@@ -1,7 +1,5 @@
 export const dynamic = "force-dynamic"
 
-import Image from "next/image"
-import Link from "next/link"
 import Stripe from "stripe"
 import { createClient } from "@supabase/supabase-js"
 import { cn } from "@/lib/utils"
@@ -154,19 +152,10 @@ export default async function AdminStatsPage() {
   const monthLabel = new Date().toLocaleDateString("fr-CA", { month: "long", year: "numeric" })
 
   return (
-    <div className="min-h-screen bg-ivory-100 font-body">
-      <div className="max-w-5xl mx-auto px-5 py-10">
-
-        {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
-          <div>
-            <Image src="/vocali-logo-black.png" alt="Vocali" width={104} height={32} className="mb-3" />
-            <h1 className="text-charcoal-900 font-display text-2xl font-semibold">Statistiques</h1>
-            <p className="text-charcoal-500 text-sm mt-1 capitalize">{monthLabel}</p>
-          </div>
-          <Link href="/admin/clinics" className="text-charcoal-400 text-sm hover:text-gold-600 transition-colors">
-            ← Cliniques
-          </Link>
+    <div>
+        <div className="mb-8">
+          <h1 className="text-charcoal-900 font-display text-2xl font-semibold">Statistiques</h1>
+          <p className="text-charcoal-500 text-sm mt-1 capitalize">{monthLabel}</p>
         </div>
 
         {/* Revenus */}
@@ -251,7 +240,6 @@ export default async function AdminStatsPage() {
           />
         </Section>
 
-      </div>
     </div>
   )
 }

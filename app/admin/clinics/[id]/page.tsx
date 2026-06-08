@@ -1,6 +1,5 @@
 import { getClinicById } from "@/lib/supabase/clinics"
 import { notFound } from "next/navigation"
-import Image from "next/image"
 import Link from "next/link"
 import ClinicConfigForm from "./ClinicConfigForm"
 import NotesForm from "./NotesForm"
@@ -22,12 +21,10 @@ export default async function ClinicDetailPage({ params }: Props) {
   const services = (clinic.services ?? []) as string[]
 
   return (
-    <div className="min-h-screen bg-ivory-100 font-body">
-      <div className="max-w-3xl mx-auto px-5 py-10">
+    <div className="max-w-3xl">
 
         {/* Header */}
         <div className="mb-8">
-          <Image src="/vocali-logo-black.png" alt="Vocali" width={104} height={32} className="mb-6" />
           <Link href="/admin/clinics" className="text-charcoal-400 text-sm font-body hover:text-gold-600 transition-colors mb-4 inline-block">
             ← Toutes les cliniques
           </Link>
@@ -108,7 +105,6 @@ export default async function ClinicDetailPage({ params }: Props) {
             initialNotes={(clinic as unknown as { internal_notes?: string }).internal_notes ?? ""}
           />
         </div>
-      </div>
     </div>
   )
 }

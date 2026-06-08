@@ -1,5 +1,6 @@
 import { headers } from "next/headers"
 import { redirect } from "next/navigation"
+import AdminNav from "@/components/admin/AdminNav"
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
   const headersList = await headers()
@@ -10,5 +11,12 @@ export default async function AdminLayout({ children }: { children: React.ReactN
     redirect("/admin-login")
   }
 
-  return <>{children}</>
+  return (
+    <div className="min-h-screen bg-ivory-100 font-body">
+      <AdminNav />
+      <div className="max-w-5xl mx-auto px-5 pb-10">
+        {children}
+      </div>
+    </div>
+  )
 }
