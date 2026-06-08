@@ -7,7 +7,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   const isAuthed = cookie.includes("admin_token=vocali_admin_authed")
 
   if (!isAuthed) {
-    redirect("/admin/login")
+    redirect("/admin-login")
   }
 
   return <>{children}</>
