@@ -90,14 +90,19 @@ export default function DemoAudioModal({ open, onClose, lang }: Props) {
     }
   }, [open])
 
-  function togglePlay() {
+  async function togglePlay() {
     if (!audioRef.current) return
     if (playing) {
       audioRef.current.pause()
+      setPlaying(false)
     } else {
-      audioRef.current.play()
+      try {
+        await audioRef.current.play()
+        setPlaying(true)
+      } catch {
+        // autoplay blocked — user gesture should have allowed this, ignore
+      }
     }
-    setPlaying(!playing)
   }
 
   function handleSeek(e: React.ChangeEvent<HTMLInputElement>) {
@@ -201,6 +206,8 @@ export default function DemoAudioModal({ open, onClose, lang }: Props) {
                 onTimeUpdate={(e) => setCurrentTime(e.currentTarget.currentTime)}
                 onLoadedMetadata={(e) => setDuration(e.currentTarget.duration)}
                 onEnded={() => setPlaying(false)}
+                preload="auto"
+                playsInline
               />
 
               <div className="flex items-center gap-4">
