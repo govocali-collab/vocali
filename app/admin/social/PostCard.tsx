@@ -188,6 +188,17 @@ export default function PostCard({ post, onDelete, photoUrl }: Props) {
                 className="w-full border border-ivory-300 rounded-lg px-3 py-2 text-sm text-charcoal-800 focus:outline-none focus:border-gold-400 bg-white resize-none"
               />
             </div>
+            {slides[activeSlide].cta !== undefined && (
+              <div>
+                <label className="block text-xs text-charcoal-400 mb-1">CTA</label>
+                <input
+                  type="text"
+                  value={slides[activeSlide].cta ?? ""}
+                  onChange={e => updateSlide(activeSlide, "cta", e.target.value)}
+                  className="w-full border border-ivory-300 rounded-lg px-3 py-2 text-sm text-charcoal-800 focus:outline-none focus:border-gold-400 bg-white"
+                />
+              </div>
+            )}
           </div>
         </div>
       )}

@@ -120,15 +120,15 @@ export const PostSlide = forwardRef<HTMLDivElement, Props>(
             </p>
           )}
 
-          {/* CTA arrow for last slide */}
-          {isLast && (
+          {/* CTA for last slide */}
+          {isLast && slide.cta && (
             <div className={cn(
               "mt-4 font-semibold text-[#C9A864] flex items-center gap-1",
               s.text.body
             )}
               style={{ fontFamily: "var(--font-dm-sans), sans-serif" }}
             >
-              Prendre rendez-vous →
+              {slide.cta}
             </div>
           )}
         </div>

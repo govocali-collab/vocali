@@ -13,6 +13,7 @@ export type PostStyle = "light" | "dark"
 export interface Slide {
   headline: string
   body: string
+  cta?: string
 }
 
 export interface SocialPost {

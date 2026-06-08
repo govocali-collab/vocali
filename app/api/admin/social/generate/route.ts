@@ -83,14 +83,15 @@ Génère aussi :
 Réponds UNIQUEMENT en JSON valide avec ce format exact :
 {
   "slides": [
-    {"headline": "...", "body": "..."},
+    {"headline": "...", "body": "...", "cta": ""},
     ...
   ],
   "caption": "...",
   "hashtags": ["...", "...", "...", "...", "..."]
 }
 
-Pour les slides sans body (couverture), mets body à "".`
+- Pour les slides sans body (couverture), mets body à "".
+- Pour la DERNIÈRE slide d'un carousel (slide call-to-action), mets un texte CTA court dans "cta" (ex: "Prendre rendez-vous →"). Pour toutes les autres slides, mets cta à "".`
 }
 
 export const maxDuration = 60
