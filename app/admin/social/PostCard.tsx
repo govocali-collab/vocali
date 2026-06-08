@@ -160,41 +160,34 @@ export default function PostCard({ post, onDelete, photoUrl }: Props) {
 
       {/* Edit panel */}
       {editing && (
-        <div className="border-t border-ivory-200 bg-ivory-50">
-          <div className="flex items-center justify-between px-4 pt-3 pb-2">
-            <p className="text-xs font-semibold text-charcoal-500 uppercase tracking-widest">Éditer les slides</p>
+        <div className="px-4 py-3 border-t border-ivory-200 bg-ivory-50">
+          <div className="flex items-center justify-between mb-3">
+            <p className="text-xs font-semibold text-charcoal-500 uppercase tracking-widest">
+              Slide {activeSlide + 1} / {slides.length}
+            </p>
             <button onClick={() => setEditing(false)} className="text-charcoal-400 hover:text-charcoal-700 p-0.5">
               <X size={14} />
             </button>
           </div>
-          <div className="px-4 pb-3 space-y-4 max-h-96 overflow-y-auto">
-            {slides.map((slide, i) => (
-              <div key={i} className="bg-white border border-ivory-200 rounded-lg p-3">
-                <p className="text-xs font-semibold text-gold-600 uppercase tracking-widest mb-2">
-                  Slide {i + 1}
-                </p>
-                <div className="space-y-2">
-                  <div>
-                    <label className="block text-xs text-charcoal-400 mb-1">Titre</label>
-                    <input
-                      type="text"
-                      value={slide.headline}
-                      onChange={e => updateSlide(i, "headline", e.target.value)}
-                      className="w-full border border-ivory-300 rounded-lg px-3 py-2 text-sm text-charcoal-800 focus:outline-none focus:border-gold-400"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs text-charcoal-400 mb-1">Corps</label>
-                    <textarea
-                      value={slide.body ?? ""}
-                      onChange={e => updateSlide(i, "body", e.target.value)}
-                      rows={2}
-                      className="w-full border border-ivory-300 rounded-lg px-3 py-2 text-sm text-charcoal-800 focus:outline-none focus:border-gold-400 resize-none"
-                    />
-                  </div>
-                </div>
-              </div>
-            ))}
+          <div className="space-y-2">
+            <div>
+              <label className="block text-xs text-charcoal-400 mb-1">Titre</label>
+              <input
+                type="text"
+                value={slides[activeSlide].headline}
+                onChange={e => updateSlide(activeSlide, "headline", e.target.value)}
+                className="w-full border border-ivory-300 rounded-lg px-3 py-2 text-sm text-charcoal-800 focus:outline-none focus:border-gold-400 bg-white"
+              />
+            </div>
+            <div>
+              <label className="block text-xs text-charcoal-400 mb-1">Corps</label>
+              <textarea
+                value={slides[activeSlide].body ?? ""}
+                onChange={e => updateSlide(activeSlide, "body", e.target.value)}
+                rows={3}
+                className="w-full border border-ivory-300 rounded-lg px-3 py-2 text-sm text-charcoal-800 focus:outline-none focus:border-gold-400 bg-white resize-none"
+              />
+            </div>
           </div>
         </div>
       )}
