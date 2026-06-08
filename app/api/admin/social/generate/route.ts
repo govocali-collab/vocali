@@ -104,16 +104,17 @@ export async function POST(req: NextRequest) {
     const body = await req.json() as { topic?: string; postType?: PostType; style?: PostStyle; useTrends?: boolean; customContent?: string }
     const { topic = "", postType = "single", style = "light", useTrends = true, customContent } = body
 
-    if (!topic.trim()) {
-      return NextResponse.json({ error: "Sujet requis" }, { status: 400 })
+    if (!topic.trim() && !customContent?.trim()) {
+      return NextResponse.json({ error: "Un sujet ou un texte est requis" }, { status: 400 })
     }
+    const effectiveTopic = topic.trim() || customContent!.slice(0, 60)
 
-    const trends = useTrends ? await researchTrends(topic) : ""
+    const trends = useTrends ? await researchTrends(effectiveTopic) : ""
 
     const message = await client.messages.create({
       model: "claude-opus-4-8",
       max_tokens: 1024,
-      messages: [{ role: "user", content: buildPrompt(topic, postType, trends, customContent) }],
+      messages: [{ role: "user", content: buildPrompt(effectiveTopic, postType, trends, customContent) }],
     })
 
     const text = message.content[0].type === "text" ? message.content[0].text : ""
@@ -130,7 +131,7 @@ export async function POST(req: NextRequest) {
     }
 
     const post = await createSocialPost({
-      topic: topic.trim(),
+      topic: effectiveTopic,
       post_type: postType,
       style,
       slides: parsed.slides,

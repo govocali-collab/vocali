@@ -28,8 +28,10 @@ export default function SocialView({ initialPosts }: Props) {
   const [posts, setPosts] = useState<SocialPost[]>(initialPosts)
   const [latest, setLatest] = useState<SocialPost | null>(null)
 
+  const canGenerate = !generating && (topic.trim().length > 0 || customContent.trim().length > 0)
+
   async function handleGenerate() {
-    if (!topic.trim() || generating) return
+    if (!canGenerate) return
     setGenerating(true)
     try {
       const res = await fetch("/api/admin/social/generate", {
@@ -209,7 +211,7 @@ export default function SocialView({ initialPosts }: Props) {
 
             <button
               onClick={handleGenerate}
-              disabled={generating || !topic.trim()}
+              disabled={!canGenerate}
               className="w-full flex items-center justify-center gap-2 bg-gold-600 hover:bg-gold-700 disabled:opacity-60 text-white text-sm font-semibold py-3 rounded-lg transition-colors"
             >
               {generating
