@@ -66,7 +66,7 @@ export function Footer({ dict, lang }: Props) {
         </div>
 
         <div className="border-t border-charcoal-800 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4">
-          <p className="text-charcoal-500 text-sm">{dict.footer.copyright}</p>
+          <p className="text-charcoal-500 text-sm">© {new Date().getFullYear()} {dict.footer.copyright}</p>
           <div className="flex items-center gap-1.5 text-charcoal-500 text-sm">
             <MapPin size={12} className="text-gold-600" />
             <span>{dict.footer.madeIn}</span>

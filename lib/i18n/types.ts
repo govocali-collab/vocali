@@ -43,7 +43,7 @@ export type Dictionary = {
     items: Array<{ title: string; desc: string }>
     revenueTitle: string
     revenueDesc: string
-    revenueHighlight: string
+    revenueHighlight?: string
   }
   solution: {
     badge: string
@@ -69,6 +69,15 @@ export type Dictionary = {
     subtitle: string
     features: Array<{ title: string; desc: string }>
     cta: string
+  }
+  founder: {
+    badge: string
+    headline: string
+    body: string
+    photoAlt: string
+    name: string
+    title: string
+    madeIn: string
   }
   pilot: {
     badge: string

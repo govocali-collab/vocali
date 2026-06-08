@@ -16,7 +16,7 @@ export function Pilot({ dict, lang = "fr" }: Props) {
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <AnimateOnScroll variant="fadeUp" className="text-center mb-16">
           <span className="section-badge mb-6 inline-flex">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+            <span className="w-1.5 h-1.5 rounded-full bg-gold-500" />
             {p.badge}
           </span>
           <h2 className="font-serif text-4xl lg:text-5xl font-bold text-charcoal-900 leading-tight mb-5">

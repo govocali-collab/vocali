@@ -4,13 +4,16 @@ import Link from "next/link"
 import Image from "next/image"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
-import { LayoutGrid, BarChart2, UserPlus, FileText } from "lucide-react"
+import { LayoutGrid, BarChart2, UserPlus, FileText, Users, Search, ImagePlay } from "lucide-react"
 
 const links = [
   { href: "/admin/clinics",    label: "Cliniques",    icon: LayoutGrid },
   { href: "/admin/stats",      label: "Statistiques", icon: BarChart2 },
+  { href: "/admin/crm",        label: "CRM",          icon: Users },
+  { href: "/admin/scraper",    label: "Scraper",      icon: Search },
+  { href: "/admin/social",     label: "Posts",        icon: ImagePlay },
   { href: "/admin/onboarding", label: "Onboarding",   icon: UserPlus },
-  { href: "/admin/quotes",     label: "Soumissions",  icon: FileText },
+  { href: "/admin/billing",    label: "Facturation",  icon: FileText },
 ]
 
 export default function AdminNav() {

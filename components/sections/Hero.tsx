@@ -1,9 +1,11 @@
 "use client"
 
+import { useState } from "react"
 import { motion } from "framer-motion"
 import { ArrowRight, Play, Phone, Sparkles, User } from "lucide-react"
 import { Button } from "@/components/ui/Button"
 import { CalPopupButton } from "@/components/ui/CalPopupButton"
+import DemoAudioModal from "@/components/DemoAudioModal"
 import type { Dictionary } from "@/lib/i18n"
 
 interface Props {
@@ -118,6 +120,7 @@ function CallCard({ c }: { c: Dictionary["hero"]["callCard"] }) {
 
 export function Hero({ dict, lang }: Props) {
   const h = dict.hero
+  const [demoOpen, setDemoOpen] = useState(false)
 
   return (
     <section
@@ -187,7 +190,7 @@ export function Hero({ dict, lang }: Props) {
                 {h.ctaPrimary}
                 <ArrowRight size={18} />
               </CalPopupButton>
-              <Button variant="secondary" size="lg">
+              <Button variant="secondary" size="lg" onClick={() => setDemoOpen(true)}>
                 <Play size={16} className="shrink-0" />
                 {h.ctaSecondary}
               </Button>
@@ -215,6 +218,8 @@ export function Hero({ dict, lang }: Props) {
       </div>
 
       <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-white to-transparent pointer-events-none" />
+
+      <DemoAudioModal open={demoOpen} onClose={() => setDemoOpen(false)} lang={lang} />
     </section>
   )
 }

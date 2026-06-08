@@ -8,6 +8,7 @@ import { HowItWorks } from "@/components/sections/HowItWorks"
 import { Benefits } from "@/components/sections/Benefits"
 import { Franchise } from "@/components/sections/Franchise"
 import { Pilot } from "@/components/sections/Pilot"
+import { Founder } from "@/components/sections/Founder"
 import { FAQ } from "@/components/sections/FAQ"
 import { FinalCTA } from "@/components/sections/FinalCTA"
 
@@ -28,8 +29,9 @@ export default async function Page({ params }: Props) {
         <Solution dict={dict} />
         <HowItWorks dict={dict} />
         <Benefits dict={dict} />
-        <Franchise dict={dict} />
+        <Franchise dict={dict} lang={lang} />
         <Pilot dict={dict} lang={lang} />
+        <Founder dict={dict} />
         <FAQ dict={dict} />
         <FinalCTA dict={dict} lang={lang} />
       </main>

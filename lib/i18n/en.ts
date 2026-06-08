@@ -31,7 +31,7 @@ export const en: Dictionary = {
       phone: "+1 (514) 555-0192",
       online: "On the line",
       aiName: "Vocali AI",
-      message: "Hello! Thank you for calling. How can I help you today?",
+      message: "Hello! Welcome to Clinique Dermavia. How can I help you today?",
       stat1Label: "Response",
       stat1Value: "< 1s",
       stat2Label: "Available",
@@ -64,10 +64,9 @@ export const en: Dictionary = {
         desc: "Your team is juggling in-person clients and the phone at the same time.",
       },
     ],
-    revenueTitle: "One missed call = one lost appointment.",
+    revenueTitle: "A missed call is an appointment that will never happen.",
     revenueDesc:
-      "At $150 per visit on average, just 10 missed calls per week adds up to over $78,000 in lost revenue potential annually.",
-    revenueHighlight: "$78,000",
+      "How much is each unanswered call costing you?\nMost clinics don't know — because a lost call leaves no trace.",
   },
   solution: {
     badge: "The solution",
@@ -183,6 +182,15 @@ export const en: Dictionary = {
     ],
     cta: "Talk to our team",
   },
+  founder: {
+    badge: "The founder",
+    headline: "Built by someone who understands your reality.",
+    body: "My name is Jonathan. I built Vocali after seeing Quebec aesthetic clinics lose clients not because of a lack of quality — but because of a lack of availability. Sofia is the receptionist I wished I could have given them from day one.",
+    photoAlt: "Jonathan, founder of Vocali",
+    name: "Jonathan",
+    title: "Founder, Vocali",
+    madeIn: "Made with care in Quebec 🍁",
+  },
   pilot: {
     badge: "Now deploying",
     title: "Quebec Pilot Program",
@@ -234,7 +242,7 @@ export const en: Dictionary = {
       terms: "Terms of Use",
       contact: "Contact Us",
     },
-    copyright: "© 2025 Vocali. All rights reserved.",
+    copyright: "Vocali. All rights reserved.",
     madeIn: "Made with care in Quebec",
   },
 }

@@ -57,20 +57,12 @@ export function Problem({ dict }: Props) {
         <AnimateOnScroll variant="scaleIn" delay={0.2}>
           <div className="relative bg-gradient-to-br from-gold-900/30 to-gold-800/20 border border-gold-700/40 rounded-3xl p-8 lg:p-10 overflow-hidden">
             <div className="absolute top-0 right-0 w-64 h-64 bg-gold-500/5 rounded-full -translate-y-1/2 translate-x-1/2 pointer-events-none" />
-            <div className="flex flex-col lg:flex-row lg:items-center gap-6">
-              <div className="lg:flex-1">
-                <h3 className="font-serif text-xl lg:text-2xl font-bold text-white mb-3">
-                  {p.revenueTitle}
-                </h3>
-                <p className="text-charcoal-300 leading-relaxed text-base">{p.revenueDesc}</p>
-              </div>
-              <div className="shrink-0 text-center lg:text-right">
-                <p className="font-serif text-5xl lg:text-6xl font-bold text-gold-400 leading-none mb-1">
-                  {p.revenueHighlight}
-                </p>
-                <p className="text-charcoal-400 text-sm">par année</p>
-              </div>
-            </div>
+            <h3 className="font-serif text-xl lg:text-2xl font-bold text-white mb-4">
+              {p.revenueTitle}
+            </h3>
+            <p className="text-charcoal-300 leading-relaxed text-base whitespace-pre-line">
+              {p.revenueDesc}
+            </p>
           </div>
         </AnimateOnScroll>
       </div>

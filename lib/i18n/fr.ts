@@ -31,7 +31,7 @@ export const fr: Dictionary = {
       phone: "+1 (514) 555-0192",
       online: "En ligne",
       aiName: "Vocali IA",
-      message: "Bonjour! Merci d'appeler. Comment puis-je vous aider aujourd'hui?",
+      message: "Bonjour ! Bienvenue chez Clinique Dermavia. Comment puis-je vous aider aujourd'hui ?",
       stat1Label: "Délai",
       stat1Value: "< 1s",
       stat2Label: "Disponible",
@@ -64,10 +64,9 @@ export const fr: Dictionary = {
         desc: "Votre équipe jongle entre les clientes présentes et celles au téléphone.",
       },
     ],
-    revenueTitle: "Un appel manqué = un rendez-vous perdu.",
+    revenueTitle: "Un appel manqué, c'est un rendez-vous qui n'aura pas lieu.",
     revenueDesc:
-      "À 150 $ par visite en moyenne, 10 appels manqués par semaine représentent plus de 78 000 $ en revenus potentiels annuels.",
-    revenueHighlight: "78 000 $",
+      "Combien vous coûte chaque appel sans réponse ?\nLa plupart des cliniques ne le savent pas — parce qu'un appel perdu ne laisse pas de trace.",
   },
   solution: {
     badge: "La solution",
@@ -183,6 +182,15 @@ export const fr: Dictionary = {
     ],
     cta: "Parler à notre équipe",
   },
+  founder: {
+    badge: "Le fondateur",
+    headline: "Bâti par quelqu'un qui comprend votre réalité.",
+    body: "Je m'appelle Jonathan. J'ai développé Vocali après avoir constaté que les cliniques esthétiques et médico-esthétiques au Québec perdaient des clientes non pas par manque de qualité, mais par manque de disponibilité. Sofia, c'est la réceptionniste que j'aurais voulu leur donner dès le premier jour.",
+    photoAlt: "Jonathan, fondateur de Vocali",
+    name: "Jonathan",
+    title: "Fondateur, Vocali",
+    madeIn: "Fait avec soin au Québec 🍁",
+  },
   pilot: {
     badge: "Déploiement en cours",
     title: "Programme pilote au Québec",
@@ -234,7 +242,7 @@ export const fr: Dictionary = {
       terms: "Conditions d'utilisation",
       contact: "Nous joindre",
     },
-    copyright: "© 2025 Vocali. Tous droits réservés.",
+    copyright: "Vocali. Tous droits réservés.",
     madeIn: "Fait avec soin au Québec",
   },
 }

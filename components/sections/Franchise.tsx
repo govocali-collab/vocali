@@ -1,15 +1,16 @@
 import { LayoutGrid, Shield, BarChart3, Rocket, ArrowRight } from "lucide-react"
 import { AnimateOnScroll } from "@/components/ui/AnimateOnScroll"
-import { Button } from "@/components/ui/Button"
+import { CalPopupButton } from "@/components/ui/CalPopupButton"
 import type { Dictionary } from "@/lib/i18n"
 
 interface Props {
   dict: Dictionary
+  lang?: string
 }
 
 const icons = [LayoutGrid, Shield, BarChart3, Rocket]
 
-export function Franchise({ dict }: Props) {
+export function Franchise({ dict, lang = "fr" }: Props) {
   const f = dict.franchise
 
   return (
@@ -31,10 +32,10 @@ export function Franchise({ dict }: Props) {
             <p className="text-charcoal-400 text-lg leading-relaxed mb-10">
               {f.subtitle}
             </p>
-            <Button variant="outline-gold" size="lg">
+            <CalPopupButton variant="outline-gold" size="lg" lang={lang}>
               {f.cta}
               <ArrowRight size={18} />
-            </Button>
+            </CalPopupButton>
           </AnimateOnScroll>
 
           <div className="grid grid-cols-2 gap-4">
