@@ -9,9 +9,10 @@ import { PostSlide } from "./PostSlide"
 interface Props {
   post: SocialPost
   onDelete?: (id: string) => void
+  photoUrl?: string
 }
 
-export default function PostCard({ post, onDelete }: Props) {
+export default function PostCard({ post, onDelete, photoUrl }: Props) {
   const [activeSlide, setActiveSlide] = useState(0)
   const [copied, setCopied] = useState(false)
   const slideRefs = useRef<(HTMLDivElement | null)[]>([])
@@ -89,6 +90,7 @@ export default function PostCard({ post, onDelete }: Props) {
               postType={post.post_type}
               style={post.style}
               size="export"
+              photoUrl={photoUrl}
             />
           ))}
         </div>
@@ -102,6 +104,7 @@ export default function PostCard({ post, onDelete }: Props) {
               total={1}
               postType={post.post_type}
               style={post.style}
+              photoUrl={photoUrl}
             />
           </div>
         ) : (
@@ -113,6 +116,7 @@ export default function PostCard({ post, onDelete }: Props) {
                 total={post.slides.length}
                 postType={post.post_type}
                 style={post.style}
+                photoUrl={photoUrl}
               />
             </div>
             {/* Carousel nav */}

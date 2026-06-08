@@ -1,7 +1,7 @@
 "use client"
 
-import { useState } from "react"
-import { Sparkles, History, Loader2, TrendingUp } from "lucide-react"
+import { useState, useRef } from "react"
+import { Sparkles, History, Loader2, TrendingUp, ImagePlus, X } from "lucide-react"
 import { cn } from "@/lib/utils"
 import type { SocialPost, PostType, PostStyle } from "@/lib/supabase/social"
 import PostCard from "./PostCard"
@@ -21,12 +21,22 @@ export default function SocialView({ initialPosts }: Props) {
   const [tab, setTab] = useState<"generate" | "history">("generate")
   const [topic, setTopic] = useState("")
   const [customContent, setCustomContent] = useState("")
+  const [photoUrl, setPhotoUrl] = useState<string | null>(null)
   const [postType, setPostType] = useState<PostType>("single")
   const [style, setStyle] = useState<PostStyle>("light")
   const [useTrends, setUseTrends] = useState(true)
   const [generating, setGenerating] = useState(false)
   const [posts, setPosts] = useState<SocialPost[]>(initialPosts)
   const [latest, setLatest] = useState<SocialPost | null>(null)
+  const fileInputRef = useRef<HTMLInputElement>(null)
+
+  function handlePhotoChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0]
+    if (!file) return
+    const reader = new FileReader()
+    reader.onload = (ev) => setPhotoUrl(ev.target?.result as string)
+    reader.readAsDataURL(file)
+  }
 
   const canGenerate = !generating && (topic.trim().length > 0 || customContent.trim().length > 0)
 
@@ -133,6 +143,42 @@ export default function SocialView({ initialPosts }: Props) {
               />
             </div>
 
+            {/* Photo */}
+            <div className="mb-4">
+              <label className="block text-xs font-semibold text-charcoal-400 uppercase tracking-widest mb-1.5">
+                Photo <span className="normal-case font-normal text-charcoal-300">(optionnel)</span>
+              </label>
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={handlePhotoChange}
+              />
+              {photoUrl ? (
+                <div className="relative w-full h-28 rounded-lg overflow-hidden border border-ivory-300">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={photoUrl} alt="Photo sélectionnée" className="w-full h-full object-cover" />
+                  <button
+                    onClick={() => { setPhotoUrl(null); if (fileInputRef.current) fileInputRef.current.value = "" }}
+                    className="absolute top-2 right-2 w-6 h-6 bg-black/50 hover:bg-black/70 text-white rounded-full flex items-center justify-center transition-colors"
+                  >
+                    <X size={12} />
+                  </button>
+                </div>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => fileInputRef.current?.click()}
+                  disabled={generating}
+                  className="w-full h-20 border-2 border-dashed border-ivory-300 hover:border-gold-300 rounded-lg flex flex-col items-center justify-center gap-1.5 text-charcoal-400 hover:text-gold-600 transition-colors"
+                >
+                  <ImagePlus size={18} />
+                  <span className="text-xs font-medium">Ajouter une photo</span>
+                </button>
+              )}
+            </div>
+
             {/* Post type */}
             <div className="mb-4">
               <label className="block text-xs font-semibold text-charcoal-400 uppercase tracking-widest mb-2">
@@ -224,7 +270,7 @@ export default function SocialView({ initialPosts }: Props) {
           {/* Preview of latest */}
           <div>
             {latest ? (
-              <PostCard post={latest} onDelete={handleDelete} />
+              <PostCard post={latest} onDelete={handleDelete} photoUrl={photoUrl ?? undefined} />
             ) : (
               <div className="bg-white border border-ivory-300 rounded-xl p-8 shadow-card flex items-center justify-center h-full min-h-[300px]">
                 <div className="text-center">
