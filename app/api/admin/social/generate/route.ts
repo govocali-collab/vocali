@@ -92,43 +92,56 @@ Réponds UNIQUEMENT en JSON valide avec ce format exact :
 Pour les slides sans body (couverture), mets body à "".`
 }
 
+export const maxDuration = 60
+
 export async function POST(req: NextRequest) {
   const cookie = req.headers.get("cookie") ?? ""
   if (!cookie.includes("admin_token=vocali_admin_authed")) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   }
 
-  const body = await req.json() as { topic?: string; postType?: PostType; style?: PostStyle; useTrends?: boolean; customContent?: string }
-  const { topic = "", postType = "single", style = "light", useTrends = true, customContent } = body
+  try {
+    const body = await req.json() as { topic?: string; postType?: PostType; style?: PostStyle; useTrends?: boolean; customContent?: string }
+    const { topic = "", postType = "single", style = "light", useTrends = true, customContent } = body
 
-  if (!topic.trim()) {
-    return NextResponse.json({ error: "Sujet requis" }, { status: 400 })
+    if (!topic.trim()) {
+      return NextResponse.json({ error: "Sujet requis" }, { status: 400 })
+    }
+
+    const trends = useTrends ? await researchTrends(topic) : ""
+
+    const message = await client.messages.create({
+      model: "claude-opus-4-8",
+      max_tokens: 1024,
+      messages: [{ role: "user", content: buildPrompt(topic, postType, trends, customContent) }],
+    })
+
+    const text = message.content[0].type === "text" ? message.content[0].text : ""
+    const jsonMatch = text.match(/\{[\s\S]*\}/)
+    if (!jsonMatch) {
+      return NextResponse.json({ error: "Erreur de génération — réponse inattendue" }, { status: 500 })
+    }
+
+    let parsed: { slides: Slide[]; caption: string; hashtags: string[] }
+    try {
+      parsed = JSON.parse(jsonMatch[0]) as { slides: Slide[]; caption: string; hashtags: string[] }
+    } catch {
+      return NextResponse.json({ error: "Erreur de parsing JSON" }, { status: 500 })
+    }
+
+    const post = await createSocialPost({
+      topic: topic.trim(),
+      post_type: postType,
+      style,
+      slides: parsed.slides,
+      caption: parsed.caption,
+      hashtags: parsed.hashtags,
+    })
+
+    return NextResponse.json({ post })
+  } catch (err) {
+    const message = err instanceof Error ? err.message : "Erreur inconnue"
+    console.error("[social/generate]", message)
+    return NextResponse.json({ error: message }, { status: 500 })
   }
-
-  const trends = useTrends ? await researchTrends(topic) : ""
-
-  const message = await client.messages.create({
-    model: "claude-opus-4-8",
-    max_tokens: 1024,
-    messages: [{ role: "user", content: buildPrompt(topic, postType, trends, customContent) }],
-  })
-
-  const text = message.content[0].type === "text" ? message.content[0].text : ""
-  const jsonMatch = text.match(/\{[\s\S]*\}/)
-  if (!jsonMatch) {
-    return NextResponse.json({ error: "Erreur de génération" }, { status: 500 })
-  }
-
-  const parsed = JSON.parse(jsonMatch[0]) as { slides: Slide[]; caption: string; hashtags: string[] }
-
-  const post = await createSocialPost({
-    topic: topic.trim(),
-    post_type: postType,
-    style,
-    slides: parsed.slides,
-    caption: parsed.caption,
-    hashtags: parsed.hashtags,
-  })
-
-  return NextResponse.json({ post })
 }

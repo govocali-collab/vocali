@@ -38,13 +38,16 @@ export default function SocialView({ initialPosts }: Props) {
         body: JSON.stringify({ topic, postType, style, useTrends, customContent: customContent.trim() || undefined }),
       })
       if (!res.ok) {
-        const err = await res.json() as { error?: string }
-        alert(err.error ?? "Erreur lors de la génération")
+        let errMsg = "Erreur lors de la génération"
+        try { const err = await res.json() as { error?: string }; errMsg = err.error ?? errMsg } catch { /* ignore */ }
+        alert(errMsg)
         return
       }
       const { post } = await res.json() as { post: SocialPost }
       setLatest(post)
       setPosts(prev => [post, ...prev])
+    } catch (err) {
+      alert(err instanceof Error ? err.message : "Erreur lors de la génération")
     } finally {
       setGenerating(false)
     }
