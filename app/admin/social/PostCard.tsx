@@ -212,39 +212,41 @@ export default function PostCard({ post, onDelete, photoUrl }: Props) {
       </div>
 
       {/* Actions */}
-      <div className="px-4 py-3 border-t border-ivory-200 flex items-center gap-2">
+      <div className="px-4 py-3 border-t border-ivory-200 flex items-center gap-1">
         <button
           onClick={copyCaption}
-          className="flex items-center gap-1.5 text-xs font-medium text-charcoal-500 hover:text-charcoal-800 transition-colors px-3 py-1.5 rounded-lg hover:bg-ivory-100"
+          title={copied ? "Copié !" : "Copier la caption"}
+          className="w-8 h-8 flex items-center justify-center rounded-lg text-charcoal-400 hover:text-charcoal-800 hover:bg-ivory-100 transition-colors"
         >
-          {copied ? <Check size={12} className="text-emerald-500" /> : <Copy size={12} />}
-          {copied ? "Copié !" : "Caption"}
+          {copied ? <Check size={14} className="text-emerald-500" /> : <Copy size={14} />}
         </button>
         <button
           onClick={() => setEditing(v => !v)}
+          title="Éditer les slides"
           className={cn(
-            "flex items-center gap-1.5 text-xs font-medium transition-colors px-3 py-1.5 rounded-lg",
-            editing ? "bg-gold-100 text-gold-700" : "text-charcoal-500 hover:text-charcoal-800 hover:bg-ivory-100"
+            "w-8 h-8 flex items-center justify-center rounded-lg transition-colors",
+            editing ? "bg-gold-100 text-gold-700" : "text-charcoal-400 hover:text-charcoal-800 hover:bg-ivory-100"
           )}
         >
-          <Pencil size={12} />
-          Éditer
+          <Pencil size={14} />
         </button>
         <div className="flex-1" />
         {slides.length > 1 && (
           <button
             onClick={downloadAll}
+            title="Télécharger toutes les slides"
             className="flex items-center gap-1.5 text-xs font-medium text-charcoal-500 hover:text-charcoal-800 transition-colors px-3 py-1.5 rounded-lg hover:bg-ivory-100"
           >
-            <Download size={12} />
+            <Download size={13} />
             Tout
           </button>
         )}
         <button
           onClick={() => downloadSlide(slides.length === 1 ? 0 : activeSlide)}
+          title={slides.length > 1 ? `Télécharger slide ${activeSlide + 1}` : "Télécharger"}
           className="flex items-center gap-1.5 text-xs font-medium bg-gold-600 hover:bg-gold-700 text-white px-3 py-1.5 rounded-lg transition-colors"
         >
-          <Download size={12} />
+          <Download size={13} />
           {slides.length > 1 ? `Slide ${activeSlide + 1}` : "Télécharger"}
         </button>
       </div>
