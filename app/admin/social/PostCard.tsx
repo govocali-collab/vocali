@@ -85,7 +85,7 @@ export default function PostCard({ post, onDelete, photoUrl }: Props) {
       {/* Slide preview */}
       <div className="px-4 pb-2">
         {/* Hidden export-size slides for download */}
-        <div className="absolute pointer-events-none opacity-0 overflow-hidden" style={{ left: -9999 }}>
+        <div className="pointer-events-none" style={{ position: "fixed", left: -99999, top: 0 }}>
           {slides.map((slide, i) => (
             <PostSlide
               key={i}
