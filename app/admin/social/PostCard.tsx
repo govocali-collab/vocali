@@ -40,9 +40,26 @@ export default function PostCard({ post, onDelete, photoUrl }: Props) {
   }
 
   async function downloadAll() {
+    const html2canvas = (await import("html2canvas")).default
+    const JSZip = (await import("jszip")).default
+    const zip = new JSZip()
+    const slug = post.topic.slice(0, 20).replace(/\s+/g, "-")
+
     for (let i = 0; i < slides.length; i++) {
-      await downloadSlide(i)
+      const el = slideRefs.current[i]
+      if (!el) continue
+      const canvas = await html2canvas(el, { scale: 2, useCORS: true, backgroundColor: null })
+      const dataUrl = canvas.toDataURL("image/png")
+      const base64 = dataUrl.split(",")[1]
+      zip.file(`vocali-${slug}-slide-${i + 1}.png`, base64, { base64: true })
     }
+
+    const blob = await zip.generateAsync({ type: "blob" })
+    const link = document.createElement("a")
+    link.download = `vocali-${slug}.zip`
+    link.href = URL.createObjectURL(blob)
+    link.click()
+    URL.revokeObjectURL(link.href)
   }
 
   function copyCaption() {
