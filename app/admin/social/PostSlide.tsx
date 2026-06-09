@@ -17,8 +17,8 @@ const SIZES = {
   preview: {
     square: "w-[338px] h-[423px]",
     story:  "w-[238px] h-[423px]",
-    text:   { headline: "text-[13px]", body: "text-[9px]", logo: "text-[8px]", num: "text-[8px]" },
-    pad:    "p-5",
+    text:   { headline: "text-[16px]", body: "text-[11px]", logo: "text-[10px]", num: "text-[10px]" },
+    pad:    "p-6",
   },
   export: {
     square: "w-[1080px] h-[1350px]",
