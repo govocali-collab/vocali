@@ -65,15 +65,19 @@ export const PostSlide = forwardRef<HTMLDivElement, Props>(
           </div>
         )}
 
+        {/* Gold dot — always centered, 40px from top bar */}
+        <div className={cn(
+          "flex justify-center flex-shrink-0",
+          size === "preview" ? "mt-10" : "mt-[40px]"
+        )}>
+          <div className={cn(
+            "rounded-full bg-[#C9A864]",
+            size === "preview" ? "w-[5px] h-[5px]" : "w-5 h-5"
+          )} />
+        </div>
+
         {/* Content */}
         <div className={cn("flex flex-col flex-1 justify-center", isCover && "items-center text-center")}>
-          {/* Accent dot */}
-          <div className={cn(
-            "rounded-full bg-[#C9A864] mb-3 flex-shrink-0",
-            size === "preview" ? "w-[5px] h-[5px]" : "w-5 h-5",
-            isCover && "mx-auto"
-          )} />
-
           <h2
             className={cn(
               "font-serif font-bold leading-tight tracking-tight",
