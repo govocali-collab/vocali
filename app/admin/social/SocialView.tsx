@@ -23,7 +23,7 @@ export default function SocialView({ initialPosts }: Props) {
   const [customContent, setCustomContent] = useState("")
   const [postType, setPostType] = useState<PostType>("single")
   const [style, setStyle] = useState<PostStyle>("light")
-  const [useTrends, setUseTrends] = useState(true)
+  const [useTrends, setUseTrends] = useState(false)
   const [generating, setGenerating] = useState(false)
   const [posts, setPosts] = useState<SocialPost[]>(initialPosts)
   const [latest, setLatest] = useState<SocialPost | null>(null)

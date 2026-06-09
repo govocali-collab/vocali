@@ -15,8 +15,8 @@ interface Props {
 
 const SIZES = {
   preview: {
-    square: "w-[270px] h-[338px]",
-    story:  "w-[190px] h-[338px]",
+    square: "w-[338px] h-[423px]",
+    story:  "w-[238px] h-[423px]",
     text:   { headline: "text-[13px]", body: "text-[9px]", logo: "text-[8px]", num: "text-[8px]" },
     pad:    "p-5",
   },
