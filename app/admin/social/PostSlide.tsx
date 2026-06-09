@@ -11,13 +11,12 @@ interface Props {
   postType: PostType
   style: PostStyle
   size?: "preview" | "export"
-  photoUrl?: string
 }
 
 const SIZES = {
   preview: {
-    square: "w-[216px] h-[270px]",
-    story:  "w-[152px] h-[270px]",
+    square: "w-[270px] h-[338px]",
+    story:  "w-[190px] h-[338px]",
     text:   { headline: "text-[13px]", body: "text-[9px]", logo: "text-[8px]", num: "text-[8px]" },
     pad:    "p-5",
   },
@@ -30,7 +29,7 @@ const SIZES = {
 }
 
 export const PostSlide = forwardRef<HTMLDivElement, Props>(
-  ({ slide, index, total, postType, style, size = "preview", photoUrl }, ref) => {
+  ({ slide, index, total, postType, style, size = "preview" }, ref) => {
     const isStory  = postType === "story"
     const isLight  = style === "light"
     const s        = SIZES[size]
@@ -44,28 +43,9 @@ export const PostSlide = forwardRef<HTMLDivElement, Props>(
           "relative flex flex-col justify-between font-sans overflow-hidden flex-shrink-0",
           isStory ? s.story : s.square,
           s.pad,
-          !photoUrl && (isLight ? "bg-[#FAF7F2] text-[#1C1A16]" : "bg-[#1C1A16] text-[#FAF7F2]"),
-          photoUrl && "text-[#FAF7F2]"
+          isLight ? "bg-[#FAF7F2] text-[#1C1A16]" : "bg-[#1C1A16] text-[#FAF7F2]"
         )}
       >
-        {/* Background photo + overlay */}
-        {photoUrl && (
-          <>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={photoUrl}
-              alt=""
-              className="absolute inset-0 w-full h-full object-cover"
-              style={{ zIndex: 0 }}
-            />
-            <div
-              className="absolute inset-0"
-              style={{ zIndex: 1, background: isLight ? "rgba(28,26,22,0.45)" : "rgba(28,26,22,0.65)" }}
-            />
-          </>
-        )}
-        {/* All content above photo */}
-        <div className="relative flex flex-col justify-between h-full" style={{ zIndex: 2 }}>
         {/* Gold top bar */}
         <div className={cn(
           "absolute top-0 left-0 right-0",
@@ -140,7 +120,7 @@ export const PostSlide = forwardRef<HTMLDivElement, Props>(
         )}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src={(isLight && !photoUrl) ? "/vocali-logo-black.png" : "/vocali-logo-white.png"}
+            src={isLight ? "/vocali-logo-black.png" : "/vocali-logo-white.png"}
             alt="Vocali"
             className={size === "preview" ? "h-[14px]" : "h-[56px]"}
             style={{ objectFit: "contain" }}
@@ -157,7 +137,6 @@ export const PostSlide = forwardRef<HTMLDivElement, Props>(
           size === "preview" ? "h-[2px]" : "h-[6px]",
           "bg-[#C9A864]"
         )} />
-        </div>{/* end z-index wrapper */}
       </div>
     )
   }
