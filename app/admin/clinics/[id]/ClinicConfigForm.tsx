@@ -22,6 +22,7 @@ export default function ClinicConfigForm({ clinic }: { clinic: ClinicRow }) {
   const router = useRouter()
   const config = (clinic.clinic_config ?? {}) as Record<string, unknown>
 
+  const [twilioPhone, setTwilioPhone] = useState(clinic.twilio_phone_number ?? "")
   const [systemPrompt, setSystemPrompt] = useState(clinic.system_prompt_override ?? "")
   const [websiteUrl, setWebsiteUrl] = useState((config.website_url as string) ?? "")
   const [bookingCreds, setBookingCreds] = useState((config.booking_creds as string) ?? "")
@@ -37,6 +38,54 @@ export default function ClinicConfigForm({ clinic }: { clinic: ClinicRow }) {
   const [error, setError] = useState("")
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
   const [deleting, setDeleting] = useState(false)
+
+  // Achat de numéro Twilio
+  const [showNumberSearch, setShowNumberSearch] = useState(false)
+  const [areaCode, setAreaCode] = useState("")
+  const [country, setCountry] = useState("CA")
+  const [searchResults, setSearchResults] = useState<{ phoneNumber: string; friendlyName: string; region: string; locality: string }[]>([])
+  const [searching, setSearching] = useState(false)
+  const [buying, setBuying] = useState("")
+  const [numberError, setNumberError] = useState("")
+
+  async function searchNumbers() {
+    setSearching(true)
+    setNumberError("")
+    setSearchResults([])
+    try {
+      const params = new URLSearchParams({ country })
+      if (areaCode) params.set("areaCode", areaCode)
+      const res = await fetch(`/api/admin/clinics/${clinic.id}/available-numbers?${params}`)
+      const data = await res.json()
+      if (!data.success) throw new Error(data.error)
+      setSearchResults(data.numbers)
+    } catch (err) {
+      setNumberError(err instanceof Error ? err.message : "Erreur inconnue")
+    } finally {
+      setSearching(false)
+    }
+  }
+
+  async function buyNumber(phoneNumber: string) {
+    setBuying(phoneNumber)
+    setNumberError("")
+    try {
+      const res = await fetch(`/api/admin/clinics/${clinic.id}/buy-number`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ phoneNumber }),
+      })
+      const data = await res.json()
+      if (!data.success) throw new Error(data.error)
+      setTwilioPhone(phoneNumber)
+      setShowNumberSearch(false)
+      setSearchResults([])
+    } catch (err) {
+      setNumberError(err instanceof Error ? err.message : "Erreur inconnue")
+    } finally {
+      setBuying("")
+    }
+  }
 
   async function accessAccount() {
     setImpersonating(true)
@@ -98,6 +147,99 @@ export default function ClinicConfigForm({ clinic }: { clinic: ClinicRow }) {
       </p>
 
       <div className="space-y-4">
+
+        {/* Numéro Twilio */}
+        <div>
+          <label className="block text-charcoal-600 text-sm font-body font-medium mb-1.5">Numéro Twilio</label>
+          {twilioPhone ? (
+            <div className="flex items-center gap-3">
+              <span className="flex-1 bg-ivory-50 border border-ivory-300 rounded-lg px-4 py-2.5 text-charcoal-900 text-sm font-body font-mono">
+                {twilioPhone}
+              </span>
+              <button
+                type="button"
+                onClick={() => { setTwilioPhone(""); setShowNumberSearch(true) }}
+                className="text-charcoal-400 text-xs font-body hover:text-red-500 transition-colors whitespace-nowrap"
+              >
+                Changer
+              </button>
+            </div>
+          ) : (
+            <button
+              type="button"
+              onClick={() => setShowNumberSearch(true)}
+              className="w-full border-2 border-dashed border-ivory-300 rounded-lg px-4 py-3 text-charcoal-400 text-sm font-body hover:border-gold-300 hover:text-gold-600 transition-colors"
+            >
+              + Acheter un numéro Twilio
+            </button>
+          )}
+
+          {showNumberSearch && (
+            <div className="mt-3 bg-ivory-50 border border-ivory-300 rounded-lg p-4 space-y-3">
+              <div className="flex gap-2">
+                <select
+                  className={cn(inputClass, "w-24 flex-shrink-0")}
+                  value={country}
+                  onChange={(e) => setCountry(e.target.value)}
+                >
+                  <option value="CA">🇨🇦 CA</option>
+                  <option value="US">🇺🇸 US</option>
+                </select>
+                <input
+                  className={cn(inputClass, "flex-1")}
+                  value={areaCode}
+                  onChange={(e) => setAreaCode(e.target.value.replace(/\D/g, ""))}
+                  placeholder="Indicatif régional (ex: 514)"
+                  maxLength={3}
+                />
+                <button
+                  type="button"
+                  onClick={searchNumbers}
+                  disabled={searching}
+                  className="bg-charcoal-800 hover:bg-charcoal-900 text-white font-body font-medium text-sm rounded-lg px-4 py-2.5 disabled:opacity-50 transition-colors whitespace-nowrap"
+                >
+                  {searching ? "…" : "Rechercher"}
+                </button>
+              </div>
+
+              {numberError && (
+                <p className="text-red-500 text-xs font-body">{numberError}</p>
+              )}
+
+              {searchResults.length > 0 && (
+                <div className="space-y-1.5 max-h-48 overflow-y-auto">
+                  {searchResults.map((n) => (
+                    <div key={n.phoneNumber} className="flex items-center justify-between bg-white border border-ivory-200 rounded-lg px-3 py-2">
+                      <div>
+                        <span className="text-charcoal-900 text-sm font-body font-mono">{n.friendlyName}</span>
+                        {(n.locality || n.region) && (
+                          <span className="text-charcoal-400 text-xs font-body ml-2">{[n.locality, n.region].filter(Boolean).join(", ")}</span>
+                        )}
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => buyNumber(n.phoneNumber)}
+                        disabled={!!buying}
+                        className="bg-gold-gradient text-white font-body font-semibold text-xs rounded-lg px-3 py-1.5 hover:opacity-90 disabled:opacity-50 transition-opacity ml-3 flex-shrink-0"
+                      >
+                        {buying === n.phoneNumber ? "Achat…" : "Acheter"}
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              <button
+                type="button"
+                onClick={() => { setShowNumberSearch(false); setSearchResults([]); setNumberError("") }}
+                className="text-charcoal-400 text-xs font-body hover:text-charcoal-600"
+              >
+                Annuler
+              </button>
+            </div>
+          )}
+        </div>
+
         <Field label="Site web de la clinique" hint="Alexandra scrappera ce site pour enrichir ses réponses (services, produits, équipe, politiques…)">
           <input
             className={inputClass}
