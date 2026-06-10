@@ -84,6 +84,7 @@ export default function OnboardingPage() {
   const [agentName, setAgentName] = useState("Sofia")
   const [tone, setTone] = useState<"Chaleureuse" | "Professionnelle" | "Mixte">("Chaleureuse")
   const [systemPromptOverride, setSystemPromptOverride] = useState("")
+  const [websiteUrl, setWebsiteUrl] = useState("")
 
   // Services
   const [selectedServices, setSelectedServices] = useState<string[]>([])
@@ -117,7 +118,7 @@ export default function OnboardingPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           clinicName, ownerFirstName, ownerLastName, ownerEmail, ownerPhone,
-          city, language, agentName, tone, systemPromptOverride,
+          city, language, agentName, tone, systemPromptOverride, websiteUrl,
           selectedServices, customServices, hours, bookingSystem, bookingCreds,
         }),
       })
@@ -208,6 +209,15 @@ export default function OnboardingPage() {
                 </div>
               </Field>
             </div>
+            <Field label="Site web de la clinique" hint="L'agent IA scrappera ce site pour enrichir ses réponses (services, produits, équipe, politiques…)">
+              <input
+                className={inputClass}
+                type="url"
+                value={websiteUrl}
+                onChange={(e) => setWebsiteUrl(e.target.value)}
+                placeholder="https://macliniqueesthetique.com"
+              />
+            </Field>
             <Field label="Instructions spéciales (system prompt override)" hint="Instructions supplémentaires pour personnaliser le comportement de l'agent.">
               <textarea
                 className={cn(inputClass, "min-h-[100px] resize-y")}

@@ -60,6 +60,7 @@ export async function POST(req: Request) {
       agentName,
       tone,
       systemPromptOverride,
+      websiteUrl,
       selectedServices,
       customServices,
       hours,
@@ -87,6 +88,7 @@ export async function POST(req: Request) {
       city,
       keyword_boost: allServices,
       booking_system: bookingSystem,
+      website_url: websiteUrl || null,
     }
 
     if (bookingSystem !== "Aucun" && bookingCreds) {
