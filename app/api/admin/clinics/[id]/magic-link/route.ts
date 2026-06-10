@@ -23,7 +23,7 @@ export async function POST(
       type: "magiclink",
       email,
       options: {
-        redirectTo: `${appUrl}/auth/callback`,
+        redirectTo: `${appUrl}/auth/magic`,
       },
     })
 
