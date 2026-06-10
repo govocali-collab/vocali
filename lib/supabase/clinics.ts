@@ -275,11 +275,30 @@ export async function syncLocationFromClinic(clinicId: string): Promise<void> {
   }
 }
 
-export async function updateOwnerEmail(clinicId: string, email: string): Promise<void> {
+export async function updateOwnerEmail(clinicId: string, newEmail: string): Promise<void> {
   const supabase = getAdminClient()
+
+  // Get current email to find the auth user
+  const clinic = await getClinicById(clinicId)
+  if (!clinic) throw new Error("Clinique introuvable")
+
+  // Update Supabase Auth user email if one exists
+  if (clinic.owner_email && clinic.owner_email !== newEmail) {
+    const { data: users } = await supabase.auth.admin.listUsers()
+    const authUser = users?.users?.find((u) => u.email === clinic.owner_email)
+    if (authUser) {
+      const { error: authError } = await supabase.auth.admin.updateUserById(authUser.id, {
+        email: newEmail,
+        email_confirm: true,
+      })
+      if (authError) throw new Error(authError.message)
+    }
+  }
+
+  // Update clinics table
   const { error } = await supabase
     .from("clinics")
-    .update({ owner_email: email })
+    .update({ owner_email: newEmail })
     .eq("id", clinicId)
   if (error) throw new Error(error.message)
 }
