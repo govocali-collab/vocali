@@ -260,7 +260,7 @@ export async function syncLocationFromClinic(clinicId: string): Promise<void> {
     services: transformServices(rawServices),
     faq: [],
     prompt_additions: clinic.system_prompt_override ?? null,
-    agent_name: (config.agent_name as string) ?? "Sofia",
+    agent_name: (config.agent_name as string) ?? "Alexandra",
     tone: (config.tone as string) ?? "Chaleureuse",
     booking_system: (config.booking_system as string) ?? "manual",
     booking_api_url: (config.booking_api_url as string) ?? null,

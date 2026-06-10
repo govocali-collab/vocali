@@ -185,7 +185,7 @@ export const en: Dictionary = {
   founder: {
     badge: "The founder",
     headline: "Built by someone who understands your reality.",
-    body: "My name is Jonathan. I built Vocali after seeing Quebec aesthetic clinics lose clients not because of a lack of quality — but because of a lack of availability. Sofia is the receptionist I wished I could have given them from day one.",
+    body: "My name is Jonathan. I built Vocali after seeing Quebec aesthetic clinics lose clients not because of a lack of quality — but because of a lack of availability. Alexandra is the receptionist I wished I could have given them from day one.",
     photoAlt: "Jonathan, founder of Vocali",
     name: "Jonathan",
     title: "Founder, Vocali",

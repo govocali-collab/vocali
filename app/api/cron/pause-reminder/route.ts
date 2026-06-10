@@ -42,7 +42,7 @@ export async function GET(request: Request) {
     try {
       await sendPauseReminderNotification({
         clinicName: clinic.name,
-        agentName: config.agent_name ?? "Sofia",
+        agentName: config.agent_name ?? "Alexandra",
         ownerName: [config.owner_first_name, config.owner_last_name].filter(Boolean).join(" "),
         ownerEmail: clinic.owner_email,
         clinicId: clinic.id,

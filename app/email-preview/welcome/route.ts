@@ -31,7 +31,7 @@ export function GET() {
               </p>
               <p style="margin:0 0 20px;font-size:16px;line-height:1.7;color:#4C4C50;">
                 Merci de faire confiance à Vocali. Nous sommes ravis de vous accueillir —
-                votre agent <strong style="color:#A88840;">Sofia</strong> est en cours de configuration
+                votre agent <strong style="color:#A88840;">Alexandra</strong> est en cours de configuration
                 et sera bientôt prêt à prendre en charge vos appels.
               </p>
 
@@ -72,7 +72,7 @@ export function GET() {
                   <td style="background:#F8EDD4;border-left:3px solid #C9A864;border-radius:0 8px 8px 0;padding:20px 24px;">
                     <p style="margin:0 0 8px;font-size:14px;font-weight:600;color:#7D6430;">Prochaine étape</p>
                     <p style="margin:0;font-size:15px;line-height:1.6;color:#4C4C50;">
-                      <strong>Sofia</strong> sera configurée et prête dans les <strong>24–48h</strong>.
+                      <strong>Alexandra</strong> sera configurée et prête dans les <strong>24–48h</strong>.
                       Nous l'activerons ensemble lors de notre appel d'embarquement.
                     </p>
                   </td>

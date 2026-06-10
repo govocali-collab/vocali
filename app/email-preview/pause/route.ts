@@ -10,7 +10,7 @@ export function GET() {
 
   const details = [
     ["Clinique", "Clinique Dermavia"],
-    ["Agent", "Sofia"],
+    ["Agent", "Alexandra"],
     ["Propriétaire", "Marie Tremblay"],
     ["Courriel", "marie@dermavia.ca"],
     ["Date &amp; heure", now],
@@ -52,7 +52,7 @@ export function GET() {
 
               <p style="margin:0 0 8px;font-size:22px;font-weight:700;color:#1C1C1E;">Clinique Dermavia</p>
               <p style="margin:0 0 28px;font-size:15px;color:#6C6C70;">
-                La clinique a mis <strong style="color:#A88840;">Sofia</strong> en pause manuellement.
+                La clinique a mis <strong style="color:#A88840;">Alexandra</strong> en pause manuellement.
               </p>
 
               <!-- Info card -->

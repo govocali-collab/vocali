@@ -19,7 +19,7 @@ const NAV = [
 export default function Sidebar({ clinic }: { clinic: Clinic }) {
   const pathname = usePathname()
   const [open, setOpen] = useState(false)
-  const agentName = (clinic.clinic_config?.agent_name as string | undefined) ?? "Sofia"
+  const agentName = (clinic.clinic_config?.agent_name as string | undefined) ?? "Alexandra"
 
   const navItems = (
     <nav className="flex flex-col gap-1 px-3">

@@ -15,7 +15,7 @@ export default async function SettingsPage() {
   const clinic = await getClinic()
   if (!clinic) return null
 
-  const agentName = (clinic.clinic_config?.agent_name as string | undefined) ?? "Sofia"
+  const agentName = (clinic.clinic_config?.agent_name as string | undefined) ?? "Alexandra"
   const config = (clinic.clinic_config ?? {}) as Record<string, string>
   const ownerFirstName = config.owner_first_name ?? ""
   const ownerLastName = config.owner_last_name ?? ""

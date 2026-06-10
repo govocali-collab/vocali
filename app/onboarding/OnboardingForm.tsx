@@ -76,7 +76,7 @@ export default function OnboardingForm({ prefill }: { prefill?: Prefill }) {
   const [ownerPhone, setOwnerPhone] = useState("")
   const [city, setCity] = useState("")
   const [language, setLanguage] = useState<"fr-CA" | "en" | "bilingual">("fr-CA")
-  const [agentName, setAgentName] = useState("Sofia")
+  const [agentName, setAgentName] = useState("Alexandra")
   const [tone, setTone] = useState<"Chaleureuse" | "Professionnelle" | "Mixte">("Chaleureuse")
   const [selectedServices, setSelectedServices] = useState<string[]>([])
   const [customServices, setCustomServices] = useState("")
@@ -178,7 +178,7 @@ export default function OnboardingForm({ prefill }: { prefill?: Prefill }) {
             <p className="text-charcoal-400 text-sm mb-4">Choisissez son prénom et comment elle parlera à vos clients.</p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <Field label="Son prénom" hint="Elle se présentera ainsi au téléphone">
-                <input className={inputClass} value={agentName} onChange={(e) => setAgentName(e.target.value)} placeholder="Sofia" />
+                <input className={inputClass} value={agentName} onChange={(e) => setAgentName(e.target.value)} placeholder="Alexandra" />
               </Field>
               <Field label="Son ton">
                 <div className="flex flex-wrap gap-2 mt-0.5">

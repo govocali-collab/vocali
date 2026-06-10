@@ -92,7 +92,7 @@ function transcriptToText(transcript: unknown): string | null {
   if (!Array.isArray(transcript) || transcript.length === 0) return null
   return transcript
     .map((m: { role: string; content: string }) =>
-      `${m.role === "assistant" ? "Sofia" : "Client"}: ${m.content}`
+      `${m.role === "assistant" ? "Alexandra" : "Client"}: ${m.content}`
     )
     .join("\n")
 }

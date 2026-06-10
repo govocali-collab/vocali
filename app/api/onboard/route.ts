@@ -59,7 +59,7 @@ export async function POST(req: Request) {
     const ownerName = `${ownerFirstName} ${ownerLastName}`.trim()
 
     const clinicConfig: Record<string, unknown> = {
-      agent_name: agentName || "Sofia",
+      agent_name: agentName || "Alexandra",
       tone,
       languages: language,
       owner_first_name: ownerFirstName,
@@ -127,7 +127,7 @@ export async function POST(req: Request) {
     // 5. Send welcome email to clinic owner
     await sendWelcomeEmail({
       clinicName,
-      agentName: agentName || "Sofia",
+      agentName: agentName || "Alexandra",
       ownerEmail,
       ownerFirstName,
       tempPassword,
@@ -141,7 +141,7 @@ export async function POST(req: Request) {
       ownerEmail,
       ownerPhone,
       city,
-      agentName: agentName || "Sofia",
+      agentName: agentName || "Alexandra",
       services: allServices,
       bookingSystem,
       language,
@@ -150,7 +150,7 @@ export async function POST(req: Request) {
     return NextResponse.json({
       success: true,
       clinicId,
-      agentName: agentName || "Sofia",
+      agentName: agentName || "Alexandra",
       clinicName,
     })
   } catch (err) {

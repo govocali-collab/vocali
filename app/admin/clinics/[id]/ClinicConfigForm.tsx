@@ -98,7 +98,7 @@ export default function ClinicConfigForm({ clinic }: { clinic: ClinicRow }) {
       </p>
 
       <div className="space-y-4">
-        <Field label="Site web de la clinique" hint="Sofia scrappera ce site pour enrichir ses réponses (services, produits, équipe, politiques…)">
+        <Field label="Site web de la clinique" hint="Alexandra scrappera ce site pour enrichir ses réponses (services, produits, équipe, politiques…)">
           <input
             className={inputClass}
             value={websiteUrl}
