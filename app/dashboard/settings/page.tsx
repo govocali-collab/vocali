@@ -1,5 +1,5 @@
 import { getClinic } from "@/lib/supabase/dashboard"
-import { Zap, Clock, List, Mail, Phone } from "lucide-react"
+import { Zap, Clock, List, Mail } from "lucide-react"
 import OwnerForm from "@/components/dashboard/OwnerForm"
 import AgentToggle from "@/components/dashboard/AgentToggle"
 import PasswordForm from "@/components/dashboard/PasswordForm"
@@ -59,17 +59,6 @@ export default async function SettingsPage() {
                 <dd className="text-gold-700 text-sm font-body font-medium mt-0.5">{agentName}</dd>
               </div>
             </div>
-            {clinic.twilio_phone_number && (
-              <div className="flex items-start gap-3">
-                <div className="w-7 h-7 rounded-lg bg-ivory-100 border border-ivory-300 flex items-center justify-center flex-shrink-0 mt-0.5">
-                  <Phone size={13} className="text-charcoal-400" />
-                </div>
-                <div>
-                  <dt className="text-charcoal-400 text-xs font-body">Numéro Twilio assigné</dt>
-                  <dd className="text-charcoal-800 text-sm font-body font-mono mt-0.5">{clinic.twilio_phone_number}</dd>
-                </div>
-              </div>
-            )}
           </dl>
         </section>
 
