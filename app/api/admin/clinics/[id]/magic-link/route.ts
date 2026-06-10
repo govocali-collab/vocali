@@ -17,7 +17,8 @@ export async function POST(
     await params
 
     const supabase = getAdminClient()
-    const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000"
+    const reqUrl = new URL(req.url)
+    const appUrl = `${reqUrl.protocol}//${reqUrl.host}`
 
     const { data, error } = await supabase.auth.admin.generateLink({
       type: "magiclink",
