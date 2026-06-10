@@ -39,6 +39,51 @@ export default function ClinicConfigForm({ clinic }: { clinic: ClinicRow }) {
   const [error, setError] = useState("")
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
   const [deleting, setDeleting] = useState(false)
+  const [scraping, setScraping] = useState(false)
+  const [scrapeProgress, setScrapeProgress] = useState(0)
+  const [scrapePages, setScrapePages] = useState(0)
+  const [scrapeResult, setScrapeResult] = useState<{ chars: number; pages: number } | null>(null)
+  const [scrapeError, setScrapeError] = useState("")
+
+  async function scrapeWebsite() {
+    if (!websiteUrl) return
+    setScraping(true)
+    setScrapeProgress(0)
+    setScrapePages(0)
+    setScrapeResult(null)
+    setScrapeError("")
+    try {
+      const res = await fetch(`/api/admin/clinics/${clinic.id}/scrape`, { method: "POST" })
+      if (!res.body) throw new Error("Pas de réponse")
+      const reader = res.body.getReader()
+      const decoder = new TextDecoder()
+      let buffer = ""
+      while (true) {
+        const { done, value } = await reader.read()
+        if (done) break
+        buffer += decoder.decode(value, { stream: true })
+        const lines = buffer.split("\n")
+        buffer = lines.pop() ?? ""
+        for (const line of lines) {
+          if (!line.startsWith("data: ")) continue
+          const event = JSON.parse(line.slice(6))
+          if (event.type === "progress") {
+            setScrapeProgress(event.percent)
+            setScrapePages(event.pages)
+          } else if (event.type === "done") {
+            setScrapeResult({ chars: event.chars, pages: event.pages })
+            setScrapeProgress(100)
+          } else if (event.type === "error") {
+            throw new Error(event.error)
+          }
+        }
+      }
+    } catch (err) {
+      setScrapeError(err instanceof Error ? err.message : "Erreur inconnue")
+    } finally {
+      setScraping(false)
+    }
+  }
 
   // Achat de numéro Twilio
   const [showNumberSearch, setShowNumberSearch] = useState(false)
@@ -259,6 +304,34 @@ export default function ClinicConfigForm({ clinic }: { clinic: ClinicRow }) {
             placeholder="https://macliniqueesthetique.com"
             type="url"
           />
+          {websiteUrl && (
+            <div className="mt-2 space-y-2">
+              <div className="flex items-center gap-3">
+                <button
+                  type="button"
+                  onClick={scrapeWebsite}
+                  disabled={scraping}
+                  className="text-xs font-body px-3 py-1.5 rounded-lg border border-gold-300 text-gold-700 bg-gold-50 hover:bg-gold-100 disabled:opacity-50 transition-colors"
+                >
+                  {scraping ? `Scraping… ${scrapePages} pages` : "↻ Scraper le site maintenant"}
+                </button>
+                {scrapeResult && (
+                  <span className="text-xs text-green-600 font-body">
+                    ✓ {scrapeResult.pages} pages · {Math.round(scrapeResult.chars / 1000)}k caractères
+                  </span>
+                )}
+                {scrapeError && <span className="text-xs text-red-500 font-body">{scrapeError}</span>}
+              </div>
+              {scraping && (
+                <div className="w-full bg-ivory-200 rounded-full h-1.5">
+                  <div
+                    className="bg-gold-400 h-1.5 rounded-full transition-all duration-300"
+                    style={{ width: `${scrapeProgress}%` }}
+                  />
+                </div>
+              )}
+            </div>
+          )}
         </Field>
 
         <Field label="Instructions spéciales" hint="Comportements spécifiques, promotions, restrictions...">
