@@ -19,8 +19,42 @@ function formatPct(value: number) {
   return `${value >= 0 ? "+" : ""}${value.toFixed(0)}%`
 }
 
+async function fetchStripeStats(startOfMonth: Date, startOfLastMonth: Date, endOfLastMonth: Date) {
+  if (!process.env.STRIPE_SECRET_KEY) return null
+  try {
+    const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
+
+    const activeSubs = await stripe.subscriptions.list({ status: "active", limit: 100 })
+    const mrr = activeSubs.data.reduce((sum, sub) => {
+      for (const item of sub.items.data) {
+        const amount = item.price.unit_amount ?? 0
+        const interval = item.price.recurring?.interval
+        const count = item.price.recurring?.interval_count ?? 1
+        if (interval === "month") sum += amount * item.quantity! / count
+        if (interval === "year") sum += Math.round((amount * item.quantity!) / 12 / count)
+      }
+      return sum
+    }, 0)
+
+    const invoicesThisMonth = await stripe.invoices.list({ status: "paid", created: { gte: Math.floor(startOfMonth.getTime() / 1000) }, limit: 100 })
+    const revenueThisMonth = invoicesThisMonth.data.reduce((s, i) => s + (i.amount_paid ?? 0), 0)
+
+    const invoicesLastMonth = await stripe.invoices.list({ status: "paid", created: { gte: Math.floor(startOfLastMonth.getTime() / 1000), lte: Math.floor(endOfLastMonth.getTime() / 1000) }, limit: 100 })
+    const revenueLastMonth = invoicesLastMonth.data.reduce((s, i) => s + (i.amount_paid ?? 0), 0)
+
+    const cancelledSubs = await stripe.subscriptions.list({ status: "canceled", created: { gte: Math.floor(startOfMonth.getTime() / 1000) }, limit: 100 })
+    const churnThisMonth = cancelledSubs.data.length
+
+    const failedInvoices = await stripe.invoices.list({ status: "open", created: { gte: Math.floor(startOfMonth.getTime() / 1000) }, limit: 100 })
+    const failedPayments = failedInvoices.data.filter((i) => (i.attempt_count ?? 0) > 0).length
+
+    return { mrr, revenueThisMonth, revenueLastMonth, churnThisMonth, failedPayments }
+  } catch {
+    return null
+  }
+}
+
 async function fetchStats() {
-  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
   const admin = getAdminClient()
 
   const now = new Date()
@@ -29,54 +63,12 @@ async function fetchStats() {
   const endOfLastMonth = new Date(now.getFullYear(), now.getMonth(), 0, 23, 59, 59)
 
   // ── Stripe ──────────────────────────────────────────────
-
-  // MRR — active subscriptions
-  const activeSubs = await stripe.subscriptions.list({ status: "active", limit: 100 })
-  const mrr = activeSubs.data.reduce((sum, sub) => {
-    for (const item of sub.items.data) {
-      const amount = item.price.unit_amount ?? 0
-      const interval = item.price.recurring?.interval
-      const count = item.price.recurring?.interval_count ?? 1
-      if (interval === "month") sum += amount * item.quantity! / count
-      if (interval === "year") sum += Math.round((amount * item.quantity!) / 12 / count)
-    }
-    return sum
-  }, 0)
-
-  // Revenue this month
-  const invoicesThisMonth = await stripe.invoices.list({
-    status: "paid",
-    created: { gte: Math.floor(startOfMonth.getTime() / 1000) },
-    limit: 100,
-  })
-  const revenueThisMonth = invoicesThisMonth.data.reduce((s, i) => s + (i.amount_paid ?? 0), 0)
-
-  // Revenue last month
-  const invoicesLastMonth = await stripe.invoices.list({
-    status: "paid",
-    created: {
-      gte: Math.floor(startOfLastMonth.getTime() / 1000),
-      lte: Math.floor(endOfLastMonth.getTime() / 1000),
-    },
-    limit: 100,
-  })
-  const revenueLastMonth = invoicesLastMonth.data.reduce((s, i) => s + (i.amount_paid ?? 0), 0)
-
-  // Churn this month
-  const cancelledSubs = await stripe.subscriptions.list({
-    status: "canceled",
-    created: { gte: Math.floor(startOfMonth.getTime() / 1000) },
-    limit: 100,
-  })
-  const churnThisMonth = cancelledSubs.data.length
-
-  // Failed payments this month
-  const failedInvoices = await stripe.invoices.list({
-    status: "open",
-    created: { gte: Math.floor(startOfMonth.getTime() / 1000) },
-    limit: 100,
-  })
-  const failedPayments = failedInvoices.data.filter((i) => (i.attempt_count ?? 0) > 0).length
+  const stripeStats = await fetchStripeStats(startOfMonth, startOfLastMonth, endOfLastMonth)
+  const mrr = stripeStats?.mrr ?? 0
+  const revenueThisMonth = stripeStats?.revenueThisMonth ?? 0
+  const revenueLastMonth = stripeStats?.revenueLastMonth ?? 0
+  const churnThisMonth = stripeStats?.churnThisMonth ?? 0
+  const failedPayments = stripeStats?.failedPayments ?? 0
 
   // ── Supabase ─────────────────────────────────────────────
 
