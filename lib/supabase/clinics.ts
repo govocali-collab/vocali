@@ -249,7 +249,8 @@ export async function syncLocationFromClinic(clinicId: string): Promise<void> {
     clinic_id: clinicId,
     name: clinic.name,
     slug: toSlug(clinic.name),
-    is_active: clinic.is_active,
+    // Only activate via sync — never deactivate (deactivation is controlled by client toggle or billing)
+    ...(clinic.is_active ? { is_active: true } : {}),
     twilio_phone_number: clinic.twilio_phone_number ?? null,
     staff_sms_phone: ownerPhone,
     transfer_phone: ownerPhone,
