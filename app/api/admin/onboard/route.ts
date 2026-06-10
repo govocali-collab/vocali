@@ -155,7 +155,7 @@ export async function POST(req: Request) {
 
     // 3. Create Supabase Auth user
     const tempPassword = generateTempPassword()
-    await createAuthUser(ownerEmail, tempPassword)
+    await createAuthUser(ownerEmail, tempPassword, clinicName)
 
     // 4. Send welcome email
     await sendWelcomeEmail({

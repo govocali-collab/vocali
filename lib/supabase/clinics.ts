@@ -286,13 +286,15 @@ export async function updateOwnerEmail(clinicId: string, email: string): Promise
 
 export async function createAuthUser(
   email: string,
-  password: string
+  password: string,
+  clinicName?: string
 ): Promise<string> {
   const supabase = getAdminClient()
   const { data, error } = await supabase.auth.admin.createUser({
     email,
     password,
     email_confirm: true,
+    user_metadata: clinicName ? { full_name: clinicName } : undefined,
   })
   if (error) throw new Error(error.message)
   return data.user.id

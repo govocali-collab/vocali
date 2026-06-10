@@ -122,7 +122,7 @@ export async function POST(req: Request) {
 
     // 4. Create auth user
     const tempPassword = generateTempPassword()
-    await createAuthUser(ownerEmail, tempPassword)
+    await createAuthUser(ownerEmail, tempPassword, clinicName)
 
     // 5. Send welcome email to clinic owner
     await sendWelcomeEmail({
