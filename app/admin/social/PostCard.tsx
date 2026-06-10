@@ -1,10 +1,13 @@
 "use client"
 
-import { useRef, useState } from "react"
+import { useRef, useState, useEffect } from "react"
 import { Download, Trash2, ChevronLeft, ChevronRight, Copy, Check, Pencil, X } from "lucide-react"
 import { cn } from "@/lib/utils"
 import type { SocialPost, Slide } from "@/lib/supabase/social"
 import { PostSlide } from "./PostSlide"
+
+const SLIDE_W = 338
+const SLIDE_H = 423
 
 interface Props {
   post: SocialPost
@@ -17,6 +20,19 @@ export default function PostCard({ post, onDelete }: Props) {
   const [editing, setEditing] = useState(false)
   const [slides, setSlides] = useState<Slide[]>(post.slides)
   const slideRefs = useRef<(HTMLDivElement | null)[]>([])
+  const previewRef = useRef<HTMLDivElement>(null)
+  const [slideScale, setSlideScale] = useState(1)
+
+  useEffect(() => {
+    const el = previewRef.current
+    if (!el) return
+    const ro = new ResizeObserver(([entry]) => {
+      const available = entry.contentRect.width
+      setSlideScale(Math.min(1, available / SLIDE_W))
+    })
+    ro.observe(el)
+    return () => ro.disconnect()
+  }, [])
 
   function updateSlide(index: number, field: keyof Slide, value: string) {
     setSlides(prev => prev.map((s, i) => i === index ? { ...s, [field]: value } : s))
@@ -25,13 +41,8 @@ export default function PostCard({ post, onDelete }: Props) {
   async function downloadSlide(index: number) {
     const el = slideRefs.current[index]
     if (!el) return
-
     const html2canvas = (await import("html2canvas")).default
-    const canvas = await html2canvas(el, {
-      scale: 2,
-      useCORS: true,
-      backgroundColor: null,
-    })
+    const canvas = await html2canvas(el, { scale: 2, useCORS: true, backgroundColor: null })
     const link = document.createElement("a")
     link.download = `vocali-post-${post.topic.slice(0, 20).replace(/\s+/g, "-")}-${index + 1}.png`
     link.href = canvas.toDataURL("image/png")
@@ -43,16 +54,13 @@ export default function PostCard({ post, onDelete }: Props) {
     const JSZip = (await import("jszip")).default
     const zip = new JSZip()
     const slug = post.topic.slice(0, 20).replace(/\s+/g, "-")
-
     for (let i = 0; i < slides.length; i++) {
       const el = slideRefs.current[i]
       if (!el) continue
       const canvas = await html2canvas(el, { scale: 2, useCORS: true, backgroundColor: null })
-      const dataUrl = canvas.toDataURL("image/png")
-      const base64 = dataUrl.split(",")[1]
+      const base64 = canvas.toDataURL("image/png").split(",")[1]
       zip.file(`vocali-${slug}-slide-${i + 1}.png`, base64, { base64: true })
     }
-
     const blob = await zip.generateAsync({ type: "blob" })
     const link = document.createElement("a")
     link.download = `vocali-${slug}.zip`
@@ -66,6 +74,28 @@ export default function PostCard({ post, onDelete }: Props) {
     navigator.clipboard.writeText(full)
     setCopied(true)
     setTimeout(() => setCopied(false), 2000)
+  }
+
+  function ScaledSlide({ slide, index }: { slide: Slide; index: number }) {
+    return (
+      <div style={{
+        width: SLIDE_W * slideScale,
+        height: SLIDE_H * slideScale,
+        overflow: "hidden",
+        flexShrink: 0,
+        position: "relative",
+      }}>
+        <div style={{ transform: `scale(${slideScale})`, transformOrigin: "top left", position: "absolute", top: 0, left: 0 }}>
+          <PostSlide
+            slide={slide}
+            index={index}
+            total={slides.length}
+            postType={post.post_type}
+            style={post.style}
+          />
+        </div>
+      </div>
+    )
   }
 
   const typeLabel: Record<string, string> = {
@@ -99,7 +129,7 @@ export default function PostCard({ post, onDelete }: Props) {
       </div>
 
       {/* Slide preview */}
-      <div className="px-4 pb-2">
+      <div ref={previewRef} className="px-4 pb-2">
         {/* Hidden export-size slides for download */}
         <div className="pointer-events-none" style={{ position: "fixed", left: -99999, top: 0 }}>
           {slides.map((slide, i) => (
@@ -116,27 +146,15 @@ export default function PostCard({ post, onDelete }: Props) {
           ))}
         </div>
 
-        {/* Visible preview */}
+        {/* Visible preview — scaled to fit card width */}
         {slides.length === 1 ? (
           <div className="flex justify-center">
-            <PostSlide
-              slide={slides[0]}
-              index={0}
-              total={1}
-              postType={post.post_type}
-              style={post.style}
-            />
+            <ScaledSlide slide={slides[0]} index={0} />
           </div>
         ) : (
           <div>
             <div className="flex justify-center">
-              <PostSlide
-                slide={slides[activeSlide]}
-                index={activeSlide}
-                total={slides.length}
-                postType={post.post_type}
-                style={post.style}
-              />
+              <ScaledSlide slide={slides[activeSlide]} index={activeSlide} />
             </div>
             {/* Carousel nav */}
             <div className="flex items-center justify-between mt-2">
@@ -160,8 +178,8 @@ export default function PostCard({ post, onDelete }: Props) {
                 ))}
               </div>
               <button
-                onClick={() => setActiveSlide(i => Math.min(post.slides.length - 1, i + 1))}
-                disabled={activeSlide === post.slides.length - 1}
+                onClick={() => setActiveSlide(i => Math.min(slides.length - 1, i + 1))}
+                disabled={activeSlide === slides.length - 1}
                 className="p-1 rounded-lg text-charcoal-400 hover:text-charcoal-700 disabled:opacity-30 transition-colors"
               >
                 <ChevronRight size={16} />

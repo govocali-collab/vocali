@@ -58,8 +58,8 @@ export const PostSlide = forwardRef<HTMLDivElement, Props>(
           <div className={cn(
             "absolute top-0 right-0 bg-[#C9A864] text-white font-bold leading-none",
             size === "preview"
-              ? "text-[7px] px-2 py-1 mt-5 rounded-bl-lg"
-              : "text-[28px] px-7 py-3 mt-[64px] rounded-bl-2xl"
+              ? "text-[7px] px-2 py-1 mt-[3px] rounded-bl-lg"
+              : "text-[28px] px-7 py-3 mt-[10px] rounded-bl-2xl"
           )}>
             {index + 1}/{total}
           </div>
@@ -124,8 +124,8 @@ export const PostSlide = forwardRef<HTMLDivElement, Props>(
             style={{ objectFit: "contain" }}
           />
           <div className={cn(
-            "w-4 rounded-full bg-[#C9A864]/40",
-            size === "preview" ? "h-[2px]" : "h-[6px]"
+            "flex-1 rounded-full bg-[#C9A864]/40",
+            size === "preview" ? "h-[2px] ml-2" : "h-[6px] ml-6"
           )} />
         </div>
 

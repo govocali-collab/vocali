@@ -130,6 +130,7 @@ export async function updateClinicConfig(
     agentName?: string
     tone?: string
     systemPromptOverride?: string
+    websiteUrl?: string
     bookingCreds?: string
     bookingSystem?: string
     bookingApiUrl?: string
@@ -145,6 +146,7 @@ export async function updateClinicConfig(
     ...(clinic.clinic_config as Record<string, unknown>),
     ...(config.agentName ? { agent_name: config.agentName } : {}),
     ...(config.tone ? { tone: config.tone } : {}),
+    ...(config.websiteUrl !== undefined ? { website_url: config.websiteUrl || null } : {}),
     ...(config.bookingCreds !== undefined ? { booking_creds: config.bookingCreds } : {}),
     ...(config.bookingSystem !== undefined ? { booking_system: config.bookingSystem } : {}),
     ...(config.bookingApiUrl !== undefined ? { booking_api_url: config.bookingApiUrl } : {}),
@@ -263,6 +265,7 @@ export async function syncLocationFromClinic(clinicId: string): Promise<void> {
     booking_system: (config.booking_system as string) ?? "manual",
     booking_api_url: (config.booking_api_url as string) ?? null,
     booking_api_key: (config.booking_api_key as string) ?? null,
+    website_url: (config.website_url as string) ?? null,
   }
 
   if (existing) {

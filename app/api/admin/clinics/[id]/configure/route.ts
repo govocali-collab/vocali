@@ -7,12 +7,13 @@ export async function POST(
 ) {
   try {
     const { id } = await params
-    const { agentName, tone, systemPromptOverride, bookingCreds, bookingSystem, bookingApiUrl, bookingApiKey, activate } = await req.json()
+    const { agentName, tone, systemPromptOverride, websiteUrl, bookingCreds, bookingSystem, bookingApiUrl, bookingApiKey, activate } = await req.json()
 
     await updateClinicConfig(id, {
       agentName,
       tone,
       systemPromptOverride,
+      websiteUrl,
       bookingCreds,
       bookingSystem,
       bookingApiUrl,

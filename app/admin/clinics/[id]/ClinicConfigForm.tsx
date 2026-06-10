@@ -23,6 +23,7 @@ export default function ClinicConfigForm({ clinic }: { clinic: ClinicRow }) {
   const config = (clinic.clinic_config ?? {}) as Record<string, unknown>
 
   const [systemPrompt, setSystemPrompt] = useState(clinic.system_prompt_override ?? "")
+  const [websiteUrl, setWebsiteUrl] = useState((config.website_url as string) ?? "")
   const [bookingCreds, setBookingCreds] = useState((config.booking_creds as string) ?? "")
   const [bookingSystem, setBookingSystem] = useState((config.booking_system as string) || "manual")
   const [bookingApiUrl, setBookingApiUrl] = useState((config.booking_api_url as string) ?? "")
@@ -71,7 +72,7 @@ export default function ClinicConfigForm({ clinic }: { clinic: ClinicRow }) {
       const res = await fetch(`/api/admin/clinics/${clinic.id}/configure`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ systemPromptOverride: systemPrompt, bookingCreds, bookingSystem, bookingApiUrl, bookingApiKey, activate }),
+        body: JSON.stringify({ systemPromptOverride: systemPrompt, websiteUrl, bookingCreds, bookingSystem, bookingApiUrl, bookingApiKey, activate }),
       })
       const data = await res.json()
       if (!data.success) throw new Error(data.error)
@@ -97,6 +98,16 @@ export default function ClinicConfigForm({ clinic }: { clinic: ClinicRow }) {
       </p>
 
       <div className="space-y-4">
+        <Field label="Site web de la clinique" hint="Sofia scrappera ce site pour enrichir ses réponses (services, produits, équipe, politiques…)">
+          <input
+            className={inputClass}
+            value={websiteUrl}
+            onChange={(e) => setWebsiteUrl(e.target.value)}
+            placeholder="https://macliniqueesthetique.com"
+            type="url"
+          />
+        </Field>
+
         <Field label="Instructions spéciales" hint="Comportements spécifiques, promotions, restrictions...">
           <textarea
             className={cn(inputClass, "min-h-[100px] resize-y")}
