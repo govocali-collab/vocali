@@ -612,6 +612,134 @@ export async function sendAdminNotification({
   });
 }
 
+interface SendAgentLiveParams {
+  clinicName: string;
+  ownerEmail: string;
+  ownerFirstName: string;
+  agentName: string;
+}
+
+export async function sendAgentLiveEmail({
+  clinicName,
+  ownerEmail,
+  ownerFirstName,
+  agentName,
+}: SendAgentLiveParams) {
+  const year = new Date().getFullYear()
+  return resend.emails.send({
+    from: "Vocali <support@vocali.ca>",
+    to: ownerEmail,
+    subject: `${agentName} est maintenant en ligne ✨`,
+    html: `
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>${agentName} est en ligne</title>
+</head>
+<body style="margin:0;padding:0;background-color:#FAF7F2;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#FAF7F2;padding:40px 0;">
+    <tr>
+      <td align="center">
+        <table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;">
+
+          <!-- Header -->
+          <tr>
+            <td style="background:#FFFFFF;border-radius:12px 12px 0 0;border-top:3px solid #C9A864;padding:32px 48px;text-align:center;">
+              <img src="https://vocali.ca/vocali-logo-black.png" alt="Vocali" style="height:48px;width:auto;display:block;margin:0 auto;" />
+              <div style="height:1px;background:#C9A864;margin-top:32px;"></div>
+            </td>
+          </tr>
+
+          <!-- Body -->
+          <tr>
+            <td style="background:#FFFFFF;padding:48px;">
+              <p style="margin:0 0 24px;font-size:22px;font-weight:600;color:#1C1C1E;">
+                Bonjour ${ownerFirstName},
+              </p>
+              <p style="margin:0 0 20px;font-size:16px;line-height:1.7;color:#4C4C50;">
+                Bonne nouvelle — <strong style="color:#A88840;">${agentName}</strong> est maintenant <strong>en ligne</strong> et prête à répondre aux appels de <strong>${clinicName}</strong>.
+              </p>
+
+              <!-- Live badge -->
+              <table width="100%" cellpadding="0" cellspacing="0" style="margin:32px 0;">
+                <tr>
+                  <td style="background:#F0FAF4;border:1px solid #6EE7A0;border-radius:10px;padding:24px 32px;text-align:center;">
+                    <p style="margin:0 0 6px;font-size:13px;font-weight:600;color:#2D7A4F;text-transform:uppercase;letter-spacing:0.08em;">● En ligne</p>
+                    <p style="margin:0;font-size:18px;font-weight:700;color:#1C1C1E;">${agentName} répond à vos appels</p>
+                  </td>
+                </tr>
+              </table>
+
+              <p style="margin:0 0 20px;font-size:15px;line-height:1.7;color:#4C4C50;">
+                Depuis votre tableau de bord, vous pouvez consulter vos appels, lire les transcriptions et mettre ${agentName} sur pause si nécessaire.
+              </p>
+
+              <!-- CTA -->
+              <table width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 32px;">
+                <tr>
+                  <td align="center">
+                    <a href="https://vocali.ca/dashboard"
+                       style="display:inline-block;background:linear-gradient(135deg,#C9A864 0%,#A88840 50%,#8A6E2F 100%);color:#FEFDFB;text-decoration:none;font-size:15px;font-weight:600;padding:14px 36px;border-radius:8px;letter-spacing:0.02em;">
+                      Accéder à mon tableau de bord →
+                    </a>
+                  </td>
+                </tr>
+              </table>
+
+              <!-- Note -->
+              <table width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 32px;">
+                <tr>
+                  <td style="background:#F8EDD4;border-left:3px solid #C9A864;border-radius:0 8px 8px 0;padding:20px 24px;">
+                    <p style="margin:0 0 6px;font-size:14px;font-weight:600;color:#7D6430;">Un conseil</p>
+                    <p style="margin:0;font-size:14px;line-height:1.6;color:#4C4C50;">
+                      Faites un appel test pour entendre ${agentName} en action et vous assurer que tout correspond à vos attentes.
+                    </p>
+                  </td>
+                </tr>
+              </table>
+
+              <p style="margin:0;font-size:15px;line-height:1.7;color:#4C4C50;">
+                Des questions ? Répondez simplement à ce courriel — je suis là.
+              </p>
+            </td>
+          </tr>
+
+          <!-- Signature -->
+          <tr>
+            <td style="background:#FFFFFF;padding:0 48px 40px;border-radius:0 0 12px 12px;">
+              <table cellpadding="0" cellspacing="0">
+                <tr>
+                  <td style="border-top:1px solid #EDE3D4;padding-top:28px;">
+                    <p style="margin:0 0 4px;font-size:15px;font-weight:600;color:#1C1C1E;">Jonathan Hébert</p>
+                    <p style="margin:0 0 2px;font-size:14px;color:#6C6C70;">Fondateur, Vocali</p>
+                    <a href="mailto:support@vocali.ca" style="font-size:14px;color:#A88840;text-decoration:none;">support@vocali.ca</a>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- Footer -->
+          <tr>
+            <td style="padding:24px 48px;text-align:center;">
+              <p style="margin:0;font-size:12px;color:#B0B0B3;">
+                © ${year} Vocali · Réceptionniste IA pour cliniques
+              </p>
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
+    `.trim(),
+  })
+}
+
 export async function sendPaymentFailedNotification({
   clinicName, ownerEmail, clinicId, attemptCount, nextRetry,
 }: { clinicName: string; ownerEmail: string; clinicId: string; attemptCount: number; nextRetry: string | null }) {

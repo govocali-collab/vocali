@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server"
-import { updateClinicConfig, syncLocationFromClinic } from "@/lib/supabase/clinics"
+import { updateClinicConfig, syncLocationFromClinic, getClinicById } from "@/lib/supabase/clinics"
+import { sendAgentLiveEmail } from "@/lib/email/resend"
 
 export async function POST(
   req: Request,
@@ -24,6 +25,19 @@ export async function POST(
     await syncLocationFromClinic(id).catch((err) =>
       console.error("Location sync error (non-fatal):", err)
     )
+
+    if (activate) {
+      const clinic = await getClinicById(id)
+      if (clinic) {
+        const config = (clinic.clinic_config ?? {}) as Record<string, string>
+        sendAgentLiveEmail({
+          clinicName: clinic.name,
+          ownerEmail: clinic.owner_email,
+          ownerFirstName: config.owner_first_name ?? clinic.name,
+          agentName: config.agent_name ?? "Alexandra",
+        }).catch((err) => console.error("Agent live email error (non-fatal):", err))
+      }
+    }
 
     return NextResponse.json({ success: true })
   } catch (err) {
