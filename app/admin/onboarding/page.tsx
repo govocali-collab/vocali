@@ -209,23 +209,25 @@ export default function OnboardingPage() {
                 </div>
               </Field>
             </div>
-            <Field label="Site web de la clinique" hint="L'agent IA scrappera ce site pour enrichir ses réponses (services, produits, équipe, politiques…)">
-              <input
-                className={inputClass}
-                type="url"
-                value={websiteUrl}
-                onChange={(e) => setWebsiteUrl(e.target.value)}
-                placeholder="https://macliniqueesthetique.com"
-              />
-            </Field>
-            <Field label="Instructions spéciales (system prompt override)" hint="Instructions supplémentaires pour personnaliser le comportement de l'agent.">
-              <textarea
-                className={cn(inputClass, "min-h-[100px] resize-y")}
-                value={systemPromptOverride}
-                onChange={(e) => setSystemPromptOverride(e.target.value)}
-                placeholder="Ex : Toujours mentionner la promotion du mois. Ne jamais confirmer de prix sans consulter la grille tarifaire..."
-              />
-            </Field>
+            <div className="space-y-4 mt-4">
+              <Field label="Site web de la clinique" hint="L'agent IA scrappera ce site pour enrichir ses réponses (services, produits, équipe, politiques…)">
+                <input
+                  className={inputClass}
+                  type="url"
+                  value={websiteUrl}
+                  onChange={(e) => setWebsiteUrl(e.target.value)}
+                  placeholder="https://macliniqueesthetique.com"
+                />
+              </Field>
+              <Field label="Instructions spéciales (system prompt override)" hint="Instructions supplémentaires pour personnaliser le comportement de l'agent.">
+                <textarea
+                  className={cn(inputClass, "min-h-[100px] resize-y")}
+                  value={systemPromptOverride}
+                  onChange={(e) => setSystemPromptOverride(e.target.value)}
+                  placeholder="Ex : Toujours mentionner la promotion du mois. Ne jamais confirmer de prix sans consulter la grille tarifaire..."
+                />
+              </Field>
+            </div>
           </div>
 
           {/* ── SERVICES ── */}
