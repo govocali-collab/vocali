@@ -275,6 +275,15 @@ export async function syncLocationFromClinic(clinicId: string): Promise<void> {
   }
 }
 
+export async function updateOwnerEmail(clinicId: string, email: string): Promise<void> {
+  const supabase = getAdminClient()
+  const { error } = await supabase
+    .from("clinics")
+    .update({ owner_email: email })
+    .eq("id", clinicId)
+  if (error) throw new Error(error.message)
+}
+
 export async function createAuthUser(
   email: string,
   password: string

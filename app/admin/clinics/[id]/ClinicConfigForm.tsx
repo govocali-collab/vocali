@@ -22,6 +22,7 @@ export default function ClinicConfigForm({ clinic }: { clinic: ClinicRow }) {
   const router = useRouter()
   const config = (clinic.clinic_config ?? {}) as Record<string, unknown>
 
+  const [ownerEmail, setOwnerEmail] = useState(clinic.owner_email ?? "")
   const [twilioPhone, setTwilioPhone] = useState(clinic.twilio_phone_number ?? "")
   const [systemPrompt, setSystemPrompt] = useState(clinic.system_prompt_override ?? "")
   const [websiteUrl, setWebsiteUrl] = useState((config.website_url as string) ?? "")
@@ -121,7 +122,7 @@ export default function ClinicConfigForm({ clinic }: { clinic: ClinicRow }) {
       const res = await fetch(`/api/admin/clinics/${clinic.id}/configure`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ systemPromptOverride: systemPrompt, websiteUrl, bookingCreds, bookingSystem, bookingApiUrl, bookingApiKey, activate }),
+        body: JSON.stringify({ ownerEmail, systemPromptOverride: systemPrompt, websiteUrl, bookingCreds, bookingSystem, bookingApiUrl, bookingApiKey, activate }),
       })
       const data = await res.json()
       if (!data.success) throw new Error(data.error)
@@ -147,6 +148,16 @@ export default function ClinicConfigForm({ clinic }: { clinic: ClinicRow }) {
       </p>
 
       <div className="space-y-4">
+
+        <Field label="Courriel de la cliente" hint="Utilisé pour le magic link et les notifications">
+          <input
+            className={inputClass}
+            value={ownerEmail}
+            onChange={(e) => setOwnerEmail(e.target.value)}
+            placeholder="cliente@exemple.com"
+            type="email"
+          />
+        </Field>
 
         {/* Numéro Twilio */}
         <div>

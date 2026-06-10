@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server"
-import { updateClinicConfig, syncLocationFromClinic, getClinicById } from "@/lib/supabase/clinics"
+import { updateClinicConfig, syncLocationFromClinic, getClinicById, updateOwnerEmail } from "@/lib/supabase/clinics"
 import { sendAgentLiveEmail } from "@/lib/email/resend"
 
 export async function POST(
@@ -8,7 +8,11 @@ export async function POST(
 ) {
   try {
     const { id } = await params
-    const { agentName, tone, systemPromptOverride, websiteUrl, bookingCreds, bookingSystem, bookingApiUrl, bookingApiKey, activate } = await req.json()
+    const { ownerEmail, agentName, tone, systemPromptOverride, websiteUrl, bookingCreds, bookingSystem, bookingApiUrl, bookingApiKey, activate } = await req.json()
+
+    if (ownerEmail !== undefined) {
+      await updateOwnerEmail(id, ownerEmail.trim())
+    }
 
     await updateClinicConfig(id, {
       agentName,
