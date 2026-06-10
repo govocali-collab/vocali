@@ -69,6 +69,7 @@ export default function OnboardingPage() {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
+  const [twilioWarning, setTwilioWarning] = useState("")
 
   // Clinic info
   const [clinicName, setClinicName] = useState("")
@@ -122,6 +123,11 @@ export default function OnboardingPage() {
       })
       const data = await res.json()
       if (!data.success) throw new Error(data.error)
+      if (data.twilioError) {
+        setTwilioWarning(`Compte créé, mais numéro Twilio non assigné : ${data.twilioError}`)
+        setLoading(false)
+        return
+      }
       router.push("/admin/clinics")
     } catch (err) {
       setError(err instanceof Error ? err.message : "Erreur inconnue")
@@ -330,6 +336,21 @@ export default function OnboardingPage() {
           {error && (
             <div className="px-4 py-3 bg-red-50 border border-red-200 rounded-lg text-red-600 text-sm font-body">
               {error}
+            </div>
+          )}
+
+          {twilioWarning && (
+            <div className="px-4 py-3 bg-amber-50 border border-amber-200 rounded-lg text-amber-700 text-sm font-body space-y-2">
+              <p className="font-semibold">Compte créé — numéro Twilio manquant</p>
+              <p>{twilioWarning}</p>
+              <p>Assigne un numéro manuellement depuis la fiche de la clinique, puis clique «&nbsp;Activer&nbsp;».</p>
+              <button
+                type="button"
+                onClick={() => router.push("/admin/clinics")}
+                className="mt-1 text-amber-800 underline underline-offset-2 text-xs"
+              >
+                Voir les cliniques →
+              </button>
             </div>
           )}
 

@@ -106,11 +106,17 @@ export async function POST(req: Request) {
 
     // 2. Purchase Twilio number — prefer matching area code
     let twilioNumber: string | null = null
+    let twilioError: string | null = null
     try {
       const twilioClient = twilio(
         process.env.TWILIO_ACCOUNT_SID,
         process.env.TWILIO_AUTH_TOKEN
       )
+
+      const voiceWebhookUrl = process.env.VOICE_AGENT_WEBHOOK_URL
+      if (!voiceWebhookUrl) {
+        throw new Error("VOICE_AGENT_WEBHOOK_URL not configured in environment")
+      }
 
       const areaCode = getAreaCode(city)
       let available = areaCode
@@ -121,21 +127,28 @@ export async function POST(req: Request) {
 
       // Fallback to any Canadian number if area code had no results
       if (available.length === 0) {
+        console.warn(`[Twilio] No numbers for area code ${areaCode} (${city}) — trying Canada-wide`)
         available = await twilioClient
           .availablePhoneNumbers("CA")
           .local.list({ limit: 1, voiceEnabled: true })
       }
 
-      if (available.length > 0) {
-        const purchased = await twilioClient.incomingPhoneNumbers.create({
-          phoneNumber: available[0].phoneNumber,
-          friendlyName: clinicName,
-        })
-        twilioNumber = purchased.phoneNumber
-        await updateClinicTwilioNumber(clinicId, twilioNumber)
+      if (available.length === 0) {
+        throw new Error("Aucun numéro canadien disponible dans Twilio")
       }
+
+      const purchased = await twilioClient.incomingPhoneNumbers.create({
+        phoneNumber: available[0].phoneNumber,
+        friendlyName: clinicName,
+        voiceUrl: voiceWebhookUrl,
+        voiceMethod: "POST",
+      })
+      twilioNumber = purchased.phoneNumber
+      await updateClinicTwilioNumber(clinicId, twilioNumber)
+      console.log(`[Twilio] Purchased ${twilioNumber} for ${clinicName}`)
     } catch (twilioErr) {
-      console.error("Twilio error (non-fatal):", twilioErr)
+      twilioError = twilioErr instanceof Error ? twilioErr.message : String(twilioErr)
+      console.error("Twilio error (non-fatal):", twilioError)
     }
 
     // 3. Create Supabase Auth user
@@ -151,7 +164,7 @@ export async function POST(req: Request) {
       tempPassword,
     })
 
-    return NextResponse.json({ success: true, clinicId, twilioNumber })
+    return NextResponse.json({ success: true, clinicId, twilioNumber, twilioError })
   } catch (err) {
     const message = err instanceof Error ? err.message : "Erreur inconnue"
     console.error("Onboard error:", message)
