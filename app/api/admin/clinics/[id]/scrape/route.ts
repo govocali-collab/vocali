@@ -142,8 +142,13 @@ function extractLinks(html: string, baseUrl: URL, currentUrl: string): string[] 
 async function extractServices(content: string): Promise<{ name: string; description: string; price_range: string; duration: string }[]> {
   try {
     const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
-    // Use only first 5k chars to stay well within Vercel function timeout
-    const sample = content.slice(0, 5_000)
+
+    // Prefer sections that mention service/formation keywords over raw first bytes
+    const serviceKeywords = /service|formation|soin|traitement|massage|épilation|manucure|pédicure|botox|filler|laser|microbla|extension|lash|maquillage|facial|peeling|hydra|dermato|cours|atelier|produit/i
+    const pages = content.split(/(?=^=== )/m)
+    const relevant = pages.filter(p => serviceKeywords.test(p))
+    const sample = (relevant.length > 0 ? relevant.join("\n") : content).slice(0, 6_000)
+
     const msg = await anthropic.messages.create({
       model: "claude-haiku-4-5-20251001",
       max_tokens: 1024,
