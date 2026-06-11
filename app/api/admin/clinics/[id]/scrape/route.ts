@@ -142,22 +142,18 @@ function extractLinks(html: string, baseUrl: URL, currentUrl: string): string[] 
 async function extractServices(content: string): Promise<{ name: string; description: string; price_range: string; duration: string }[]> {
   try {
     const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
-    const sample = content.slice(0, 20_000)
+    // Use only first 5k chars to stay well within Vercel function timeout
+    const sample = content.slice(0, 5_000)
     const msg = await anthropic.messages.create({
       model: "claude-haiku-4-5-20251001",
       max_tokens: 1024,
       messages: [{
         role: "user",
-        content: `Analyse ce contenu de site web et extrait tous les services, soins, traitements et formations offerts. Retourne UNIQUEMENT un JSON valide (pas de markdown), un tableau d'objets avec exactement ces champs:
-[{"name":"Nom du service","description":"Courte description (1 phrase max)","price_range":"","duration":""}]
+        content: `Extrait tous les services, soins, traitements, formations et produits de ce contenu. Retourne UNIQUEMENT du JSON valide, sans markdown:
+[{"name":"Nom","description":"1 phrase","price_range":"","duration":""}]
 
-Règles:
-- Inclure services esthétiques, soins, traitements, formations, cours
-- "name" = titre exact du service (ex: "Microblading", "Formation Lash Lift")
-- "description" = 1 phrase courte décrivant le service
-- "price_range" et "duration" = chaîne vide "" si pas d'info disponible
-- Maximum 40 services
-- Ne pas inventer — seulement ce qui est explicitement mentionné
+Inclure: services esthétiques, soins, formations, cours, produits vendus.
+Maximum 40 éléments. Ne rien inventer.
 
 CONTENU:
 ${sample}`
