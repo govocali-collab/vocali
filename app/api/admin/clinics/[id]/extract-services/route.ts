@@ -45,7 +45,7 @@ async function extractServices(content: string): Promise<{ name: string; descrip
 
     const msg = await anthropic.messages.create({
       model: "claude-haiku-4-5-20251001",
-      max_tokens: 1024,
+      max_tokens: 2048,
       messages: [{
         role: "user",
         content: `Analyse ce contenu de site web et liste TOUS les produits, services, soins, traitements, formations et cours mentionnés. Retourne UNIQUEMENT du JSON valide sans markdown:
