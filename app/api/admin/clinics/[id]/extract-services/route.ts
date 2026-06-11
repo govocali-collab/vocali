@@ -41,20 +41,22 @@ async function extractServices(content: string): Promise<{ name: string; descrip
   try {
     const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
 
-    const serviceKeywords = /service|formation|soin|traitement|massage|épilation|manucure|pédicure|botox|filler|laser|microbla|extension|lash|maquillage|facial|peeling|hydra|dermato|cours|atelier|produit/i
-    const pages = content.split(/\n(?==== )/)
-    const relevant = pages.filter(p => serviceKeywords.test(p))
-    const sample = (relevant.length > 0 ? relevant.join("\n") : content).slice(0, 6_000)
+    // Sample beginning, middle, and end to cover the whole site
+    const third = Math.floor(content.length / 3)
+    const sample = [
+      content.slice(0, 2_000),
+      content.slice(third, third + 2_000),
+      content.slice(third * 2, third * 2 + 2_000),
+    ].join("\n...\n")
 
     const msg = await anthropic.messages.create({
       model: "claude-haiku-4-5-20251001",
       max_tokens: 1024,
       messages: [{
         role: "user",
-        content: `Extrait tous les services, soins, traitements, formations et produits de ce contenu. Retourne UNIQUEMENT du JSON valide, sans markdown:
-[{"name":"Nom","description":"1 phrase","price_range":"","duration":""}]
+        content: `Analyse ce contenu de site web et liste TOUS les produits, services, soins, traitements, formations et cours mentionnés. Retourne UNIQUEMENT du JSON valide sans markdown:
+[{"name":"Nom exact","description":"1 phrase ou vide","price_range":"","duration":""}]
 
-Inclure: services esthétiques, soins, formations, cours, produits vendus.
 Maximum 40 éléments. Ne rien inventer.
 
 CONTENU:
@@ -67,7 +69,8 @@ ${sample}`
     const parsed = JSON.parse(cleaned)
     if (!Array.isArray(parsed)) return []
     return parsed.filter((s: unknown) => s && typeof s === "object" && "name" in (s as object))
-  } catch {
+  } catch (e) {
+    console.error("[extract-services] error:", e)
     return []
   }
 }
