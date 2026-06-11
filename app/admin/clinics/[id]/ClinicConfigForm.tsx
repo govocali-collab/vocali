@@ -70,11 +70,19 @@ export default function ClinicConfigForm({ clinic }: { clinic: ClinicRow }) {
           if (event.type === "progress") {
             setScrapeProgress(event.percent)
             setScrapePages(event.pages)
-          } else if (event.type === "extracting") {
-            setScrapeProgress(99)
           } else if (event.type === "done") {
-            setScrapeResult({ chars: event.chars, pages: event.pages, servicesFound: event.servicesFound })
+            setScrapeProgress(99)
+            setScraping(false)
+            // Extract services in a separate call to avoid Vercel timeout
+            try {
+              const extractRes = await fetch(`/api/admin/clinics/${clinic.id}/extract-services`, { method: "POST" })
+              const extractData = await extractRes.json()
+              setScrapeResult({ chars: event.chars, pages: event.pages, servicesFound: extractData.servicesFound })
+            } catch {
+              setScrapeResult({ chars: event.chars, pages: event.pages })
+            }
             setScrapeProgress(100)
+            return
           } else if (event.type === "error") {
             throw new Error(event.error)
           }
@@ -319,7 +327,9 @@ export default function ClinicConfigForm({ clinic }: { clinic: ClinicRow }) {
                   ? scrapeProgress >= 99
                     ? "Extraction des services…"
                     : `Scraping… ${scrapePages} pages`
-                  : "↻ Scraper le site maintenant"}
+                  : scrapeProgress === 100 && !scrapeResult
+                    ? "Extraction des services…"
+                    : "↻ Scraper le site maintenant"}
                 </button>
                 {scrapeResult && (
                   <span className="text-xs text-green-600 font-body">
