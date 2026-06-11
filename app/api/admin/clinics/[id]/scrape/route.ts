@@ -1,4 +1,5 @@
 import { createClient } from "@supabase/supabase-js"
+import Anthropic from "@anthropic-ai/sdk"
 
 function getAdminClient() {
   return createClient(
@@ -83,7 +84,17 @@ export async function POST(
           .update({ website_content: combined })
           .eq("id", location.id)
 
-        send({ type: "done", chars: combined.length, pages: visited.size })
+        // Extract services/formations from scraped content using Claude
+        send({ type: "extracting", message: "Extraction des services…" })
+        const services = await extractServices(combined)
+        if (services.length > 0) {
+          await supabase
+            .from("locations")
+            .update({ services })
+            .eq("id", location.id)
+        }
+
+        send({ type: "done", chars: combined.length, pages: visited.size, servicesFound: services.length })
       } catch (err) {
         send({ type: "error", error: err instanceof Error ? err.message : "Erreur inconnue" })
       } finally {
@@ -126,6 +137,40 @@ function extractLinks(html: string, baseUrl: URL, currentUrl: string): string[] 
     } catch { /* skip */ }
   }
   return links
+}
+
+async function extractServices(content: string): Promise<{ name: string; description: string; price_range: string; duration: string }[]> {
+  try {
+    const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
+    const sample = content.slice(0, 20_000)
+    const msg = await anthropic.messages.create({
+      model: "claude-haiku-4-5-20251001",
+      max_tokens: 1024,
+      messages: [{
+        role: "user",
+        content: `Analyse ce contenu de site web et extrait tous les services, soins, traitements et formations offerts. Retourne UNIQUEMENT un JSON valide (pas de markdown), un tableau d'objets avec exactement ces champs:
+[{"name":"Nom du service","description":"Courte description (1 phrase max)","price_range":"","duration":""}]
+
+Règles:
+- Inclure services esthétiques, soins, traitements, formations, cours
+- "name" = titre exact du service (ex: "Microblading", "Formation Lash Lift")
+- "description" = 1 phrase courte décrivant le service
+- "price_range" et "duration" = chaîne vide "" si pas d'info disponible
+- Maximum 40 services
+- Ne pas inventer — seulement ce qui est explicitement mentionné
+
+CONTENU:
+${sample}`
+      }]
+    })
+    const text = msg.content.filter(b => b.type === "text").map(b => (b as { type: "text"; text: string }).text).join("")
+    const cleaned = text.replace(/^```(?:json)?\n?/, "").replace(/\n?```$/, "").trim()
+    const parsed = JSON.parse(cleaned)
+    if (!Array.isArray(parsed)) return []
+    return parsed.filter((s: unknown) => s && typeof s === "object" && "name" in (s as object))
+  } catch {
+    return []
+  }
 }
 
 function extractText(html: string, maxLen: number): string {

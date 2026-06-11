@@ -42,7 +42,7 @@ export default function ClinicConfigForm({ clinic }: { clinic: ClinicRow }) {
   const [scraping, setScraping] = useState(false)
   const [scrapeProgress, setScrapeProgress] = useState(0)
   const [scrapePages, setScrapePages] = useState(0)
-  const [scrapeResult, setScrapeResult] = useState<{ chars: number; pages: number } | null>(null)
+  const [scrapeResult, setScrapeResult] = useState<{ chars: number; pages: number; servicesFound?: number } | null>(null)
   const [scrapeError, setScrapeError] = useState("")
 
   async function scrapeWebsite() {
@@ -70,8 +70,10 @@ export default function ClinicConfigForm({ clinic }: { clinic: ClinicRow }) {
           if (event.type === "progress") {
             setScrapeProgress(event.percent)
             setScrapePages(event.pages)
+          } else if (event.type === "extracting") {
+            setScrapeProgress(99)
           } else if (event.type === "done") {
-            setScrapeResult({ chars: event.chars, pages: event.pages })
+            setScrapeResult({ chars: event.chars, pages: event.pages, servicesFound: event.servicesFound })
             setScrapeProgress(100)
           } else if (event.type === "error") {
             throw new Error(event.error)
@@ -313,11 +315,16 @@ export default function ClinicConfigForm({ clinic }: { clinic: ClinicRow }) {
                   disabled={scraping}
                   className="text-xs font-body px-3 py-1.5 rounded-lg border border-gold-300 text-gold-700 bg-gold-50 hover:bg-gold-100 disabled:opacity-50 transition-colors"
                 >
-                  {scraping ? `Scraping… ${scrapePages} pages` : "↻ Scraper le site maintenant"}
+                  {scraping
+                  ? scrapeProgress >= 99
+                    ? "Extraction des services…"
+                    : `Scraping… ${scrapePages} pages`
+                  : "↻ Scraper le site maintenant"}
                 </button>
                 {scrapeResult && (
                   <span className="text-xs text-green-600 font-body">
                     ✓ {scrapeResult.pages} pages · {Math.round(scrapeResult.chars / 1000)}k caractères
+                    {scrapeResult.servicesFound ? ` · ${scrapeResult.servicesFound} services extraits` : ""}
                   </span>
                 )}
                 {scrapeError && <span className="text-xs text-red-500 font-body">{scrapeError}</span>}
