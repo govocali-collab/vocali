@@ -41,13 +41,7 @@ async function extractServices(content: string): Promise<{ name: string; descrip
   try {
     const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
 
-    // Sample beginning, middle, and end to cover the whole site
-    const third = Math.floor(content.length / 3)
-    const sample = [
-      content.slice(0, 2_000),
-      content.slice(third, third + 2_000),
-      content.slice(third * 2, third * 2 + 2_000),
-    ].join("\n...\n")
+    const sample = content
 
     const msg = await anthropic.messages.create({
       model: "claude-haiku-4-5-20251001",
