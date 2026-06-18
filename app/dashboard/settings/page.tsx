@@ -24,8 +24,12 @@ export default async function SettingsPage() {
   const ownerPhone = config.owner_phone ?? ""
   const ownerEmail = clinic.owner_email ?? config.owner_email ?? ""
   const hours = clinic.hours ?? {}
-  const serviceItems = await listCatalog(clinic.id, "service")
-  const formationItems = clinic.offers_trainings ? await listCatalog(clinic.id, "formation") : []
+  // Résilient : si le catalogue est indisponible (ex: permissions/table), la page
+  // s'affiche quand même (catalogue vide) au lieu de planter.
+  const serviceItems = await listCatalog(clinic.id, "service").catch(() => [])
+  const formationItems = clinic.offers_trainings
+    ? await listCatalog(clinic.id, "formation").catch(() => [])
+    : []
 
   return (
     <div className="px-5 py-6 lg:px-8 max-w-3xl">
