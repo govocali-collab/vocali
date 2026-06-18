@@ -107,9 +107,10 @@ export async function POST(req: Request) {
         await supabase.from("leads").insert({
           call_session_id: sessionId,
           location_id: locationId,
-          caller_phone: callerNumber || null,
+          // La table leads n'a pas de colonne `phone` : on garde le numéro de
+          // rappel donné pendant l'appel (sinon l'identifiant de l'appelant).
+          caller_phone: analysis.phone || callerNumber || null,
           name: analysis.name,
-          phone: analysis.phone || callerNumber || null,
           email: analysis.email,
           service_interest: analysis.service_interest,
           preferred_date: analysis.preferred_date,
