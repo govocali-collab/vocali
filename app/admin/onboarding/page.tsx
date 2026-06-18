@@ -113,10 +113,10 @@ export default function OnboardingPage() {
     setSearchedOnce(true)
     try {
       const params = new URLSearchParams({ country: numberCountry })
-      // 3 chiffres = indicatif régional ; sinon = nom de ville (InLocality).
-      const q = numberQuery.trim()
-      if (/^\d{3}$/.test(q)) params.set("areaCode", q)
-      else if (q) params.set("inLocality", q)
+      // Champ vide → on utilise la ville de la clinique. Le backend décide
+      // ville vs indicatif et retombe sur l'indicatif si la ville ne donne rien.
+      const q = numberQuery.trim() || city.trim()
+      if (q) params.set("q", q)
       const res = await fetch(`/api/admin/available-numbers?${params}`)
       const data = await res.json()
       if (!data.success) throw new Error(data.error)
@@ -293,7 +293,7 @@ export default function OnboardingPage() {
 
                 {searchedOnce && !searchingNumbers && !numberError && numberResults.length === 0 && (
                   <p className="text-charcoal-500 text-xs font-body bg-ivory-50 border border-ivory-200 rounded-lg px-3 py-2.5">
-                    Aucun numéro disponible pour {numberQuery ? `« ${numberQuery} »` : "cette recherche"}. Essaie une autre ville, un autre indicatif (ex&nbsp;: 438), ou laisse le champ vide pour voir tous les numéros.
+                    Aucun numéro disponible pour {numberQuery ? `« ${numberQuery} »` : "cette recherche"}. Essaie une autre ville, un autre indicatif (ex&nbsp;: 438) (ex : 450 pour Laval), ou laisse vide pour utiliser la ville de la clinique.
                   </p>
                 )}
               </div>
