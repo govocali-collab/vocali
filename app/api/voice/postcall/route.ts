@@ -95,8 +95,12 @@ export async function POST(req: Request) {
 
     const sessionId = upserted?.id || session?.id
 
-    // 4) Créer le lead si suivi requis. Idempotent (un lead par session).
-    if (sessionId && locationId && analysis.is_lead) {
+    // 4) Créer un lead dès qu'il y a une vraie conversation (au moins un tour
+    // client). On NE dépend PAS de Claude pour l'existence du lead : les détails
+    // (nom, service…) sont enrichis par Claude s'il est disponible, sinon null.
+    // Idempotent : un seul lead par session.
+    const hasUserTurn = transcriptArray.some((t) => t.role === "user")
+    if (sessionId && locationId && hasUserTurn) {
       const { data: existing } = await supabase
         .from("leads")
         .select("id")
@@ -115,7 +119,7 @@ export async function POST(req: Request) {
           service_interest: analysis.service_interest,
           preferred_date: analysis.preferred_date,
           preferred_time: analysis.preferred_time,
-          notes: analysis.notes || analysis.summary,
+          notes: analysis.notes || summary,
           appointment_requested: analysis.appointment_requested,
           status: "nouveau",
         })
