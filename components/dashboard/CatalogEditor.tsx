@@ -1,12 +1,16 @@
 "use client"
 
 import { useState, useTransition } from "react"
-import { Plus, Trash2, Tag } from "lucide-react"
+import { Plus, Trash2 } from "lucide-react"
 import { addCatalogItem, saveCatalogItem, removeCatalogItem } from "@/app/actions/catalog"
 import type { CatalogItem, CatalogKind } from "@/lib/supabase/catalog"
 
 const inputClass =
   "w-full bg-ivory-50 border border-ivory-300 rounded-lg px-3 py-2 text-charcoal-900 text-sm font-body placeholder-charcoal-300 focus:outline-none focus:border-gold-400 transition-colors"
+
+function FieldLabel({ children }: { children: React.ReactNode }) {
+  return <span className="block text-charcoal-400 text-[11px] font-body font-medium uppercase tracking-wide mb-1">{children}</span>
+}
 
 export default function CatalogEditor({
   kind,
@@ -17,7 +21,7 @@ export default function CatalogEditor({
   kind: CatalogKind
   title: string
   items: CatalogItem[]
-  noun: string // ex: "service", "formation"
+  noun: string
 }) {
   const [rows, setRows] = useState<CatalogItem[]>(items)
   const [pending, startTransition] = useTransition()
@@ -56,63 +60,30 @@ export default function CatalogEditor({
   return (
     <section className="bg-white rounded-xl border border-ivory-300 p-5 shadow-card">
       <div className="flex items-center justify-between mb-4">
-        <h2 className="text-charcoal-400 text-xs font-body font-medium uppercase tracking-wider">{title}</h2>
-        <span className="text-charcoal-300 text-xs font-body">{rows.length}</span>
+        <h2 className="text-charcoal-700 font-body font-semibold">{title}</h2>
+        <span className="text-charcoal-400 text-xs font-body bg-ivory-100 border border-ivory-200 rounded-full px-2 py-0.5">
+          {rows.length}
+        </span>
       </div>
 
       <div className="space-y-3">
         {rows.map((row) => (
           <div
             key={row.id}
-            className={`rounded-lg border p-3 ${row.active ? "border-ivory-300 bg-white" : "border-ivory-200 bg-ivory-50 opacity-70"}`}
+            className={`rounded-xl border p-4 transition-colors ${
+              row.active ? "border-ivory-300 bg-white" : "border-ivory-200 bg-ivory-50/60"
+            }`}
           >
-            <div className="flex gap-2">
+            {/* Nom + actif */}
+            <div className="flex items-center gap-3">
               <input
-                className={inputClass}
+                className="flex-1 min-w-0 bg-transparent border-0 border-b border-transparent hover:border-ivory-300 focus:border-gold-400 px-0 py-1 text-charcoal-900 text-base font-body font-semibold placeholder-charcoal-300 focus:outline-none transition-colors"
                 value={row.name}
                 placeholder={`Nom du ${noun}`}
                 onChange={(e) => patchLocal(row.id, "name", e.target.value)}
                 onBlur={() => persist(row)}
               />
-              <input
-                className={`${inputClass} w-28 flex-shrink-0`}
-                value={row.price ?? ""}
-                placeholder="Prix"
-                onChange={(e) => patchLocal(row.id, "price", e.target.value)}
-                onBlur={() => persist(row)}
-              />
-            </div>
-
-            <div className="flex gap-2 mt-2">
-              <input
-                className={`${inputClass} w-32 flex-shrink-0`}
-                value={row.duration ?? ""}
-                placeholder="Durée"
-                onChange={(e) => patchLocal(row.id, "duration", e.target.value)}
-                onBlur={() => persist(row)}
-              />
-              <div className="relative flex-1">
-                <Tag size={13} className="absolute left-3 top-1/2 -translate-y-1/2 text-gold-500 pointer-events-none" />
-                <input
-                  className={`${inputClass} pl-8`}
-                  value={row.promotion ?? ""}
-                  placeholder="Promotion / spécial (optionnel)"
-                  onChange={(e) => patchLocal(row.id, "promotion", e.target.value)}
-                  onBlur={() => persist(row)}
-                />
-              </div>
-            </div>
-
-            <textarea
-              className={`${inputClass} mt-2 min-h-[44px] resize-y`}
-              value={row.description ?? ""}
-              placeholder="Description (optionnel)"
-              onChange={(e) => patchLocal(row.id, "description", e.target.value)}
-              onBlur={() => persist(row)}
-            />
-
-            <div className="flex items-center justify-between mt-2">
-              <label className="flex items-center gap-2 text-charcoal-500 text-xs font-body cursor-pointer">
+              <label className="flex items-center gap-1.5 text-charcoal-500 text-xs font-body cursor-pointer flex-shrink-0">
                 <input
                   type="checkbox"
                   checked={row.active}
@@ -126,10 +97,62 @@ export default function CatalogEditor({
                 />
                 Actif
               </label>
+            </div>
+
+            {/* Prix + Durée */}
+            <div className="grid grid-cols-2 gap-3 mt-3">
+              <div>
+                <FieldLabel>Prix</FieldLabel>
+                <input
+                  className={inputClass}
+                  value={row.price ?? ""}
+                  placeholder="ex : 120 $"
+                  onChange={(e) => patchLocal(row.id, "price", e.target.value)}
+                  onBlur={() => persist(row)}
+                />
+              </div>
+              <div>
+                <FieldLabel>Durée</FieldLabel>
+                <input
+                  className={inputClass}
+                  value={row.duration ?? ""}
+                  placeholder="ex : 60 min"
+                  onChange={(e) => patchLocal(row.id, "duration", e.target.value)}
+                  onBlur={() => persist(row)}
+                />
+              </div>
+            </div>
+
+            {/* Promotion */}
+            <div className="mt-3">
+              <FieldLabel>Promotion / spécial</FieldLabel>
+              <input
+                className={`${inputClass} bg-gold-50/50 border-gold-200 placeholder-gold-400/70`}
+                value={row.promotion ?? ""}
+                placeholder="ex : -20 % ce mois-ci (optionnel)"
+                onChange={(e) => patchLocal(row.id, "promotion", e.target.value)}
+                onBlur={() => persist(row)}
+              />
+            </div>
+
+            {/* Description */}
+            <div className="mt-3">
+              <FieldLabel>Description</FieldLabel>
+              <textarea
+                className={`${inputClass} min-h-[52px] resize-y`}
+                value={row.description ?? ""}
+                placeholder="Quelques mots sur ce que ça inclut (optionnel)"
+                onChange={(e) => patchLocal(row.id, "description", e.target.value)}
+                onBlur={() => persist(row)}
+              />
+            </div>
+
+            {/* Supprimer */}
+            <div className="flex justify-end mt-3 pt-3 border-t border-ivory-200">
               <button
                 type="button"
                 onClick={() => remove(row.id)}
-                className="flex items-center gap-1 text-charcoal-400 text-xs font-body hover:text-red-500 transition-colors"
+                className="inline-flex items-center gap-1.5 text-charcoal-400 text-xs font-body hover:text-red-500 transition-colors"
               >
                 <Trash2 size={13} /> Supprimer
               </button>
@@ -138,7 +161,9 @@ export default function CatalogEditor({
         ))}
 
         {rows.length === 0 && (
-          <p className="text-charcoal-400 text-sm font-body py-2">Aucun {noun} pour le moment.</p>
+          <div className="text-center py-8 border border-dashed border-ivory-300 rounded-xl">
+            <p className="text-charcoal-400 text-sm font-body">Aucun {noun} pour le moment.</p>
+          </div>
         )}
       </div>
 
