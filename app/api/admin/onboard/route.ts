@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server"
 import twilio from "twilio"
-import { createClinic, updateClinicTwilioNumber, createAuthUser } from "@/lib/supabase/clinics"
+import { createClinic, updateClinicTwilioNumber, createAuthUser, syncLocationFromClinic } from "@/lib/supabase/clinics"
+import { importNumberToElevenLabs } from "@/lib/elevenlabs"
 import { sendWelcomeEmail } from "@/lib/email/resend"
 
 const CITY_AREA_CODES: Record<string, number> = {
@@ -115,11 +116,6 @@ export async function POST(req: Request) {
         process.env.TWILIO_AUTH_TOKEN
       )
 
-      const voiceWebhookUrl = process.env.VOICE_AGENT_WEBHOOK_URL
-      if (!voiceWebhookUrl) {
-        throw new Error("VOICE_AGENT_WEBHOOK_URL not configured in environment")
-      }
-
       const areaCode = getAreaCode(city)
       let available = areaCode
         ? await twilioClient
@@ -142,12 +138,15 @@ export async function POST(req: Request) {
       const purchased = await twilioClient.incomingPhoneNumbers.create({
         phoneNumber: available[0].phoneNumber,
         friendlyName: clinicName,
-        voiceUrl: voiceWebhookUrl,
-        voiceMethod: "POST",
       })
       twilioNumber = purchased.phoneNumber
       await updateClinicTwilioNumber(clinicId, twilioNumber)
-      console.log(`[Twilio] Purchased ${twilioNumber} for ${clinicName}`)
+      await syncLocationFromClinic(clinicId).catch((e) =>
+        console.error("Location sync (non-fatal):", e)
+      )
+      // Importer le numéro dans ElevenLabs et l'assigner à l'agent Vocali.
+      await importNumberToElevenLabs(twilioNumber, clinicName)
+      console.log(`[Twilio+ElevenLabs] Purchased & imported ${twilioNumber} for ${clinicName}`)
     } catch (twilioErr) {
       twilioError = twilioErr instanceof Error ? twilioErr.message : String(twilioErr)
       console.error("Twilio error (non-fatal):", twilioError)
