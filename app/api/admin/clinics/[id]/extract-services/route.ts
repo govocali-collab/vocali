@@ -2,6 +2,9 @@ import { createClient } from "@supabase/supabase-js"
 import Anthropic from "@anthropic-ai/sdk"
 import { listCatalog, bulkCreateCatalogItems, type CatalogKind } from "@/lib/supabase/catalog"
 
+// L'extraction (gros contenu + génération JSON) peut prendre du temps.
+export const maxDuration = 60
+
 function getAdminClient() {
   return createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -71,21 +74,23 @@ async function extractItems(content: string): Promise<Extracted[]> {
 
     const msg = await anthropic.messages.create({
       model: "claude-haiku-4-5-20251001",
-      max_tokens: 3000,
+      max_tokens: 8000,
       messages: [
         {
           role: "user",
-          content: `Tu analyses le contenu du site web d'une clinique d'esthétique au Québec. Liste TOUS les soins/traitements/services, les formations/cours, et les produits mentionnés.
+          content: `Tu analyses le contenu du site web d'une clinique d'esthétique au Québec. Liste de façon EXHAUSTIVE absolument TOUS les soins/traitements/services, TOUTES les formations/cours, et tous les produits mentionnés — n'en oublie aucun, même ceux listés dans un menu, une grille de tarifs ou une page de prix.
 
 Pour chaque élément, classe-le dans "kind" :
 - "service" : un soin, traitement ou service offert (ex: Botox, facial, épilation laser)
 - "formation" : une formation ou un cours donné par la clinique
 - "produit" : un produit physique vendu
 
-Retourne UNIQUEMENT du JSON valide, sans markdown :
-[{"kind":"service","name":"Nom exact","description":"1 phrase ou vide","price":"prix si mentionné sinon vide","duration":"durée si mentionnée sinon vide"}]
+Pour "description" : reprends la description du site quand elle est présente (1 à 2 phrases), sinon laisse vide. NE L'INVENTE PAS.
 
-Règles : maximum 60 éléments. N'invente RIEN — laisse "price" et "duration" vides s'ils ne sont pas écrits sur le site.
+Retourne UNIQUEMENT du JSON valide, sans markdown :
+[{"kind":"service","name":"Nom exact","description":"description du site ou vide","price":"prix si mentionné sinon vide","duration":"durée si mentionnée sinon vide"}]
+
+Règles : sois COMPLET (jusqu'à 150 éléments si nécessaire). N'invente RIEN — laisse "price", "duration" et "description" vides s'ils ne sont pas écrits sur le site.
 
 CONTENU:
 ${content}`,

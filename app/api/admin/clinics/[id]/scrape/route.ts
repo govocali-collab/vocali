@@ -8,8 +8,11 @@ function getAdminClient() {
 }
 
 const MAX_PAGES = 50
-const MAX_CHARS_PER_PAGE = 3000
-const MAX_TOTAL_CHARS = 40000
+const MAX_CHARS_PER_PAGE = 7000
+const MAX_TOTAL_CHARS = 90000
+// Pages prioritaires (services/tarifs/formations) : scrapées en premier pour
+// qu'elles tiennent dans le budget de caractères.
+const PRIORITY_RE = /service|soin|traitement|tarif|prix|forfait|menu|catalogue|formation|cours|atelier/i
 
 export async function POST(
   _req: Request,
@@ -65,7 +68,10 @@ export async function POST(
 
             const html = await res.text()
             for (const link of extractLinks(html, baseUrl, pageUrl)) {
-              if (!visited.has(link) && !queue.includes(link)) queue.push(link)
+              if (visited.has(link) || queue.includes(link)) continue
+              // Les pages services/tarifs/formations passent en tête de file.
+              if (PRIORITY_RE.test(link)) queue.unshift(link)
+              else queue.push(link)
             }
 
             const text = extractText(html, MAX_CHARS_PER_PAGE)
