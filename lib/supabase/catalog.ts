@@ -108,3 +108,40 @@ export async function bulkCreateCatalogItems(clinicId: string, items: CatalogIte
   if (error) throw new Error(error.message)
   return rows.length
 }
+
+// Import (CSV) : pour chaque item, met à jour l'item existant du même nom
+// (insensible à la casse) — pratique pour ajouter les prix sur des items déjà
+// scrappés — sinon l'insère. Ne touche qu'aux champs fournis non vides.
+export async function upsertCatalogByName(
+  clinicId: string,
+  items: CatalogItemInput[],
+): Promise<{ inserted: number; updated: number }> {
+  const existing = await listCatalog(clinicId)
+  const byName = new Map(existing.map((i) => [i.name.trim().toLowerCase(), i]))
+
+  let updated = 0
+  const toInsert: CatalogItemInput[] = []
+
+  for (const it of items) {
+    const name = (it.name ?? "").trim()
+    if (!name) continue
+    const match = byName.get(name.toLowerCase())
+    if (match) {
+      const patch: CatalogItemInput = {}
+      if (it.price) patch.price = it.price
+      if (it.description) patch.description = it.description
+      if (it.duration) patch.duration = it.duration
+      if (it.promotion) patch.promotion = it.promotion
+      if (it.kind) patch.kind = it.kind
+      if (Object.keys(patch).length > 0) {
+        await updateCatalogItem(clinicId, match.id, patch)
+        updated++
+      }
+    } else {
+      toInsert.push(it)
+    }
+  }
+
+  const inserted = toInsert.length > 0 ? await bulkCreateCatalogItems(clinicId, toInsert) : 0
+  return { inserted, updated }
+}
