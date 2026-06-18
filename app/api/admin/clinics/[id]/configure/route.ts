@@ -8,7 +8,7 @@ export async function POST(
 ) {
   try {
     const { id } = await params
-    const { ownerEmail, agentName, tone, systemPromptOverride, websiteUrl, bookingCreds, bookingSystem, bookingApiUrl, bookingApiKey, voiceId, offersTrainings, activate } = await req.json()
+    const { ownerEmail, agentName, tone, systemPromptOverride, websiteUrl, bookingCreds, bookingSystem, bookingApiUrl, bookingApiKey, voiceId, offersTrainings, greeting, activate } = await req.json()
 
     if (ownerEmail !== undefined) {
       await updateOwnerEmail(id, ownerEmail.trim())
@@ -25,6 +25,7 @@ export async function POST(
       bookingApiKey,
       voiceId,
       offersTrainings,
+      greeting,
       activate: !!activate,
     })
 

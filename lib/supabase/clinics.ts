@@ -137,6 +137,7 @@ export async function updateClinicConfig(
     bookingApiKey?: string
     voiceId?: string
     offersTrainings?: boolean
+    greeting?: string
     activate?: boolean
   }
 ): Promise<void> {
@@ -155,6 +156,8 @@ export async function updateClinicConfig(
     ...(config.bookingApiKey !== undefined ? { booking_api_key: config.bookingApiKey } : {}),
     // Voix ElevenLabs par clinique (vide = voix par défaut du modèle).
     ...(config.voiceId !== undefined ? { voice_id: config.voiceId.trim() || null } : {}),
+    // Message d'accueil personnalisé (vide = message par défaut).
+    ...(config.greeting !== undefined ? { greeting: config.greeting.trim() || null } : {}),
   }
 
   const update: Record<string, unknown> = { clinic_config: updatedConfig }
