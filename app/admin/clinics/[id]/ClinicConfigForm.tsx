@@ -34,6 +34,7 @@ export default function ClinicConfigForm({ clinic }: { clinic: ClinicRow }) {
   const [offersTrainings, setOffersTrainings] = useState(
     Boolean((clinic as unknown as { offers_trainings?: boolean }).offers_trainings)
   )
+  const [greeting, setGreeting] = useState((config.greeting as string) ?? "")
 
   const [saving, setSaving] = useState(false)
   const [activating, setActivating] = useState(false)
@@ -181,7 +182,7 @@ export default function ClinicConfigForm({ clinic }: { clinic: ClinicRow }) {
       const res = await fetch(`/api/admin/clinics/${clinic.id}/configure`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ownerEmail, systemPromptOverride: systemPrompt, websiteUrl, bookingCreds, bookingSystem, bookingApiUrl, bookingApiKey, voiceId, offersTrainings, activate }),
+        body: JSON.stringify({ ownerEmail, systemPromptOverride: systemPrompt, websiteUrl, bookingCreds, bookingSystem, bookingApiUrl, bookingApiKey, voiceId, offersTrainings, greeting, activate }),
       })
       const data = await res.json()
       if (!data.success) throw new Error(data.error)
@@ -353,6 +354,18 @@ export default function ClinicConfigForm({ clinic }: { clinic: ClinicRow }) {
               )}
             </div>
           )}
+        </Field>
+
+        <Field
+          label="Message d'accueil"
+          hint="Variables : {{clinique}} = nom de la clinique, {{agent}} = nom de l'agent. Laisse vide pour le message par défaut. (L'avis d'enregistrement « Cet appel peut être enregistré à des fins de contrôle de qualité » est ajouté automatiquement avant — non modifiable.)"
+        >
+          <textarea
+            className={cn(inputClass, "min-h-[72px] resize-y")}
+            value={greeting}
+            onChange={(e) => setGreeting(e.target.value)}
+            placeholder="{{clinique}} bonjour, je suis {{agent}}. Comment puis-je vous aider aujourd'hui ?"
+          />
         </Field>
 
         <Field label="Instructions spéciales" hint="Comportements spécifiques, promotions, restrictions...">
