@@ -58,6 +58,12 @@ export default function ClinicConfigForm({ clinic }: { clinic: ClinicRow }) {
     setScrapeResult(null)
     setScrapeError("")
     try {
+      // Enregistre d'abord l'URL (sinon le scraper lit l'ancienne valeur en base).
+      await fetch(`/api/admin/clinics/${clinic.id}/configure`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ websiteUrl }),
+      })
       const res = await fetch(`/api/admin/clinics/${clinic.id}/scrape`, { method: "POST" })
       if (!res.body) throw new Error("Pas de réponse")
       const reader = res.body.getReader()
