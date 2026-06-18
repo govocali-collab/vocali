@@ -82,14 +82,24 @@ export async function POST(
           } catch { /* skip page */ }
         }
 
-        const combined = allContent.join("\n\n").slice(0, MAX_TOTAL_CHARS)
+        // Beaucoup de boutiques (Lightspeed, Shopify…) chargent les produits en
+        // JavaScript → invisibles dans le HTML. Le sitemap, lui, liste TOUTES les
+        // pages produits. On en tire la liste complète (noms depuis les slugs).
+        const sitemapNames = await fetchSitemapProducts(baseUrl.origin)
+
+        let combined = allContent.join("\n\n").slice(0, MAX_TOTAL_CHARS)
+        if (sitemapNames.length > 0) {
+          combined +=
+            `\n\n=== LISTE COMPLÈTE DES PRODUITS / SERVICES / FORMATIONS (depuis le sitemap) ===\n` +
+            sitemapNames.map((n) => `- ${n}`).join("\n")
+        }
 
         await supabase
           .from("locations")
           .update({ website_content: combined })
           .eq("id", location.id)
 
-        send({ type: "done", chars: combined.length, pages: visited.size })
+        send({ type: "done", chars: combined.length, pages: visited.size, sitemap: sitemapNames.length })
       } catch (err) {
         send({ type: "error", error: err instanceof Error ? err.message : "Erreur inconnue" })
       } finally {
@@ -105,6 +115,39 @@ export async function POST(
       "X-Accel-Buffering": "no",
     },
   })
+}
+
+// Lit /sitemap.xml et tire un nom lisible de chaque slug de produit/page.
+async function fetchSitemapProducts(origin: string): Promise<string[]> {
+  try {
+    const ctrl = new AbortController()
+    const timer = setTimeout(() => ctrl.abort(), 12_000)
+    const res = await fetch(`${origin}/sitemap.xml`, {
+      signal: ctrl.signal,
+      headers: { "User-Agent": "Mozilla/5.0 (compatible; AlexandraBot/1.0; +https://vocali.ca)" },
+    })
+    clearTimeout(timer)
+    if (!res.ok) return []
+    const xml = await res.text()
+    const locs = [...xml.matchAll(/<loc>([^<]+)<\/loc>/gi)].map((m) => m[1])
+    const SKIP = /(account|cart|panier|search|recherche|pages\/|carte-cadeau|gift|login|compte|wishlist|checkout)/i
+    const names = locs
+      .map((u) => {
+        const m = u.match(/\/products\/([^/?#]+)/i)
+        return m ? m[1] : ""
+      })
+      .filter((slug) => slug && !SKIP.test(slug))
+      .map((slug) =>
+        decodeURIComponent(slug)
+          .replace(/[-_]+/g, " ")
+          .replace(/\s+/g, " ")
+          .trim()
+          .replace(/\b\w/g, (c) => c.toUpperCase())
+      )
+    return [...new Set(names)].slice(0, 400)
+  } catch {
+    return []
+  }
 }
 
 function normalizeUrl(url: string): string {

@@ -66,8 +66,6 @@ export async function POST(
   return Response.json({ servicesFound: inserted })
 }
 
-const KINDS: CatalogKind[] = ["service", "formation", "produit"]
-
 async function extractItems(content: string): Promise<Extracted[]> {
   try {
     const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
@@ -78,19 +76,21 @@ async function extractItems(content: string): Promise<Extracted[]> {
       messages: [
         {
           role: "user",
-          content: `Tu analyses le contenu du site web d'une clinique d'esthétique au Québec. Liste de façon EXHAUSTIVE absolument TOUS les soins/traitements/services, TOUTES les formations/cours, et tous les produits mentionnés — n'en oublie aucun, même ceux listés dans un menu, une grille de tarifs ou une page de prix.
+          content: `Tu analyses le contenu du site web d'une clinique d'esthétique au Québec. Liste de façon EXHAUSTIVE absolument TOUS les soins/traitements/services, TOUTES les formations/cours, et tous les produits.
+
+⚠️ IMPORTANT : la section « LISTE COMPLÈTE DES PRODUITS / SERVICES / FORMATIONS (depuis le sitemap) » contient TOUS les éléments du site — n'en OUBLIE AUCUN de cette liste. Nettoie juste le nom pour qu'il soit lisible (ex: "Formation Tiny Tattoo 100 Elearning Avec Prerequis Trousse Incluse" → "Formation Tiny Tattoo 100% e-learning (avec prérequis, trousse incluse)").
 
 Pour chaque élément, classe-le dans "kind" :
-- "service" : un soin, traitement ou service offert (ex: Botox, facial, épilation laser)
-- "formation" : une formation ou un cours donné par la clinique
-- "produit" : un produit physique vendu
+- "service" : un soin/traitement offert en clinique (ex: facial, épilation, microblading, microneedling, maquillage permanent)
+- "formation" : une formation ou un cours (tout nom contenant "formation" ou "cours" → formation)
+- "produit" : un produit physique vendu (crèmes, sérums, trousses, outils, accessoires…)
 
-Pour "description" : reprends la description du site quand elle est présente (1 à 2 phrases), sinon laisse vide. NE L'INVENTE PAS.
+Pour "description"/"price"/"duration" : reprends-les du site quand ils sont présents, sinon laisse VIDE. N'invente RIEN.
 
-Retourne UNIQUEMENT du JSON valide, sans markdown :
-[{"kind":"service","name":"Nom exact","description":"description du site ou vide","price":"prix si mentionné sinon vide","duration":"durée si mentionnée sinon vide"}]
+Retourne UNIQUEMENT du JSON compact, sans markdown. Pour CHAQUE élément : "k" = "s" (service), "f" (formation) ou "p" (produit) ; "n" = nom propre. Ajoute "pr" (prix), "dr" (durée), "ds" (description) UNIQUEMENT si l'info est écrite sur le site (sinon omets-les) :
+[{"k":"f","n":"Formation Microblading"},{"k":"s","n":"Soin du visage PAYOT","pr":"95 $"}]
 
-Règles : sois COMPLET (jusqu'à 150 éléments si nécessaire). N'invente RIEN — laisse "price", "duration" et "description" vides s'ils ne sont pas écrits sur le site.
+Sois COMPLET : inclus jusqu'à 300 éléments si la liste en contient autant.
 
 CONTENU:
 ${content}`,
@@ -106,18 +106,16 @@ ${content}`,
     const parsed = JSON.parse(cleaned)
     if (!Array.isArray(parsed)) return []
 
+    const kindMap: Record<string, CatalogKind> = { s: "service", f: "formation", p: "produit" }
     return parsed
-      .filter((s: unknown) => s && typeof s === "object" && "name" in (s as object))
-      .map((s: Record<string, unknown>) => {
-        const kind = KINDS.includes(s.kind as CatalogKind) ? (s.kind as CatalogKind) : "service"
-        return {
-          kind,
-          name: String(s.name ?? "").trim(),
-          description: String(s.description ?? "").trim(),
-          price: String(s.price ?? "").trim(),
-          duration: String(s.duration ?? "").trim(),
-        }
-      })
+      .filter((s: unknown) => s && typeof s === "object" && "n" in (s as object))
+      .map((s: Record<string, unknown>) => ({
+        kind: kindMap[String(s.k)] ?? "service",
+        name: String(s.n ?? "").trim(),
+        description: String(s.ds ?? "").trim(),
+        price: String(s.pr ?? "").trim(),
+        duration: String(s.dr ?? "").trim(),
+      }))
       .filter((i: Extracted) => i.name)
   } catch (e) {
     console.error("[extract-services] error:", e)
