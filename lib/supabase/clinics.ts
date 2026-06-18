@@ -136,6 +136,7 @@ export async function updateClinicConfig(
     bookingApiUrl?: string
     bookingApiKey?: string
     voiceId?: string
+    offersTrainings?: boolean
     activate?: boolean
   }
 ): Promise<void> {
@@ -159,6 +160,7 @@ export async function updateClinicConfig(
   const update: Record<string, unknown> = { clinic_config: updatedConfig }
   if (config.systemPromptOverride !== undefined)
     update.system_prompt_override = config.systemPromptOverride || null
+  if (config.offersTrainings !== undefined) update.offers_trainings = config.offersTrainings
   if (config.activate) update.is_active = true
 
   const { error } = await supabase.from("clinics").update(update).eq("id", id)

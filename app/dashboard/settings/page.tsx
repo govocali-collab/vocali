@@ -1,8 +1,10 @@
 import { getClinic } from "@/lib/supabase/dashboard"
+import { listCatalog } from "@/lib/supabase/catalog"
 import { Zap, Clock, List, Mail } from "lucide-react"
 import OwnerForm from "@/components/dashboard/OwnerForm"
 import AgentToggle from "@/components/dashboard/AgentToggle"
 import PasswordForm from "@/components/dashboard/PasswordForm"
+import CatalogEditor from "@/components/dashboard/CatalogEditor"
 
 const DAYS_FR: Record<string, string> = {
   monday: "Lundi", tuesday: "Mardi", wednesday: "Mercredi",
@@ -21,10 +23,9 @@ export default async function SettingsPage() {
   const ownerLastName = config.owner_last_name ?? ""
   const ownerPhone = config.owner_phone ?? ""
   const ownerEmail = clinic.owner_email ?? config.owner_email ?? ""
-  const services = Array.isArray(clinic.services)
-    ? clinic.services.map((s) => (typeof s === "string" ? s : (s as { name: string }).name))
-    : []
   const hours = clinic.hours ?? {}
+  const serviceItems = await listCatalog(clinic.id, "service")
+  const formationItems = clinic.offers_trainings ? await listCatalog(clinic.id, "formation") : []
 
   return (
     <div className="px-5 py-6 lg:px-8 max-w-3xl">
@@ -71,19 +72,10 @@ export default async function SettingsPage() {
 
         <PasswordForm />
 
-        {services.length > 0 && (
-          <section className="bg-white rounded-xl border border-ivory-300 p-5 shadow-card">
-            <h2 className="text-charcoal-400 text-xs font-body font-medium uppercase tracking-wider mb-4">
-              Services
-            </h2>
-            <div className="flex flex-wrap gap-2">
-              {services.map((service) => (
-                <span key={service} className="px-3 py-1 rounded-full text-sm font-body text-charcoal-700 bg-ivory-100 border border-ivory-300">
-                  {service}
-                </span>
-              ))}
-            </div>
-          </section>
+        <CatalogEditor kind="service" title="Services & tarifs" noun="service" items={serviceItems} />
+
+        {clinic.offers_trainings && (
+          <CatalogEditor kind="formation" title="Formations" noun="formation" items={formationItems} />
         )}
 
         {Object.keys(hours).length > 0 && (

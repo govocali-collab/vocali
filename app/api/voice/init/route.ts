@@ -2,6 +2,7 @@ import { NextResponse } from "next/server"
 import { createClient } from "@supabase/supabase-js"
 import { verifyElevenLabsSignature } from "@/lib/voice/security"
 import { ELEVENLABS_DEFAULT_VOICE_ID } from "@/lib/elevenlabs"
+import { listCatalog, type CatalogItem } from "@/lib/supabase/catalog"
 
 /**
  * Webhook d'initialisation de conversation pour l'Agent ElevenLabs (appels
@@ -57,6 +58,11 @@ export async function POST(req: Request) {
     const agentName = location.agent_name || "Alexandra"
     const bizName = location.name || clinic?.name || "notre clinique"
 
+    // Base de connaissances : on privilégie le catalogue structuré (catalog_items),
+    // sinon on retombe sur l'ancien tableau location.services.
+    const catalog = await listCatalog(location.clinic_id).catch(() => [])
+    const knowledgeBase = catalog.length ? buildKnowledgeFromCatalog(catalog) : buildKnowledge(location)
+
     // 3) Créer la session d'appel (le webhook post-call la complétera). Idempotent.
     if (callSid) {
       await supabase
@@ -79,7 +85,7 @@ export async function POST(req: Request) {
         address: [location.address, location.city].filter(Boolean).join(", ") || "-",
         phone: location.transfer_phone || location.twilio_phone_number || "-",
         email: clinic?.owner_email || "-",
-        knowledge_base: buildKnowledge(location),
+        knowledge_base: knowledgeBase,
         custom_instructions: buildCustomInstructions(location),
       },
       conversation_config_override: {
@@ -134,6 +140,25 @@ function formatHours(hours: unknown): string {
   }
   if (typeof h.notes === "string" && h.notes.trim()) parts.push(h.notes.trim())
   return parts.join(", ")
+}
+
+// Base de connaissances à partir du catalogue structuré (services/produits/formations).
+function buildKnowledgeFromCatalog(items: CatalogItem[]): string {
+  const active = items.filter((i) => i.active)
+  const fmt = (i: CatalogItem) => {
+    const bits = [i.price, i.duration].filter(Boolean).join(", ")
+    const promo = i.promotion ? ` — PROMOTION : ${i.promotion}` : ""
+    return `- ${i.name}${bits ? ` (${bits})` : ""}${i.description ? ` : ${i.description}` : ""}${promo}`
+  }
+  const sections: string[] = []
+  const byKind = (k: string) => active.filter((i) => i.kind === k)
+  const services = byKind("service")
+  if (services.length) sections.push(`SERVICES OFFERTS :\n${services.map(fmt).join("\n")}`)
+  const produits = byKind("produit")
+  if (produits.length) sections.push(`PRODUITS :\n${produits.map(fmt).join("\n")}`)
+  const formations = byKind("formation")
+  if (formations.length) sections.push(`FORMATIONS :\n${formations.map(fmt).join("\n")}`)
+  return sections.join("\n\n") || "Aucune information détaillée disponible."
 }
 
 function buildKnowledge(loc: Record<string, unknown>): string {

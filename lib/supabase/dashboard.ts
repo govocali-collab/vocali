@@ -19,6 +19,7 @@ export type Clinic = {
   services: Array<{ name: string; description?: string } | string>
   hours: Record<string, { open: string; close: string; closed?: boolean }>
   owner_email?: string
+  offers_trainings?: boolean
 }
 
 export type CallLog = {
