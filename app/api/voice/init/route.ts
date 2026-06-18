@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server"
 import { createClient } from "@supabase/supabase-js"
 import { verifyElevenLabsSignature } from "@/lib/voice/security"
-import { ELEVENLABS_DEFAULT_VOICE_ID } from "@/lib/elevenlabs"
 import { listCatalog, type CatalogItem } from "@/lib/supabase/catalog"
 
 /**
@@ -51,9 +50,10 @@ export async function POST(req: Request) {
       .eq("id", location.clinic_id)
       .maybeSingle()
 
-    // Voix : surcharge par clinique (clinic_config.voice_id), sinon voix par défaut.
-    const clinicVoiceId = (clinic?.clinic_config as { voice_id?: string } | null)?.voice_id
-    const voiceId = clinicVoiceId && clinicVoiceId.trim() ? clinicVoiceId.trim() : ELEVENLABS_DEFAULT_VOICE_ID
+    // Voix : on surcharge UNIQUEMENT si la clinique a choisi un voice_id.
+    // Sinon, on NE touche pas → l'agent garde sa voix principale (Amélie)
+    // configurée dans ElevenLabs (meilleure qualité que l'ancienne voix par défaut).
+    const clinicVoiceId = (clinic?.clinic_config as { voice_id?: string } | null)?.voice_id?.trim()
 
     const agentName = location.agent_name || "Alexandra"
     const bizName = location.name || clinic?.name || "notre clinique"
@@ -98,7 +98,8 @@ export async function POST(req: Request) {
       },
       conversation_config_override: {
         agent: { first_message: firstMessage, language: "fr" },
-        tts: { voice_id: voiceId },
+        // Voix imposée seulement si la clinique en a choisi une ; sinon voix de l'agent.
+        ...(clinicVoiceId ? { tts: { voice_id: clinicVoiceId } } : {}),
       },
     })
   } catch (error) {
