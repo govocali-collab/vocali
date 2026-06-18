@@ -14,6 +14,7 @@ export function middleware(request: NextRequest) {
     pathname.startsWith("/admin-login") ||
     pathname.startsWith("/admin") ||
     pathname.startsWith("/onboarding") ||
+    pathname.startsWith("/demo") ||
     pathname.startsWith("/checkout") ||
     pathname.startsWith("/auth")
   ) {
