@@ -104,11 +104,13 @@ export default function OnboardingPage() {
   const [searchingNumbers, setSearchingNumbers] = useState(false)
   const [selectedNumber, setSelectedNumber] = useState("")
   const [numberError, setNumberError] = useState("")
+  const [searchedOnce, setSearchedOnce] = useState(false)
 
   async function searchNumbers() {
     setSearchingNumbers(true)
     setNumberError("")
     setNumberResults([])
+    setSearchedOnce(true)
     try {
       const params = new URLSearchParams({ country: numberCountry })
       if (numberAreaCode) params.set("areaCode", numberAreaCode)
@@ -284,6 +286,12 @@ export default function OnboardingPage() {
                       </button>
                     ))}
                   </div>
+                )}
+
+                {searchedOnce && !searchingNumbers && !numberError && numberResults.length === 0 && (
+                  <p className="text-charcoal-500 text-xs font-body bg-ivory-50 border border-ivory-200 rounded-lg px-3 py-2.5">
+                    Aucun numéro disponible pour cet indicatif{numberAreaCode ? ` (${numberAreaCode})` : ""}. Essaie un autre indicatif (ex&nbsp;: 438 pour Montréal) ou laisse le champ vide pour voir tous les numéros.
+                  </p>
                 )}
               </div>
             )}
