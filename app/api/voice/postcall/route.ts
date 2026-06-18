@@ -32,14 +32,24 @@ export async function POST(req: Request) {
       return new NextResponse("ok", { status: 200 })
     }
 
-    // Reconstruit le transcript ("Client:"/"IA:").
+    // Reconstruit le transcript. Le dashboard attend un TABLEAU [{role, content}]
+    // (role "assistant" = agent). On garde aussi une version texte pour Claude.
     const turns: Array<{ role?: string; message?: string }> = Array.isArray(data?.transcript)
       ? data.transcript
       : []
-    const transcript = turns
-      .filter((t) => t && typeof t.message === "string" && t.message.trim())
+    const cleanTurns = turns.filter((t) => t && typeof t.message === "string" && t.message!.trim())
+    const transcriptArray = cleanTurns.map((t) => ({
+      role: t.role === "agent" ? "assistant" : "user",
+      content: t.message!.trim(),
+    }))
+    const transcriptText = cleanTurns
       .map((t) => `${t.role === "user" ? "Client" : "IA"}: ${t.message!.trim()}`)
       .join("\n")
+
+    // Résumé : ElevenLabs en génère déjà un (gratuit, fiable) → on l'utilise en
+    // priorité, sans dépendre d'Anthropic.
+    const elevenSummary =
+      typeof data?.analysis?.transcript_summary === "string" ? data.analysis.transcript_summary.trim() : ""
 
     const supabase = admin()
 
@@ -60,10 +70,12 @@ export async function POST(req: Request) {
       locationId = loc?.id
     }
 
-    // 2) Analyse IA (résumé + lead).
-    const analysis = await analyzeTranscript(transcript)
+    // 2) Analyse IA (extraction du lead via Claude). Le résumé vient d'ElevenLabs
+    // s'il est présent, sinon de Claude, sinon valeur par défaut.
+    const analysis = await analyzeTranscript(transcriptText)
+    const summary = elevenSummary || analysis.summary
 
-    // 3) Upsert de la session avec transcript + résumé + durée.
+    // 3) Upsert de la session avec transcript (tableau) + résumé + durée.
     const { data: upserted } = await supabase
       .from("call_sessions")
       .upsert(
@@ -71,8 +83,8 @@ export async function POST(req: Request) {
           call_sid: callSid,
           location_id: locationId ?? null,
           caller_phone: callerNumber || null,
-          transcript,
-          conversation_summary: analysis.summary,
+          transcript: transcriptArray,
+          conversation_summary: summary,
           duration_sec: durationSec,
           language: "fr",
         },
