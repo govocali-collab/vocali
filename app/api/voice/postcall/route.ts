@@ -1,0 +1,122 @@
+import { NextResponse } from "next/server"
+import { createClient } from "@supabase/supabase-js"
+import { verifyElevenLabsSignature } from "@/lib/voice/security"
+import { analyzeTranscript } from "@/lib/voice/analyze"
+
+/**
+ * Webhook post-appel de l'Agent ElevenLabs. Reçoit la transcription complète à la
+ * fin de l'appel, la sauve dans call_sessions, l'analyse avec Claude (résumé +
+ * lead) et crée un lead si l'appel demande un suivi.
+ *
+ * Remplace la capture qui se faisait dans le moteur vocal externe.
+ */
+export async function POST(req: Request) {
+  try {
+    const raw = await req.text()
+
+    if (!(await verifyElevenLabsSignature(raw, req.headers.get("ElevenLabs-Signature")))) {
+      return new NextResponse("Forbidden", { status: 403 })
+    }
+
+    const payload = raw ? JSON.parse(raw) : {}
+    const data = payload.data || payload
+    const pc = data?.metadata?.phone_call || {}
+
+    const callSid = String(pc.call_sid || data?.conversation_id || "")
+    const agentNumber = String(pc.agent_number || "") // numéro de la clinique (appelé)
+    const callerNumber = String(pc.external_number || "") // numéro de la cliente
+    const durationSec = Number(data?.metadata?.call_duration_secs || 0) || null
+
+    if (!callSid) {
+      console.warn("[voice.postcall] aucun call_sid/conversation_id — ignoré")
+      return new NextResponse("ok", { status: 200 })
+    }
+
+    // Reconstruit le transcript ("Client:"/"IA:").
+    const turns: Array<{ role?: string; message?: string }> = Array.isArray(data?.transcript)
+      ? data.transcript
+      : []
+    const transcript = turns
+      .filter((t) => t && typeof t.message === "string" && t.message.trim())
+      .map((t) => `${t.role === "user" ? "Client" : "IA"}: ${t.message!.trim()}`)
+      .join("\n")
+
+    const supabase = admin()
+
+    // 1) Retrouver la session (créée par voice/init) → location_id.
+    const { data: session } = await supabase
+      .from("call_sessions")
+      .select("id, location_id")
+      .eq("call_sid", callSid)
+      .maybeSingle()
+
+    let locationId = session?.location_id as string | null | undefined
+    if (!locationId && agentNumber) {
+      const { data: loc } = await supabase
+        .from("locations")
+        .select("id")
+        .eq("twilio_phone_number", agentNumber)
+        .maybeSingle()
+      locationId = loc?.id
+    }
+
+    // 2) Analyse IA (résumé + lead).
+    const analysis = await analyzeTranscript(transcript)
+
+    // 3) Upsert de la session avec transcript + résumé + durée.
+    const { data: upserted } = await supabase
+      .from("call_sessions")
+      .upsert(
+        {
+          call_sid: callSid,
+          location_id: locationId ?? null,
+          caller_phone: callerNumber || null,
+          transcript,
+          conversation_summary: analysis.summary,
+          duration_sec: durationSec,
+          language: "fr",
+        },
+        { onConflict: "call_sid" },
+      )
+      .select("id")
+      .maybeSingle()
+
+    const sessionId = upserted?.id || session?.id
+
+    // 4) Créer le lead si suivi requis. Idempotent (un lead par session).
+    if (sessionId && locationId && analysis.is_lead) {
+      const { data: existing } = await supabase
+        .from("leads")
+        .select("id")
+        .eq("call_session_id", sessionId)
+        .maybeSingle()
+
+      if (!existing) {
+        await supabase.from("leads").insert({
+          call_session_id: sessionId,
+          location_id: locationId,
+          caller_phone: callerNumber || null,
+          name: analysis.name,
+          phone: analysis.phone || callerNumber || null,
+          email: analysis.email,
+          service_interest: analysis.service_interest,
+          preferred_date: analysis.preferred_date,
+          preferred_time: analysis.preferred_time,
+          notes: analysis.notes || analysis.summary,
+          appointment_requested: analysis.appointment_requested,
+          status: "nouveau",
+        })
+      }
+    }
+
+    return new NextResponse("ok", { status: 200 })
+  } catch (error) {
+    console.error("[voice.postcall] échec", error)
+    // 200 quand même : ElevenLabs ne doit pas réessayer en boucle.
+    return new NextResponse("ok", { status: 200 })
+  }
+}
+
+function admin() {
+  return createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!)
+}
