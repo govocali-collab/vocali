@@ -67,6 +67,7 @@ export async function POST(req: Request) {
       hours,
       bookingSystem,
       bookingCreds,
+      phoneNumber, // numéro Twilio choisi par l'admin (optionnel)
     } = body
 
     const allServices = [
@@ -116,27 +117,35 @@ export async function POST(req: Request) {
         process.env.TWILIO_AUTH_TOKEN
       )
 
-      const areaCode = getAreaCode(city)
-      let available = areaCode
-        ? await twilioClient
+      // Numéro choisi par l'admin → on l'achète directement. Sinon, recherche
+      // automatique par indicatif régional (comportement de repli).
+      let numberToBuy: string
+      if (phoneNumber) {
+        numberToBuy = phoneNumber
+      } else {
+        const areaCode = getAreaCode(city)
+        let available = areaCode
+          ? await twilioClient
+              .availablePhoneNumbers("CA")
+              .local.list({ limit: 1, voiceEnabled: true, areaCode })
+          : []
+
+        // Fallback to any Canadian number if area code had no results
+        if (available.length === 0) {
+          console.warn(`[Twilio] No numbers for area code ${areaCode} (${city}) — trying Canada-wide`)
+          available = await twilioClient
             .availablePhoneNumbers("CA")
-            .local.list({ limit: 1, voiceEnabled: true, areaCode })
-        : []
+            .local.list({ limit: 1, voiceEnabled: true })
+        }
 
-      // Fallback to any Canadian number if area code had no results
-      if (available.length === 0) {
-        console.warn(`[Twilio] No numbers for area code ${areaCode} (${city}) — trying Canada-wide`)
-        available = await twilioClient
-          .availablePhoneNumbers("CA")
-          .local.list({ limit: 1, voiceEnabled: true })
-      }
-
-      if (available.length === 0) {
-        throw new Error("Aucun numéro canadien disponible dans Twilio")
+        if (available.length === 0) {
+          throw new Error("Aucun numéro canadien disponible dans Twilio")
+        }
+        numberToBuy = available[0].phoneNumber
       }
 
       const purchased = await twilioClient.incomingPhoneNumbers.create({
-        phoneNumber: available[0].phoneNumber,
+        phoneNumber: numberToBuy,
         friendlyName: clinicName,
       })
       twilioNumber = purchased.phoneNumber
