@@ -99,7 +99,7 @@ export default function OnboardingPage() {
 
   // Numéro Twilio (choix avant création)
   const [numberCountry, setNumberCountry] = useState("CA")
-  const [numberAreaCode, setNumberAreaCode] = useState("")
+  const [numberQuery, setNumberQuery] = useState("")
   const [numberResults, setNumberResults] = useState<{ phoneNumber: string; friendlyName: string; region: string; locality: string }[]>([])
   const [searchingNumbers, setSearchingNumbers] = useState(false)
   const [selectedNumber, setSelectedNumber] = useState("")
@@ -113,7 +113,10 @@ export default function OnboardingPage() {
     setSearchedOnce(true)
     try {
       const params = new URLSearchParams({ country: numberCountry })
-      if (numberAreaCode) params.set("areaCode", numberAreaCode)
+      // 3 chiffres = indicatif régional ; sinon = nom de ville (InLocality).
+      const q = numberQuery.trim()
+      if (/^\d{3}$/.test(q)) params.set("areaCode", q)
+      else if (q) params.set("inLocality", q)
       const res = await fetch(`/api/admin/available-numbers?${params}`)
       const data = await res.json()
       if (!data.success) throw new Error(data.error)
@@ -253,10 +256,10 @@ export default function OnboardingPage() {
                   </select>
                   <input
                     className={cn(inputClass, "flex-1")}
-                    value={numberAreaCode}
-                    onChange={(e) => setNumberAreaCode(e.target.value.replace(/\D/g, ""))}
-                    placeholder="Indicatif régional (ex: 514)"
-                    maxLength={3}
+                    value={numberQuery}
+                    onChange={(e) => setNumberQuery(e.target.value)}
+                    onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); searchNumbers() } }}
+                    placeholder="Ville ou indicatif (ex : Granby ou 450)"
                   />
                   <button
                     type="button"
@@ -290,7 +293,7 @@ export default function OnboardingPage() {
 
                 {searchedOnce && !searchingNumbers && !numberError && numberResults.length === 0 && (
                   <p className="text-charcoal-500 text-xs font-body bg-ivory-50 border border-ivory-200 rounded-lg px-3 py-2.5">
-                    Aucun numéro disponible pour cet indicatif{numberAreaCode ? ` (${numberAreaCode})` : ""}. Essaie un autre indicatif (ex&nbsp;: 438 pour Montréal) ou laisse le champ vide pour voir tous les numéros.
+                    Aucun numéro disponible pour {numberQuery ? `« ${numberQuery} »` : "cette recherche"}. Essaie une autre ville, un autre indicatif (ex&nbsp;: 438), ou laisse le champ vide pour voir tous les numéros.
                   </p>
                 )}
               </div>

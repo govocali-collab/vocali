@@ -7,6 +7,7 @@ export async function GET(req: Request) {
   try {
     const { searchParams } = new URL(req.url)
     const areaCode = searchParams.get("areaCode") ?? ""
+    const inLocality = searchParams.get("inLocality") ?? ""
     const country = searchParams.get("country") ?? "CA"
 
     const accountSid = process.env.TWILIO_ACCOUNT_SID
@@ -17,6 +18,7 @@ export async function GET(req: Request) {
 
     const query = new URLSearchParams({ VoiceEnabled: "true", SmsEnabled: "true", PageSize: "10" })
     if (areaCode) query.set("AreaCode", areaCode)
+    if (inLocality) query.set("InLocality", inLocality)
 
     const resp = await fetch(
       `https://api.twilio.com/2010-04-01/Accounts/${accountSid}/AvailablePhoneNumbers/${country}/Local.json?${query}`,
