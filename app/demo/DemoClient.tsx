@@ -1,7 +1,7 @@
 "use client"
 
-import { useCallback, useState } from "react"
-import { useConversation } from "@elevenlabs/react"
+import { useCallback, useEffect, useState } from "react"
+import { useConversation, ConversationProvider } from "@elevenlabs/react"
 
 const AGENT_ID = "agent_3801kvc085yce259k5k87380shga"
 
@@ -70,6 +70,25 @@ function VoiceButton() {
   )
 }
 
+// useConversation DOIT être à l'intérieur d'un ConversationProvider. Le garde
+// "mounted" évite que le SDK (APIs navigateur) ne tourne au rendu serveur.
+function VoiceWidget() {
+  const [mounted, setMounted] = useState(false)
+  useEffect(() => setMounted(true), [])
+  if (!mounted) {
+    return (
+      <div className="demo-voice">
+        <div className="demo-skeleton" />
+      </div>
+    )
+  }
+  return (
+    <ConversationProvider>
+      <VoiceButton />
+    </ConversationProvider>
+  )
+}
+
 export default function DemoClient() {
   return (
     <>
@@ -95,6 +114,8 @@ export default function DemoClient() {
         .demo-pulse::before { content: ""; position: absolute; inset: 0; border-radius: 999px; background: #fff; opacity: .75; animation: demo-ping 1.2s cubic-bezier(0,0,.2,1) infinite; }
         @keyframes demo-ping { 75%, 100% { transform: scale(2.2); opacity: 0; } }
         .demo-hint2 { font-size: 13px; color: #9A9082; }
+        .demo-skeleton { width: 40px; height: 40px; border-radius: 999px; background: #ECE3D5; animation: demo-skel 1.2s ease-in-out infinite; }
+        @keyframes demo-skel { 50% { opacity: .4; } }
         .demo-perm { font-size: 13px; color: #B4453C; background: rgba(180,69,60,0.08); padding: 8px 12px; border-radius: 10px; }
         .demo-section { max-width: 1000px; margin: 0 auto; padding: 56px 24px; }
         .demo-section h2 { font-family: 'Playfair Display', serif; font-size: 30px; text-align: center; margin: 0 0 40px; font-weight: 600; }
@@ -126,7 +147,7 @@ export default function DemoClient() {
           </p>
           <div className="demo-card">
             <p className="demo-hint">Cliquez sur le bouton et parlez à Sophia 🎙️</p>
-            <VoiceButton />
+            <VoiceWidget />
           </div>
         </section>
 
