@@ -12,7 +12,7 @@ const MAX_CHARS_PER_PAGE = 7000
 const MAX_TOTAL_CHARS = 90000
 // Pages prioritaires (services/tarifs/formations) : scrapées en premier pour
 // qu'elles tiennent dans le budget de caractères.
-const PRIORITY_RE = /service|soin|traitement|tarif|prix|forfait|menu|catalogue|formation|cours|atelier/i
+const PRIORITY_RE = /service|soin|traitement|tarif|prix|forfait|menu|catalogue|formation|cours|atelier|product|produit|boutique|magasin|shop/i
 
 export async function POST(
   _req: Request,
