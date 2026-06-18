@@ -53,7 +53,9 @@ export async function POST(req: Request) {
     // Voix : on surcharge UNIQUEMENT si la clinique a choisi un voice_id.
     // Sinon, on NE touche pas → l'agent garde sa voix principale (Amélie)
     // configurée dans ElevenLabs (meilleure qualité que l'ancienne voix par défaut).
+    // Voix : celle de la clinique si définie, sinon la voix québécoise par défaut.
     const clinicVoiceId = (clinic?.clinic_config as { voice_id?: string } | null)?.voice_id?.trim()
+    const voiceId = clinicVoiceId || "UJCi4DDncuo0VJDSIegj"
 
     const agentName = location.agent_name || "Alexandra"
     const bizName = location.name || clinic?.name || "notre clinique"
@@ -98,8 +100,7 @@ export async function POST(req: Request) {
       },
       conversation_config_override: {
         agent: { first_message: firstMessage, language: "fr" },
-        // Voix imposée seulement si la clinique en a choisi une ; sinon voix de l'agent.
-        ...(clinicVoiceId ? { tts: { voice_id: clinicVoiceId } } : {}),
+        tts: { voice_id: voiceId },
       },
     })
   } catch (error) {
