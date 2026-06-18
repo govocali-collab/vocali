@@ -97,6 +97,32 @@ export default function OnboardingPage() {
   const [bookingSystem, setBookingSystem] = useState<"Jane App" | "Acuity" | "Bookly" | "Mindbody" | "Aucun">("Aucun")
   const [bookingCreds, setBookingCreds] = useState("")
 
+  // Numéro Twilio (choix avant création)
+  const [numberCountry, setNumberCountry] = useState("CA")
+  const [numberAreaCode, setNumberAreaCode] = useState("")
+  const [numberResults, setNumberResults] = useState<{ phoneNumber: string; friendlyName: string; region: string; locality: string }[]>([])
+  const [searchingNumbers, setSearchingNumbers] = useState(false)
+  const [selectedNumber, setSelectedNumber] = useState("")
+  const [numberError, setNumberError] = useState("")
+
+  async function searchNumbers() {
+    setSearchingNumbers(true)
+    setNumberError("")
+    setNumberResults([])
+    try {
+      const params = new URLSearchParams({ country: numberCountry })
+      if (numberAreaCode) params.set("areaCode", numberAreaCode)
+      const res = await fetch(`/api/admin/available-numbers?${params}`)
+      const data = await res.json()
+      if (!data.success) throw new Error(data.error)
+      setNumberResults(data.numbers)
+    } catch (err) {
+      setNumberError(err instanceof Error ? err.message : "Erreur inconnue")
+    } finally {
+      setSearchingNumbers(false)
+    }
+  }
+
   const toggleService = (service: string) => {
     setSelectedServices((prev) =>
       prev.includes(service) ? prev.filter((s) => s !== service) : [...prev, service]
@@ -120,6 +146,7 @@ export default function OnboardingPage() {
           clinicName, ownerFirstName, ownerLastName, ownerEmail, ownerPhone,
           city, language, agentName, tone, systemPromptOverride, websiteUrl,
           selectedServices, customServices, hours, bookingSystem, bookingCreds,
+          phoneNumber: selectedNumber,
         }),
       })
       const data = await res.json()
@@ -189,6 +216,77 @@ export default function OnboardingPage() {
                 </div>
               </Field>
             </div>
+          </div>
+
+          {/* ── NUMÉRO DE TÉLÉPHONE ── */}
+          <div className="bg-white rounded-xl border border-ivory-300 p-6 shadow-card">
+            <SectionTitle>Numéro de téléphone</SectionTitle>
+            <p className="text-charcoal-500 text-sm mb-4">
+              Cherche et choisis le numéro Twilio de la clinique. Laisse vide pour qu'un numéro soit choisi automatiquement selon la ville.
+            </p>
+
+            {selectedNumber ? (
+              <div className="flex items-center gap-3">
+                <span className="flex-1 bg-gold-50 border border-gold-300 rounded-lg px-4 py-2.5 text-charcoal-900 text-sm font-body font-mono">
+                  {selectedNumber}
+                </span>
+                <button
+                  type="button"
+                  onClick={() => setSelectedNumber("")}
+                  className="text-charcoal-400 text-xs font-body hover:text-red-500 transition-colors whitespace-nowrap"
+                >
+                  Changer
+                </button>
+              </div>
+            ) : (
+              <div className="space-y-3">
+                <div className="flex gap-2">
+                  <select
+                    className={cn(inputClass, "w-24 flex-shrink-0")}
+                    value={numberCountry}
+                    onChange={(e) => setNumberCountry(e.target.value)}
+                  >
+                    <option value="CA">🇨🇦 CA</option>
+                    <option value="US">🇺🇸 US</option>
+                  </select>
+                  <input
+                    className={cn(inputClass, "flex-1")}
+                    value={numberAreaCode}
+                    onChange={(e) => setNumberAreaCode(e.target.value.replace(/\D/g, ""))}
+                    placeholder="Indicatif régional (ex: 514)"
+                    maxLength={3}
+                  />
+                  <button
+                    type="button"
+                    onClick={searchNumbers}
+                    disabled={searchingNumbers}
+                    className="bg-charcoal-800 hover:bg-charcoal-900 text-white font-body font-medium text-sm rounded-lg px-4 py-2.5 disabled:opacity-50 transition-colors whitespace-nowrap"
+                  >
+                    {searchingNumbers ? "…" : "Rechercher"}
+                  </button>
+                </div>
+
+                {numberError && <p className="text-red-500 text-xs font-body">{numberError}</p>}
+
+                {numberResults.length > 0 && (
+                  <div className="space-y-1.5 max-h-48 overflow-y-auto">
+                    {numberResults.map((n) => (
+                      <button
+                        key={n.phoneNumber}
+                        type="button"
+                        onClick={() => { setSelectedNumber(n.phoneNumber); setNumberResults([]) }}
+                        className="w-full flex items-center justify-between bg-white border border-ivory-200 rounded-lg px-3 py-2 hover:border-gold-300 transition-colors text-left"
+                      >
+                        <span className="text-charcoal-900 text-sm font-body font-mono">{n.friendlyName}</span>
+                        {(n.locality || n.region) && (
+                          <span className="text-charcoal-400 text-xs font-body ml-2">{[n.locality, n.region].filter(Boolean).join(", ")}</span>
+                        )}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
           </div>
 
           {/* ── AGENT CONFIG ── */}
