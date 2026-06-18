@@ -31,6 +31,9 @@ export default function ClinicConfigForm({ clinic }: { clinic: ClinicRow }) {
   const [bookingApiUrl, setBookingApiUrl] = useState((config.booking_api_url as string) ?? "")
   const [bookingApiKey, setBookingApiKey] = useState((config.booking_api_key as string) ?? "")
   const [voiceId, setVoiceId] = useState((config.voice_id as string) ?? "")
+  const [offersTrainings, setOffersTrainings] = useState(
+    Boolean((clinic as unknown as { offers_trainings?: boolean }).offers_trainings)
+  )
 
   const [saving, setSaving] = useState(false)
   const [activating, setActivating] = useState(false)
@@ -178,7 +181,7 @@ export default function ClinicConfigForm({ clinic }: { clinic: ClinicRow }) {
       const res = await fetch(`/api/admin/clinics/${clinic.id}/configure`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ownerEmail, systemPromptOverride: systemPrompt, websiteUrl, bookingCreds, bookingSystem, bookingApiUrl, bookingApiKey, voiceId, activate }),
+        body: JSON.stringify({ ownerEmail, systemPromptOverride: systemPrompt, websiteUrl, bookingCreds, bookingSystem, bookingApiUrl, bookingApiKey, voiceId, offersTrainings, activate }),
       })
       const data = await res.json()
       if (!data.success) throw new Error(data.error)
@@ -369,6 +372,21 @@ export default function ClinicConfigForm({ clinic }: { clinic: ClinicRow }) {
             placeholder="UJCi4DDncuo0VJDSIegj (voix par défaut)"
           />
         </Field>
+
+        <label className="flex items-start gap-3 rounded-lg border border-ivory-300 bg-ivory-50 px-4 py-3 cursor-pointer">
+          <input
+            type="checkbox"
+            checked={offersTrainings}
+            onChange={(e) => setOffersTrainings(e.target.checked)}
+            className="w-4 h-4 accent-amber-600 mt-0.5"
+          />
+          <span>
+            <span className="block text-charcoal-700 text-sm font-body font-medium">Cette clinique offre des formations</span>
+            <span className="block text-charcoal-400 text-xs font-body mt-0.5">
+              Si coché, une section « Formations » apparaît dans le profil de la cliente (en plus des services).
+            </span>
+          </span>
+        </label>
 
         <Field label="Système de réservation">
           <div className="relative">
