@@ -21,7 +21,7 @@ export default async function ClinicDetailPage({ params }: Props) {
   const services = (clinic.services ?? []) as string[]
 
   return (
-    <div className="max-w-3xl">
+    <div className="max-w-5xl">
 
         {/* Header */}
         <div className="mb-8">
