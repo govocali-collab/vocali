@@ -30,6 +30,7 @@ export default function ClinicConfigForm({ clinic }: { clinic: ClinicRow }) {
   const [bookingSystem, setBookingSystem] = useState((config.booking_system as string) || "manual")
   const [bookingApiUrl, setBookingApiUrl] = useState((config.booking_api_url as string) ?? "")
   const [bookingApiKey, setBookingApiKey] = useState((config.booking_api_key as string) ?? "")
+  const [voiceId, setVoiceId] = useState((config.voice_id as string) ?? "")
 
   const [saving, setSaving] = useState(false)
   const [activating, setActivating] = useState(false)
@@ -177,7 +178,7 @@ export default function ClinicConfigForm({ clinic }: { clinic: ClinicRow }) {
       const res = await fetch(`/api/admin/clinics/${clinic.id}/configure`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ownerEmail, systemPromptOverride: systemPrompt, websiteUrl, bookingCreds, bookingSystem, bookingApiUrl, bookingApiKey, activate }),
+        body: JSON.stringify({ ownerEmail, systemPromptOverride: systemPrompt, websiteUrl, bookingCreds, bookingSystem, bookingApiUrl, bookingApiKey, voiceId, activate }),
       })
       const data = await res.json()
       if (!data.success) throw new Error(data.error)
@@ -357,6 +358,15 @@ export default function ClinicConfigForm({ clinic }: { clinic: ClinicRow }) {
             value={systemPrompt}
             onChange={(e) => setSystemPrompt(e.target.value)}
             placeholder="Ex : Toujours mentionner la promotion du mois. Ne jamais confirmer de prix sans la grille tarifaire..."
+          />
+        </Field>
+
+        <Field label="Voix (Voice ID ElevenLabs)" hint="Laisse vide pour la voix officielle Vocali. Colle un Voice ID ElevenLabs pour donner une voix différente à cette clinique (effet immédiat sur les prochains appels).">
+          <input
+            className={cn(inputClass, "font-mono text-xs")}
+            value={voiceId}
+            onChange={(e) => setVoiceId(e.target.value)}
+            placeholder="UJCi4DDncuo0VJDSIegj (voix par défaut)"
           />
         </Field>
 

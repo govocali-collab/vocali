@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server"
 import { createClient } from "@supabase/supabase-js"
 import { verifyElevenLabsSignature } from "@/lib/voice/security"
+import { ELEVENLABS_DEFAULT_VOICE_ID } from "@/lib/elevenlabs"
 
 /**
  * Webhook d'initialisation de conversation pour l'Agent ElevenLabs (appels
@@ -42,12 +43,16 @@ export async function POST(req: Request) {
       return NextResponse.json(neutralPayload())
     }
 
-    // 2) Le courriel de la clinique (les locations ne le stockent pas).
+    // 2) Le courriel + la config de la clinique (voix par clinique).
     const { data: clinic } = await supabase
       .from("clinics")
-      .select("name, owner_email")
+      .select("name, owner_email, clinic_config")
       .eq("id", location.clinic_id)
       .maybeSingle()
+
+    // Voix : surcharge par clinique (clinic_config.voice_id), sinon voix par défaut.
+    const clinicVoiceId = (clinic?.clinic_config as { voice_id?: string } | null)?.voice_id
+    const voiceId = clinicVoiceId && clinicVoiceId.trim() ? clinicVoiceId.trim() : ELEVENLABS_DEFAULT_VOICE_ID
 
     const agentName = location.agent_name || "Alexandra"
     const bizName = location.name || clinic?.name || "notre clinique"
@@ -79,6 +84,7 @@ export async function POST(req: Request) {
       },
       conversation_config_override: {
         agent: { first_message: firstMessage, language: "fr" },
+        tts: { voice_id: voiceId },
       },
     })
   } catch (error) {
