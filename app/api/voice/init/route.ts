@@ -2,6 +2,7 @@ import { NextResponse } from "next/server"
 import { createClient } from "@supabase/supabase-js"
 import { verifyElevenLabsSignature } from "@/lib/voice/security"
 import { listCatalog, type CatalogItem } from "@/lib/supabase/catalog"
+import { ELEVENLABS_DEFAULT_VOICE_ID } from "@/lib/elevenlabs"
 
 /**
  * Webhook d'initialisation de conversation pour l'Agent ElevenLabs (appels
@@ -51,11 +52,10 @@ export async function POST(req: Request) {
       .maybeSingle()
 
     // Voix : on surcharge UNIQUEMENT si la clinique a choisi un voice_id.
-    // Sinon, on NE touche pas → l'agent garde sa voix principale (Amélie)
-    // configurée dans ElevenLabs (meilleure qualité que l'ancienne voix par défaut).
-    // Voix : celle de la clinique si définie, sinon la voix québécoise par défaut.
+    // Voix : celle de la clinique si définie, sinon la voix québécoise par défaut
+    // (Claudia — accent québécois clair et chaleureux).
     const clinicVoiceId = (clinic?.clinic_config as { voice_id?: string } | null)?.voice_id?.trim()
-    const voiceId = clinicVoiceId || "UJCi4DDncuo0VJDSIegj"
+    const voiceId = clinicVoiceId || ELEVENLABS_DEFAULT_VOICE_ID
 
     const agentName = location.agent_name || "Alexandra"
     const bizName = location.name || clinic?.name || "notre clinique"

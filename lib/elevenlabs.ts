@@ -4,7 +4,9 @@ const PHONE_API = "https://api.elevenlabs.io/v1/convai/phone-numbers"
 
 // Voix par défaut du modèle officiel Vocali. Surchargeable par clinique via
 // clinic_config.voice_id (voir le webhook voice/init).
-export const ELEVENLABS_DEFAULT_VOICE_ID = "UJCi4DDncuo0VJDSIegj"
+// Claudia — voix québécoise (accent QC clair et chaleureux). Remplace Amélie
+// (UJCi4DDncuo0VJDSIegj) qui sonnait trop neutre/France.
+export const ELEVENLABS_DEFAULT_VOICE_ID = "WW0JfNPk5DgcQdM0d6X6"
 
 /**
  * Importe un numéro Twilio dans ElevenLabs et l'assigne à l'agent Vocali.
