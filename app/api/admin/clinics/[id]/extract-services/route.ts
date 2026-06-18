@@ -76,21 +76,22 @@ async function extractItems(content: string): Promise<Extracted[]> {
       messages: [
         {
           role: "user",
-          content: `Tu analyses le contenu du site web d'une clinique d'esthétique au Québec. Liste de façon EXHAUSTIVE absolument TOUS les soins/traitements/services, TOUTES les formations/cours, et tous les produits.
+          content: `Tu analyses le contenu du site web d'une clinique d'esthétique au Québec. Liste UNIQUEMENT les SOINS/TRAITEMENTS/SERVICES offerts en clinique, et les FORMATIONS/COURS.
 
-⚠️ IMPORTANT : la section « LISTE COMPLÈTE DES PRODUITS / SERVICES / FORMATIONS (depuis le sitemap) » contient TOUS les éléments du site — n'en OUBLIE AUCUN de cette liste. Nettoie juste le nom pour qu'il soit lisible (ex: "Formation Tiny Tattoo 100 Elearning Avec Prerequis Trousse Incluse" → "Formation Tiny Tattoo 100% e-learning (avec prérequis, trousse incluse)").
+🚫 N'INCLUS PAS les produits de revente / la boutique (crèmes, sérums, lotions, masques, trousses, kits, outils, accessoires, aiguilles, encres, dermographes, coffrets, suppléments, etc.). On NE veut QUE des services et des formations.
 
-Pour chaque élément, classe-le dans "kind" :
-- "service" : un soin/traitement offert en clinique (ex: facial, épilation, microblading, microneedling, maquillage permanent)
-- "formation" : une formation ou un cours (tout nom contenant "formation" ou "cours" → formation)
-- "produit" : un produit physique vendu (crèmes, sérums, trousses, outils, accessoires…)
+⚠️ Une section « LISTE COMPLÈTE … (depuis le sitemap) » peut être présente : utilise-la pour n'oublier aucun service ni aucune formation, mais ignore tout ce qui est un produit physique. Nettoie le nom pour qu'il soit lisible.
+
+Pour chaque élément, classe-le dans "k" :
+- "s" : un soin/traitement offert en clinique (ex: facial, épilation, microblading, microneedling, maquillage permanent, B-Pulse)
+- "f" : une formation ou un cours (tout nom contenant "formation" ou "cours" → formation)
 
 Pour "description"/"price"/"duration" : reprends-les du site quand ils sont présents, sinon laisse VIDE. N'invente RIEN.
 
-Retourne UNIQUEMENT du JSON compact, sans markdown. Pour CHAQUE élément : "k" = "s" (service), "f" (formation) ou "p" (produit) ; "n" = nom propre. Ajoute "pr" (prix), "dr" (durée), "ds" (description) UNIQUEMENT si l'info est écrite sur le site (sinon omets-les) :
+Retourne UNIQUEMENT du JSON compact, sans markdown. "n" = nom propre ; ajoute "pr" (prix), "dr" (durée), "ds" (description) seulement si écrits sur le site :
 [{"k":"f","n":"Formation Microblading"},{"k":"s","n":"Soin du visage PAYOT","pr":"95 $"}]
 
-Sois COMPLET : inclus jusqu'à 300 éléments si la liste en contient autant.
+Sois COMPLET pour les services et formations.
 
 CONTENU:
 ${content}`,
@@ -106,9 +107,10 @@ ${content}`,
     const parsed = JSON.parse(cleaned)
     if (!Array.isArray(parsed)) return []
 
-    const kindMap: Record<string, CatalogKind> = { s: "service", f: "formation", p: "produit" }
+    const kindMap: Record<string, CatalogKind> = { s: "service", f: "formation" }
     return parsed
-      .filter((s: unknown) => s && typeof s === "object" && "n" in (s as object))
+      // On ne garde QUE services + formations (on ignore les produits "p").
+      .filter((s: unknown) => s && typeof s === "object" && "n" in (s as object) && String((s as Record<string, unknown>).k ?? "s") !== "p")
       .map((s: Record<string, unknown>) => ({
         kind: kindMap[String(s.k)] ?? "service",
         name: String(s.n ?? "").trim(),
