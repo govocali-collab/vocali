@@ -62,7 +62,7 @@ export default function AdminQuotesPage() {
 
   return (
     <div className="min-h-screen bg-ivory-100 font-body">
-      <div className="max-w-xl mx-auto px-5 py-10">
+      <div className="max-w-5xl mx-auto px-5 py-10">
 
         <div className="mb-8">
           <Image src="/vocali-logo-black.png" alt="Vocali" width={104} height={32} className="mb-4" />

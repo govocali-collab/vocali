@@ -19,7 +19,7 @@ export default async function ProspectDetailPage({ params }: Props) {
   const cfg = STATUS_CONFIG[prospect.status]
 
   return (
-    <div className="max-w-2xl">
+    <div className="max-w-5xl">
       {/* Header */}
       <div className="mb-8">
         <Link

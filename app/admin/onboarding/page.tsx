@@ -2,7 +2,6 @@
 
 import { useState } from "react"
 import { useRouter } from "next/navigation"
-import Image from "next/image"
 import { cn, formatPhone } from "@/lib/utils"
 
 const PREDEFINED_SERVICES = [
@@ -170,11 +169,10 @@ export default function OnboardingPage() {
 
   return (
     <div className="min-h-screen bg-ivory-100 font-body">
-      <div className="max-w-3xl mx-auto px-5 py-10">
+      <div className="max-w-5xl mx-auto px-5 py-10">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div>
-            <Image src="/vocali-logo-black.png" alt="Vocali" width={104} height={32} className="mb-3" />
             <h1 className="text-charcoal-900 font-display text-2xl font-semibold">
               Nouvelle clinique
             </h1>
