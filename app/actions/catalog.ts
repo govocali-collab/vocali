@@ -6,6 +6,7 @@ import {
   createCatalogItem,
   updateCatalogItem,
   deleteCatalogItem,
+  upsertCatalogByName,
   type CatalogItem,
   type CatalogItemInput,
   type CatalogKind,
@@ -35,4 +36,15 @@ export async function removeCatalogItem(id: string): Promise<void> {
   const clinicId = await requireClinicId()
   await deleteCatalogItem(clinicId, id)
   revalidatePath("/dashboard/settings")
+}
+
+// Import CSV : met à jour par nom (prix sur items existants) ou insère.
+export async function importCatalogItems(
+  items: CatalogItemInput[],
+): Promise<{ inserted: number; updated: number }> {
+  const clinicId = await requireClinicId()
+  const safe = (items || []).slice(0, 1000) // garde-fou
+  const result = await upsertCatalogByName(clinicId, safe)
+  revalidatePath("/dashboard/settings")
+  return result
 }

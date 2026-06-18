@@ -5,6 +5,7 @@ import OwnerForm from "@/components/dashboard/OwnerForm"
 import AgentToggle from "@/components/dashboard/AgentToggle"
 import PasswordForm from "@/components/dashboard/PasswordForm"
 import CatalogEditor from "@/components/dashboard/CatalogEditor"
+import CsvImporter from "@/components/dashboard/CsvImporter"
 
 const DAYS_FR: Record<string, string> = {
   monday: "Lundi", tuesday: "Mardi", wednesday: "Mercredi",
@@ -75,6 +76,8 @@ export default async function SettingsPage() {
         />
 
         <PasswordForm />
+
+        <CsvImporter />
 
         <CatalogEditor kind="service" title="Services & tarifs" noun="service" items={serviceItems} />
 
