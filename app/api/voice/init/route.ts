@@ -75,16 +75,14 @@ export async function POST(req: Request) {
         )
     }
 
-    // 4) Message d'accueil = avis d'enregistrement FIXE (non modifiable) + pause
-    // de 1 s, puis le message d'accueil éditable de la clinique (avec variables).
-    const RECORDING_NOTICE = "Cet appel peut être enregistré à des fins de contrôle de qualité."
+    // 4) Message d'accueil éditable de la clinique (avec variables).
     const greetingTemplate =
       (clinic?.clinic_config as { greeting?: string } | null)?.greeting?.trim() ||
       "{{clinique}} bonjour, je suis {{agent}}. Comment puis-je vous aider aujourd'hui ?"
     const greeting = greetingTemplate
       .replace(/\{\{\s*(clinique|clinic|business_name|nom_clinique)\s*\}\}/gi, bizName)
       .replace(/\{\{\s*(agent|receptionniste|receptionist_name|nom_agent)\s*\}\}/gi, agentName)
-    const firstMessage = `${RECORDING_NOTICE} <break time="1.0s" /> ${greeting}`
+    const firstMessage = greeting
 
     return NextResponse.json({
       type: "conversation_initiation_client_data",
