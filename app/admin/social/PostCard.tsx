@@ -106,7 +106,7 @@ export default function PostCard({ post, onDelete }: Props) {
   }
 
   return (
-    <div className="bg-ink-card border border-ivory-300 rounded-xl shadow-card overflow-hidden">
+    <div className="bg-white border border-ivory-300 rounded-xl shadow-card overflow-hidden">
       {/* Header */}
       <div className="px-4 pt-4 pb-3 flex items-start justify-between gap-3">
         <div className="min-w-0">
@@ -207,7 +207,7 @@ export default function PostCard({ post, onDelete }: Props) {
                 type="text"
                 value={slides[activeSlide].headline}
                 onChange={e => updateSlide(activeSlide, "headline", e.target.value)}
-                className="w-full border border-ivory-300 rounded-lg px-3 py-2 text-sm text-charcoal-800 focus:outline-none focus:border-gold-400 bg-ink-card"
+                className="w-full border border-ivory-300 rounded-lg px-3 py-2 text-sm text-charcoal-800 focus:outline-none focus:border-gold-400 bg-white"
               />
             </div>
             <div>
@@ -216,7 +216,7 @@ export default function PostCard({ post, onDelete }: Props) {
                 value={slides[activeSlide].body ?? ""}
                 onChange={e => updateSlide(activeSlide, "body", e.target.value)}
                 rows={3}
-                className="w-full border border-ivory-300 rounded-lg px-3 py-2 text-sm text-charcoal-800 focus:outline-none focus:border-gold-400 bg-ink-card resize-none"
+                className="w-full border border-ivory-300 rounded-lg px-3 py-2 text-sm text-charcoal-800 focus:outline-none focus:border-gold-400 bg-white resize-none"
               />
             </div>
             {slides[activeSlide].cta !== undefined && (
@@ -226,7 +226,7 @@ export default function PostCard({ post, onDelete }: Props) {
                   type="text"
                   value={slides[activeSlide].cta ?? ""}
                   onChange={e => updateSlide(activeSlide, "cta", e.target.value)}
-                  className="w-full border border-ivory-300 rounded-lg px-3 py-2 text-sm text-charcoal-800 focus:outline-none focus:border-gold-400 bg-ink-card"
+                  className="w-full border border-ivory-300 rounded-lg px-3 py-2 text-sm text-charcoal-800 focus:outline-none focus:border-gold-400 bg-white"
                 />
               </div>
             )}

@@ -56,7 +56,7 @@ export default async function DashboardPage() {
         <StatsCard title="Sans réponse" value={stats.missedCalls} icon={<PhoneMissed size={16} />} />
       </div>
 
-      <div className="bg-ink-card rounded-xl border border-ivory-300 shadow-card">
+      <div className="bg-white rounded-xl border border-ivory-300 shadow-card">
         <div className="flex items-center justify-between px-5 py-4 border-b border-ivory-200">
           <h2 className="text-charcoal-800 font-body font-semibold text-sm">Leads d'aujourd'hui</h2>
           <Link
@@ -115,13 +115,13 @@ export default async function DashboardPage() {
       <div className="flex flex-wrap gap-3 mt-4">
         <Link
           href="/dashboard/leads"
-          className="flex items-center gap-2 px-4 py-2.5 bg-ink-card border border-ivory-300 hover:border-gold-300 rounded-lg text-charcoal-500 hover:text-charcoal-800 text-sm font-body transition-all shadow-card"
+          className="flex items-center gap-2 px-4 py-2.5 bg-white border border-ivory-300 hover:border-gold-300 rounded-lg text-charcoal-500 hover:text-charcoal-800 text-sm font-body transition-all shadow-card"
         >
           <Users size={14} /> Voir tous les leads
         </Link>
         <Link
           href="/dashboard/calls"
-          className="flex items-center gap-2 px-4 py-2.5 bg-ink-card border border-ivory-300 hover:border-gold-300 rounded-lg text-charcoal-500 hover:text-charcoal-800 text-sm font-body transition-all shadow-card"
+          className="flex items-center gap-2 px-4 py-2.5 bg-white border border-ivory-300 hover:border-gold-300 rounded-lg text-charcoal-500 hover:text-charcoal-800 text-sm font-body transition-all shadow-card"
         >
           <Phone size={14} /> Voir tous les appels
         </Link>

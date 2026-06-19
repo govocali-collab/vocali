@@ -28,7 +28,7 @@ export default function ProspectEditForm({ prospect }: { prospect: Prospect }) {
     : ""
 
   return (
-    <form action={action} className="bg-ink-card border border-ivory-300 rounded-xl p-6 shadow-card">
+    <form action={action} className="bg-white border border-ivory-300 rounded-xl p-6 shadow-card">
       <p className="text-charcoal-400 text-xs font-semibold uppercase tracking-widest mb-5">
         Informations
       </p>

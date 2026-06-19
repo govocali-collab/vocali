@@ -60,7 +60,7 @@ export default function ListView({ prospects, allProspects, filter, onFilterChan
             return (
               <div
                 key={p.id}
-                className="bg-ink-card border border-ivory-300 rounded-xl px-4 py-3 shadow-card flex items-center gap-3"
+                className="bg-white border border-ivory-300 rounded-xl px-4 py-3 shadow-card flex items-center gap-3"
               >
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-0.5">

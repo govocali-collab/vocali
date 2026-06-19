@@ -41,7 +41,7 @@ export default function CRMView({ allProspects }: { allProspects: Prospect[] }) 
               className={cn(
                 "flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium font-body transition-colors",
                 view === "list"
-                  ? "bg-ink-card text-charcoal-800 shadow-sm"
+                  ? "bg-white text-charcoal-800 shadow-sm"
                   : "text-charcoal-500 hover:text-charcoal-700"
               )}
             >
@@ -52,7 +52,7 @@ export default function CRMView({ allProspects }: { allProspects: Prospect[] }) 
               className={cn(
                 "flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium font-body transition-colors",
                 view === "kanban"
-                  ? "bg-ink-card text-charcoal-800 shadow-sm"
+                  ? "bg-white text-charcoal-800 shadow-sm"
                   : "text-charcoal-500 hover:text-charcoal-700"
               )}
             >

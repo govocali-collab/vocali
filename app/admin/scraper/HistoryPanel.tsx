@@ -34,7 +34,7 @@ const STATUS_LABEL: Record<string, string> = {
 export default function HistoryPanel({ sessions, onLoadSession }: Props) {
   if (sessions.length === 0) {
     return (
-      <div className="bg-ink-card border border-ivory-300 rounded-xl p-6 shadow-card">
+      <div className="bg-white border border-ivory-300 rounded-xl p-6 shadow-card">
         <p className="text-charcoal-400 text-xs font-semibold uppercase tracking-widest mb-4">
           Recherches récentes
         </p>
@@ -46,7 +46,7 @@ export default function HistoryPanel({ sessions, onLoadSession }: Props) {
   }
 
   return (
-    <div className="bg-ink-card border border-ivory-300 rounded-xl p-6 shadow-card">
+    <div className="bg-white border border-ivory-300 rounded-xl p-6 shadow-card">
       <p className="text-charcoal-400 text-xs font-semibold uppercase tracking-widest mb-5">
         Recherches récentes
       </p>

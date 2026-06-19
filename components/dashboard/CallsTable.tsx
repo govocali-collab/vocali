@@ -31,25 +31,25 @@ export default function CallsTable({ calls }: Props) {
           type="date"
           defaultValue={params.get("from") ?? ""}
           onChange={(e) => updateParam("from", e.target.value)}
-          className="bg-ink-card border border-ivory-300 rounded-lg px-3 py-2 text-charcoal-700 text-sm font-body focus:outline-none focus:border-gold-400"
+          className="bg-white border border-ivory-300 rounded-lg px-3 py-2 text-charcoal-700 text-sm font-body focus:outline-none focus:border-gold-400"
         />
         <input
           type="date"
           defaultValue={params.get("to") ?? ""}
           onChange={(e) => updateParam("to", e.target.value)}
-          className="bg-ink-card border border-ivory-300 rounded-lg px-3 py-2 text-charcoal-700 text-sm font-body focus:outline-none focus:border-gold-400"
+          className="bg-white border border-ivory-300 rounded-lg px-3 py-2 text-charcoal-700 text-sm font-body focus:outline-none focus:border-gold-400"
         />
       </div>
 
       {calls.length === 0 ? (
-        <div className="flex flex-col items-center justify-center py-20 text-center bg-ink-card rounded-xl border border-ivory-300">
+        <div className="flex flex-col items-center justify-center py-20 text-center bg-white rounded-xl border border-ivory-300">
           <p className="text-charcoal-400 text-base font-body">Aucun appel pour cette période.</p>
           <p className="text-charcoal-300 text-sm font-body mt-1">
             Les appels de votre agent apparaîtront ici.
           </p>
         </div>
       ) : (
-        <div className="rounded-xl border border-ivory-300 overflow-hidden bg-ink-card">
+        <div className="rounded-xl border border-ivory-300 overflow-hidden bg-white">
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>

@@ -85,11 +85,11 @@ export default function Sidebar({ clinic }: { clinic: Clinic }) {
 
   return (
     <>
-      <aside className="hidden lg:flex w-60 flex-shrink-0 bg-ink-card border-r border-ivory-300 flex-col">
+      <aside className="hidden lg:flex w-60 flex-shrink-0 bg-white border-r border-ivory-300 flex-col">
         {sidebarContent}
       </aside>
 
-      <div className="lg:hidden flex items-center justify-between px-4 py-3 bg-ink-card border-b border-ivory-300">
+      <div className="lg:hidden flex items-center justify-between px-4 py-3 bg-white border-b border-ivory-300">
         <Image src="/vocali-logo-black.png" alt="Vocali" width={81} height={25} />
         <button onClick={() => setOpen(true)} className="text-charcoal-500 hover:text-charcoal-800 p-1">
           <Menu size={20} />
@@ -99,7 +99,7 @@ export default function Sidebar({ clinic }: { clinic: Clinic }) {
       {open && (
         <div className="lg:hidden fixed inset-0 z-50 flex">
           <div className="absolute inset-0 bg-black/40" onClick={() => setOpen(false)} />
-          <aside className="relative w-60 bg-ink-card border-r border-ivory-300 flex flex-col">
+          <aside className="relative w-60 bg-white border-r border-ivory-300 flex flex-col">
             <button
               onClick={() => setOpen(false)}
               className="absolute top-4 right-4 text-charcoal-400 hover:text-charcoal-700"

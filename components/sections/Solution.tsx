@@ -12,7 +12,7 @@ export function Solution({ dict }: Props) {
   const s = dict.solution
 
   return (
-    <section id="solution" className="bg-ink-card py-16 lg:py-36">
+    <section id="solution" className="bg-white py-16 lg:py-36">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <AnimateOnScroll variant="fadeUp" className="text-center mb-16">
           <span className="section-badge mb-6 inline-flex">
@@ -32,7 +32,7 @@ export function Solution({ dict }: Props) {
             const Icon = featureIcons[i]
             return (
               <AnimateOnScroll key={feature.title} variant="fadeUp" delay={i * 0.08}>
-                <div className="group bg-ivory-50 hover:bg-ink-card border border-ivory-300 hover:border-gold-200 hover:shadow-card rounded-2xl p-7 transition-all duration-300 h-full">
+                <div className="group bg-ivory-50 hover:bg-white border border-ivory-300 hover:border-gold-200 hover:shadow-card rounded-2xl p-7 transition-all duration-300 h-full">
                   <div className="w-11 h-11 bg-gradient-to-br from-gold-100 to-gold-200 rounded-xl flex items-center justify-center mb-4 group-hover:from-gold-200 group-hover:to-gold-300 transition-all">
                     <Icon size={20} className="text-gold-700" />
                   </div>

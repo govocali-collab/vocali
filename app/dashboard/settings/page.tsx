@@ -37,7 +37,7 @@ export default async function SettingsPage() {
     <>
       <AgentToggle agentName={agentName} isActive={clinic.is_active} />
 
-      <section className="bg-ink-card rounded-xl border border-ivory-300 p-5 shadow-card">
+      <section className="bg-white rounded-xl border border-ivory-300 p-5 shadow-card">
         <h2 className="text-charcoal-400 text-xs font-body font-medium uppercase tracking-wider mb-4">
           Informations générales
         </h2>
@@ -73,7 +73,7 @@ export default async function SettingsPage() {
       <PasswordForm />
 
       {Object.keys(hours).length > 0 && (
-        <section className="bg-ink-card rounded-xl border border-ivory-300 p-5 shadow-card">
+        <section className="bg-white rounded-xl border border-ivory-300 p-5 shadow-card">
           <div className="flex items-center gap-2 mb-4">
             <Clock size={13} className="text-charcoal-400" />
             <h2 className="text-charcoal-400 text-xs font-body font-medium uppercase tracking-wider">
