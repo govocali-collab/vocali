@@ -154,7 +154,7 @@ export default function DemoClient() {
         .demo-sub { font-size: 18px; color: #6B6258; max-width: 520px; margin: 0 auto 36px; }
         .demo-card { background: #fff; border: 1px solid #ECE3D5; border-radius: 24px; padding: 36px 28px; box-shadow: 0 20px 60px rgba(201,168,106,0.12); display: flex; flex-direction: column; align-items: center; gap: 14px; }
         .demo-hint { font-size: 14px; color: #9A9082; }
-        .demo-voice { min-height: 150px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; }
+        .demo-voice { min-height: 92px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; }
         .demo-btn { display: inline-flex; align-items: center; gap: 10px; border: none; cursor: pointer; border-radius: 999px; padding: 14px 28px; font-size: 16px; font-weight: 600; font-family: 'Inter', sans-serif; color: #fff; background: linear-gradient(135deg, #C9A86A, #B8945A); box-shadow: 0 10px 30px rgba(201,168,106,0.4); transition: transform .15s, box-shadow .15s, background .15s; }
         .demo-btn:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 14px 36px rgba(201,168,106,0.5); }
         .demo-btn:disabled { opacity: .6; cursor: default; }
