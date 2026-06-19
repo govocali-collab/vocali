@@ -53,7 +53,7 @@ export default function Sidebar({ clinic }: { clinic: Clinic }) {
           alt="Vocali"
           width={104}
           height={32}
-          className="mb-4"
+          className="mb-4 -ml-px"
         />
         <p className="text-charcoal-800 text-sm font-body font-semibold truncate">{clinic.name}</p>
         {!clinic.is_active && (
