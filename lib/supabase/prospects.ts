@@ -75,3 +75,12 @@ export async function updateProspect(id: string, input: Partial<Prospect>): Prom
     .eq("id", id)
   if (error) throw error
 }
+
+export async function deleteProspect(id: string): Promise<void> {
+  const admin = getAdminClient()
+  const { error } = await admin
+    .from("prospects")
+    .delete()
+    .eq("id", id)
+  if (error) throw error
+}

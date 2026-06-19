@@ -2,6 +2,7 @@ import { getProspectById, STATUS_CONFIG } from "@/lib/supabase/prospects"
 import { notFound } from "next/navigation"
 import Link from "next/link"
 import ProspectEditForm from "./ProspectEditForm"
+import DeleteProspectButton from "./DeleteProspectButton"
 
 interface Props {
   params: Promise<{ id: string }>
@@ -45,6 +46,16 @@ export default async function ProspectDetailPage({ params }: Props) {
       </div>
 
       <ProspectEditForm prospect={prospect} />
+
+      <div className="mt-6 flex items-center justify-between gap-4 border border-red-100 bg-red-50/40 rounded-xl px-5 py-4">
+        <div>
+          <p className="text-sm font-medium text-charcoal-700 font-body">Supprimer ce prospect</p>
+          <p className="text-xs text-charcoal-400 font-body mt-0.5">
+            Retire définitivement ce prospect du CRM. Action irréversible.
+          </p>
+        </div>
+        <DeleteProspectButton id={prospect.id} name={prospect.clinic_name} />
+      </div>
     </div>
   )
 }
