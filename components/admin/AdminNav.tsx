@@ -4,11 +4,12 @@ import Link from "next/link"
 import Image from "next/image"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
-import { LayoutGrid, BarChart2, UserPlus, FileText, Users, Search, ImagePlay } from "lucide-react"
+import { LayoutGrid, BarChart2, UserPlus, FileText, Users, Search, ImagePlay, MonitorPlay } from "lucide-react"
 
 const links = [
   { href: "/admin/clinics",    label: "Cliniques",    icon: LayoutGrid },
   { href: "/admin/stats",      label: "Statistiques", icon: BarChart2 },
+  { href: "/admin/demo-stats", label: "Stats démo",   icon: MonitorPlay },
   { href: "/admin/crm",        label: "CRM",          icon: Users },
   { href: "/admin/scraper",    label: "Scraper",      icon: Search },
   { href: "/admin/social",     label: "Posts",        icon: ImagePlay },
