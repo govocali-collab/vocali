@@ -2,6 +2,12 @@ import { NextResponse } from "next/server"
 import { createClient } from "@supabase/supabase-js"
 import { verifyElevenLabsSignature } from "@/lib/voice/security"
 import { analyzeTranscript } from "@/lib/voice/analyze"
+import { analyzeDemoProspect } from "@/lib/voice/demo-prospect"
+import { createProspect } from "@/lib/supabase/prospects"
+import { sendDemoProspectEmail } from "@/lib/email/resend"
+
+// Agent de démonstration (Salon Élégance) : ses appels capturent des prospects.
+const DEMO_AGENT_ID = "agent_3801kvc085yce259k5k87380shga"
 
 /**
  * Webhook post-appel de l'Agent ElevenLabs. Reçoit la transcription complète à la
@@ -45,6 +51,13 @@ export async function POST(req: Request) {
     const transcriptText = cleanTurns
       .map((t) => `${t.role === "user" ? "Client" : "IA"}: ${t.message!.trim()}`)
       .join("\n")
+
+    // Appels de DÉMO (agent Salon Élégance) : pas de clinique ni de lead client —
+    // on capture plutôt les PROSPECTS intéressés par Vocali (CRM + email interne).
+    if (String(data?.agent_id || "") === DEMO_AGENT_ID) {
+      await handleDemoProspect(transcriptText)
+      return new NextResponse("ok", { status: 200 })
+    }
 
     // Résumé : ElevenLabs en génère déjà un (gratuit, fiable) → on l'utilise en
     // priorité, sans dépendre d'Anthropic.
@@ -142,4 +155,46 @@ export async function POST(req: Request) {
 
 function admin() {
   return createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!)
+}
+
+/**
+ * Conversation de démo : si la personne s'est montrée intéressée par Vocali et a
+ * laissé un contact, on l'ajoute au CRM (prospects, source "demo") et on envoie
+ * un courriel interne à contact@vocali.ca. Sinon, on ignore silencieusement.
+ */
+async function handleDemoProspect(transcriptText: string) {
+  try {
+    if (!transcriptText.trim()) return
+    const p = await analyzeDemoProspect(transcriptText)
+    if (!p.is_prospect || (!p.phone && !p.email)) return
+
+    let prospectId: string | null = null
+    try {
+      const created = await createProspect({
+        clinic_name: p.clinic_name || p.owner_name || "Prospect démo",
+        owner_name: p.owner_name,
+        phone: p.phone,
+        email: p.email,
+        city: p.city,
+        status: "demo",
+        source: "demo",
+        notes: p.notes,
+      })
+      prospectId = created.id
+    } catch (e) {
+      console.error("[demo.prospect] createProspect", e)
+    }
+
+    await sendDemoProspectEmail({
+      ownerName: p.owner_name,
+      clinicName: p.clinic_name,
+      phone: p.phone,
+      email: p.email,
+      city: p.city,
+      notes: p.notes,
+      prospectId,
+    }).catch((e) => console.error("[demo.prospect] email", e))
+  } catch (e) {
+    console.error("[demo.prospect] handle", e)
+  }
 }
