@@ -57,7 +57,7 @@ export async function POST(req: Request) {
     const clinicVoiceId = (clinic?.clinic_config as { voice_id?: string } | null)?.voice_id?.trim()
     const voiceId = clinicVoiceId || ELEVENLABS_DEFAULT_VOICE_ID
 
-    const agentName = location.agent_name || "Alexandra"
+    const agentName = location.agent_name || "Sarah"
     const bizName = location.name || clinic?.name || "notre clinique"
 
     // Base de connaissances : on privilégie le catalogue structuré (catalog_items),

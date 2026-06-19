@@ -185,7 +185,7 @@ export const fr: Dictionary = {
   founder: {
     badge: "Le fondateur",
     headline: "Bâti par quelqu'un qui comprend votre réalité.",
-    body: "Je m'appelle Jonathan. J'ai développé Vocali après avoir constaté que les cliniques esthétiques et médico-esthétiques au Québec perdaient des clientes non pas par manque de qualité, mais par manque de disponibilité. Alexandra, c'est la réceptionniste que j'aurais voulu leur donner dès le premier jour.",
+    body: "Je m'appelle Jonathan. J'ai développé Vocali après avoir constaté que les cliniques esthétiques et médico-esthétiques au Québec perdaient des clientes non pas par manque de qualité, mais par manque de disponibilité. Sarah, c'est la réceptionniste que j'aurais voulu leur donner dès le premier jour.",
     photoAlt: "Jonathan, fondateur de Vocali",
     name: "Jonathan",
     title: "Fondateur, Vocali",

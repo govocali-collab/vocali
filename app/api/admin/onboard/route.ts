@@ -43,7 +43,7 @@ export async function POST(req: Request) {
     ]
 
     const clinicConfig: Record<string, unknown> = {
-      agent_name: agentName || "Alexandra",
+      agent_name: agentName || "Sarah",
       tone,
       languages: language,
       owner_first_name: ownerFirstName,
@@ -132,7 +132,7 @@ export async function POST(req: Request) {
     // 4. Send welcome email
     await sendWelcomeEmail({
       clinicName,
-      agentName: agentName || "Alexandra",
+      agentName: agentName || "Sarah",
       ownerEmail,
       ownerFirstName,
       tempPassword,

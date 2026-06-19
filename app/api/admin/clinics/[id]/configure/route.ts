@@ -41,7 +41,7 @@ export async function POST(
           clinicName: clinic.name,
           ownerEmail: clinic.owner_email,
           ownerFirstName: config.owner_first_name ?? clinic.name,
-          agentName: config.agent_name ?? "Alexandra",
+          agentName: config.agent_name ?? "Sarah",
         }).catch((err) => console.error("Agent live email error (non-fatal):", err))
       }
     }

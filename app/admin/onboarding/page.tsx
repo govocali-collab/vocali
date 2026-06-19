@@ -80,7 +80,7 @@ export default function OnboardingPage() {
   const [language, setLanguage] = useState<"fr-CA" | "en" | "bilingual">("fr-CA")
 
   // Agent config
-  const [agentName, setAgentName] = useState("Alexandra")
+  const [agentName, setAgentName] = useState("Sarah")
   const [tone, setTone] = useState<"Chaleureuse" | "Professionnelle" | "Mixte">("Chaleureuse")
   const [systemPromptOverride, setSystemPromptOverride] = useState("")
   const [websiteUrl, setWebsiteUrl] = useState("")
@@ -303,7 +303,7 @@ export default function OnboardingPage() {
             <SectionTitle>Configuration de l'agent</SectionTitle>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
               <Field label="Nom de l'agent" hint="Affiché dans les emails et le dashboard">
-                <input className={inputClass} value={agentName} onChange={(e) => setAgentName(e.target.value)} placeholder="Alexandra" />
+                <input className={inputClass} value={agentName} onChange={(e) => setAgentName(e.target.value)} placeholder="Sarah" />
               </Field>
               <Field label="Ton de l'agent">
                 <div className="flex gap-2 mt-1">
