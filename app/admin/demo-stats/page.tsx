@@ -1,6 +1,7 @@
 export const dynamic = "force-dynamic"
 
-import { getDemoStats } from "@/lib/supabase/demo-stats"
+import { getDemoStats, getRecentDemoSessions } from "@/lib/supabase/demo-stats"
+import DemoTranscripts from "@/components/admin/DemoTranscripts"
 import { Play, Clock, UserCheck, TrendingUp } from "lucide-react"
 
 function fmtDuration(sec: number): string {
@@ -11,7 +12,7 @@ function fmtDuration(sec: number): string {
 }
 
 export default async function DemoStatsPage() {
-  const stats = await getDemoStats()
+  const [stats, sessions] = await Promise.all([getDemoStats(), getRecentDemoSessions(50)])
 
   const cards = [
     { label: "Démos utilisées", value: String(stats.total), icon: Play },
@@ -95,6 +96,16 @@ export default async function DemoStatsPage() {
             </tbody>
           </table>
         )}
+      </section>
+
+      <section className="bg-white rounded-xl border border-ivory-300 shadow-card overflow-hidden mt-6">
+        <div className="px-5 py-4 border-b border-ivory-300">
+          <h2 className="text-charcoal-700 text-sm font-body font-semibold">Conversations</h2>
+          <p className="text-charcoal-400 text-xs font-body mt-0.5">
+            Clique sur une conversation pour lire la transcription
+          </p>
+        </div>
+        <DemoTranscripts sessions={sessions} />
       </section>
     </div>
   )
