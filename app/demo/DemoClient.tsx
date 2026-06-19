@@ -19,7 +19,7 @@ function VoiceButton() {
 
   const isActive = conversation.status === "connected"
 
-  // « preparing » = du clic jusqu'à ce que Sophia commence à parler → barre de
+  // « preparing » = du clic jusqu'à ce que Sarah commence à parler → barre de
   // progression. On l'enlève dès qu'elle parle ou si la connexion se ferme.
   useEffect(() => {
     if (conversation.isSpeaking) setPreparing(false)
@@ -56,7 +56,7 @@ function VoiceButton() {
   return (
     <div className="demo-voice">
       {permissionDenied && (
-        <p className="demo-perm">Veuillez autoriser l&apos;accès au microphone pour parler à Sophia.</p>
+        <p className="demo-perm">Veuillez autoriser l&apos;accès au microphone pour parler à Sarah.</p>
       )}
       <button
         type="button"
@@ -69,24 +69,24 @@ function VoiceButton() {
         ) : isActive ? (
           <>
             <span className="demo-pulse" />
-            Sophia écoute…
+            Sarah écoute…
           </>
         ) : (
-          "🎙️ Parler à Sophia"
+          "🎙️ Parler à Sarah"
         )}
       </button>
       {preparing && (
-        <div className="demo-progress" role="progressbar" aria-label="Connexion à Sophia">
+        <div className="demo-progress" role="progressbar" aria-label="Connexion à Sarah">
           <div className="demo-progress__fill" />
         </div>
       )}
       <p className="demo-hint2">
         {preparing
-          ? "Connexion à Sophia…"
+          ? "Connexion à Sarah…"
           : isActive
           ? conversation.isSpeaking
-            ? "Sophia parle"
-            : "Sophia vous écoute"
+            ? "Sarah parle"
+            : "Sarah vous écoute"
           : "Cliquez pour commencer une conversation vocale"}
       </p>
     </div>
@@ -165,19 +165,19 @@ export default function DemoClient() {
 
         <section className="demo-hero">
           <h1 className="demo-serif">
-            Rencontrez <em>Sophia</em>,<br />votre réceptionniste virtuelle
+            Rencontrez <em>Sarah</em>,<br />votre réceptionniste virtuelle
           </h1>
           <p className="demo-sub">
             Prenez rendez-vous en parlant, comme avec une vraie réceptionniste. Essayez la démo dès maintenant.
           </p>
           <div className="demo-card">
-            <p className="demo-hint">Cliquez sur le bouton et parlez à Sophia 🎙️</p>
+            <p className="demo-hint">Cliquez sur le bouton et parlez à Sarah 🎙️</p>
             <VoiceWidget />
           </div>
         </section>
 
         <section className="demo-section">
-          <h2 className="demo-serif">Ce que Sophia peut faire</h2>
+          <h2 className="demo-serif">Ce que Sarah peut faire</h2>
           <div className="demo-cards">
             <div className="demo-feat">
               <span className="ic">📅</span>
