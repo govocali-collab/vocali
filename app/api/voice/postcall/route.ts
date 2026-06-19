@@ -5,6 +5,7 @@ import { analyzeTranscript } from "@/lib/voice/analyze"
 import { analyzeDemoProspect } from "@/lib/voice/demo-prospect"
 import { createProspect } from "@/lib/supabase/prospects"
 import { sendDemoProspectEmail } from "@/lib/email/resend"
+import { upsertDemoOutcome } from "@/lib/supabase/demo-stats"
 
 // Agent de démonstration (Salon Élégance) : ses appels capturent des prospects.
 const DEMO_AGENT_ID = "agent_3801kvc085yce259k5k87380shga"
@@ -55,7 +56,7 @@ export async function POST(req: Request) {
     // Appels de DÉMO (agent Salon Élégance) : pas de clinique ni de lead client —
     // on capture plutôt les PROSPECTS intéressés par Vocali (CRM + email interne).
     if (String(data?.agent_id || "") === DEMO_AGENT_ID) {
-      await handleDemoProspect(transcriptText)
+      await handleDemoProspect(transcriptText, String(data?.conversation_id || callSid), durationSec)
       return new NextResponse("ok", { status: 200 })
     }
 
@@ -162,39 +163,53 @@ function admin() {
  * laissé un contact, on l'ajoute au CRM (prospects, source "demo") et on envoie
  * un courriel interne à contact@vocali.ca. Sinon, on ignore silencieusement.
  */
-async function handleDemoProspect(transcriptText: string) {
+async function handleDemoProspect(
+  transcriptText: string,
+  conversationId: string,
+  durationSec: number | null,
+) {
+  let isProspect = false
   try {
-    if (!transcriptText.trim()) return
-    const p = await analyzeDemoProspect(transcriptText)
-    if (!p.is_prospect || (!p.phone && !p.email)) return
+    if (transcriptText.trim()) {
+      const p = await analyzeDemoProspect(transcriptText)
+      if (p.is_prospect && (p.phone || p.email)) {
+        isProspect = true
+        let prospectId: string | null = null
+        try {
+          const created = await createProspect({
+            clinic_name: p.clinic_name || p.owner_name || "Prospect démo",
+            owner_name: p.owner_name,
+            phone: p.phone,
+            email: p.email,
+            city: p.city,
+            status: "demo",
+            source: "demo",
+            notes: p.notes,
+          })
+          prospectId = created.id
+        } catch (e) {
+          console.error("[demo.prospect] createProspect", e)
+        }
 
-    let prospectId: string | null = null
-    try {
-      const created = await createProspect({
-        clinic_name: p.clinic_name || p.owner_name || "Prospect démo",
-        owner_name: p.owner_name,
-        phone: p.phone,
-        email: p.email,
-        city: p.city,
-        status: "demo",
-        source: "demo",
-        notes: p.notes,
-      })
-      prospectId = created.id
-    } catch (e) {
-      console.error("[demo.prospect] createProspect", e)
+        await sendDemoProspectEmail({
+          ownerName: p.owner_name,
+          clinicName: p.clinic_name,
+          phone: p.phone,
+          email: p.email,
+          city: p.city,
+          notes: p.notes,
+          prospectId,
+        }).catch((e) => console.error("[demo.prospect] email", e))
+      }
     }
-
-    await sendDemoProspectEmail({
-      ownerName: p.owner_name,
-      clinicName: p.clinic_name,
-      phone: p.phone,
-      email: p.email,
-      city: p.city,
-      notes: p.notes,
-      prospectId,
-    }).catch((e) => console.error("[demo.prospect] email", e))
   } catch (e) {
     console.error("[demo.prospect] handle", e)
   }
+
+  // Toujours enregistrer la session de démo (durée + prospect) pour les stats.
+  await upsertDemoOutcome({
+    conversation_id: conversationId,
+    duration_sec: durationSec,
+    is_prospect: isProspect,
+  }).catch((e) => console.error("[demo.stats] outcome", e))
 }

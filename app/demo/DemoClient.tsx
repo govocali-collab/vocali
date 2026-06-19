@@ -5,6 +5,29 @@ import { useConversation, ConversationProvider } from "@elevenlabs/react"
 
 const AGENT_ID = "agent_3801kvc085yce259k5k87380shga"
 
+// Enregistre la provenance (?src=, utm, referrer) liée à la conversation, pour
+// les statistiques d'utilisation de la démo par canal/post.
+function trackDemo(conversationId: string) {
+  try {
+    const params = new URLSearchParams(window.location.search)
+    fetch("/api/demo/track", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      keepalive: true,
+      body: JSON.stringify({
+        conversation_id: conversationId,
+        src: params.get("src") || params.get("source"),
+        utm_source: params.get("utm_source"),
+        utm_medium: params.get("utm_medium"),
+        utm_campaign: params.get("utm_campaign"),
+        referrer: document.referrer || null,
+      }),
+    }).catch(() => {})
+  } catch {
+    /* no-op */
+  }
+}
+
 function VoiceButton() {
   const [isConnecting, setIsConnecting] = useState(false)
   const [preparing, setPreparing] = useState(false)
@@ -34,7 +57,11 @@ function VoiceButton() {
     setPreparing(true)
     try {
       await navigator.mediaDevices.getUserMedia({ audio: true })
-      await conversation.startSession({ agentId: AGENT_ID, connectionType: "webrtc" })
+      const convId = (await conversation.startSession({
+        agentId: AGENT_ID,
+        connectionType: "webrtc",
+      })) as unknown as string | undefined
+      if (convId) trackDemo(convId)
     } catch (error) {
       setPreparing(false)
       if (
