@@ -54,7 +54,7 @@ const chipClass = (active: boolean) =>
     "flex items-center justify-center px-4 py-2.5 rounded-lg border text-sm font-body cursor-pointer transition-colors",
     active
       ? "bg-gold-50 border-gold-400 text-gold-700 font-medium"
-      : "bg-white border-ivory-300 text-charcoal-500 hover:border-gold-300"
+      : "bg-ink-card border-ivory-300 text-charcoal-500 hover:border-gold-300"
   )
 
 interface Prefill {
@@ -129,7 +129,7 @@ export default function OnboardingForm({ prefill }: { prefill?: Prefill }) {
         <form onSubmit={handleSubmit} className="space-y-5">
 
           {/* ── VOTRE CLINIQUE ── */}
-          <div className="bg-white rounded-xl border border-ivory-300 p-6 shadow-card">
+          <div className="bg-ink-card rounded-xl border border-ivory-300 p-6 shadow-card">
             <h2 className="text-charcoal-900 font-body font-semibold text-base mb-4">Votre clinique</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="sm:col-span-2">
@@ -154,7 +154,7 @@ export default function OnboardingForm({ prefill }: { prefill?: Prefill }) {
           </div>
 
           {/* ── VOS COORDONNÉES ── */}
-          <div className="bg-white rounded-xl border border-ivory-300 p-6 shadow-card">
+          <div className="bg-ink-card rounded-xl border border-ivory-300 p-6 shadow-card">
             <h2 className="text-charcoal-900 font-body font-semibold text-base mb-4">Vos coordonnées</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <Field label="Prénom">
@@ -173,7 +173,7 @@ export default function OnboardingForm({ prefill }: { prefill?: Prefill }) {
           </div>
 
           {/* ── SECRÉTAIRE IA ── */}
-          <div className="bg-white rounded-xl border border-ivory-300 p-6 shadow-card">
+          <div className="bg-ink-card rounded-xl border border-ivory-300 p-6 shadow-card">
             <h2 className="text-charcoal-900 font-body font-semibold text-base mb-1">Votre secrétaire IA</h2>
             <p className="text-charcoal-400 text-sm mb-4">Choisissez son prénom et comment elle parlera à vos clients.</p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -187,7 +187,7 @@ export default function OnboardingForm({ prefill }: { prefill?: Prefill }) {
                       "flex items-center justify-center px-3 py-2 rounded-lg border text-sm font-body cursor-pointer transition-colors",
                       tone === t
                         ? "bg-gold-50 border-gold-400 text-gold-700 font-medium"
-                        : "bg-white border-ivory-300 text-charcoal-500 hover:border-gold-300"
+                        : "bg-ink-card border-ivory-300 text-charcoal-500 hover:border-gold-300"
                     )}>
                       <input type="radio" name="tone" value={t} checked={tone === t} onChange={() => setTone(t)} className="sr-only" />
                       {t}
@@ -199,7 +199,7 @@ export default function OnboardingForm({ prefill }: { prefill?: Prefill }) {
           </div>
 
           {/* ── SERVICES ── */}
-          <div className="bg-white rounded-xl border border-ivory-300 p-6 shadow-card">
+          <div className="bg-ink-card rounded-xl border border-ivory-300 p-6 shadow-card">
             <h2 className="text-charcoal-900 font-body font-semibold text-base mb-1">Services offerts</h2>
             <p className="text-charcoal-400 text-sm mb-4">Sélectionnez les services que vous proposez à votre clientèle.</p>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mb-4">
@@ -208,7 +208,7 @@ export default function OnboardingForm({ prefill }: { prefill?: Prefill }) {
                 return (
                   <label key={service} className={cn(
                     "flex items-center gap-2.5 px-3 py-2 rounded-lg border text-sm font-body cursor-pointer transition-colors",
-                    checked ? "bg-gold-50 border-gold-300 text-gold-700" : "bg-white border-ivory-300 text-charcoal-600 hover:border-gold-200"
+                    checked ? "bg-gold-50 border-gold-300 text-gold-700" : "bg-ink-card border-ivory-300 text-charcoal-600 hover:border-gold-200"
                   )}>
                     <input type="checkbox" checked={checked} onChange={() => toggleService(service)} className="w-3.5 h-3.5 accent-amber-600 flex-shrink-0" />
                     {service}
@@ -222,7 +222,7 @@ export default function OnboardingForm({ prefill }: { prefill?: Prefill }) {
           </div>
 
           {/* ── HEURES ── */}
-          <div className="bg-white rounded-xl border border-ivory-300 p-6 shadow-card">
+          <div className="bg-ink-card rounded-xl border border-ivory-300 p-6 shadow-card">
             <h2 className="text-charcoal-900 font-body font-semibold text-base mb-1">Heures d'ouverture</h2>
             <p className="text-charcoal-400 text-sm mb-4">Cochez les jours fermés, ajustez les heures pour les autres.</p>
             <div className="space-y-2">
@@ -231,7 +231,7 @@ export default function OnboardingForm({ prefill }: { prefill?: Prefill }) {
                 return (
                   <div key={key} className={cn(
                     "grid grid-cols-[110px_1fr] items-center gap-3 px-3 py-2.5 rounded-lg border",
-                    day.closed ? "bg-ivory-50 border-ivory-200" : "bg-white border-ivory-300"
+                    day.closed ? "bg-ivory-50 border-ivory-200" : "bg-ink-card border-ivory-300"
                   )}>
                     <label className="flex items-center gap-2 cursor-pointer">
                       <input type="checkbox" checked={day.closed} onChange={(e) => updateHours(key, "closed", e.target.checked)} className="w-3.5 h-3.5 accent-amber-600" />
@@ -253,7 +253,7 @@ export default function OnboardingForm({ prefill }: { prefill?: Prefill }) {
           </div>
 
           {/* ── RÉSERVATION ── */}
-          <div className="bg-white rounded-xl border border-ivory-300 p-6 shadow-card">
+          <div className="bg-ink-card rounded-xl border border-ivory-300 p-6 shadow-card">
             <h2 className="text-charcoal-900 font-body font-semibold text-base mb-1">Logiciel de réservation</h2>
             <p className="text-charcoal-400 text-sm mb-4">Quel outil utilisez-vous pour gérer vos rendez-vous ?</p>
             <div className="flex flex-wrap gap-2">

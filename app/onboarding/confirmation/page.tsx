@@ -15,7 +15,7 @@ export default async function ConfirmationPage({ searchParams }: Props) {
       <div className="max-w-md w-full text-center">
         <Image src="/vocali-logo-black.png" alt="Vocali" width={115} height={37} className="mx-auto mb-8" />
 
-        <div className="bg-white rounded-2xl border border-ivory-300 shadow-card p-8 mb-6">
+        <div className="bg-ink-card rounded-2xl border border-ivory-300 shadow-card p-8 mb-6">
           <div className="flex justify-center mb-4">
             <div className="w-14 h-14 rounded-full bg-green-50 border border-green-200 flex items-center justify-center">
               <CheckCircle size={28} className="text-green-500" />

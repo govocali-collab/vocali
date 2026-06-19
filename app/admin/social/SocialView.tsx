@@ -84,7 +84,7 @@ export default function SocialView({ initialPosts }: Props) {
             className={cn(
               "flex items-center gap-1.5 px-4 py-1.5 rounded-md text-sm font-medium transition-colors",
               tab === key
-                ? "bg-white text-charcoal-900 shadow-sm"
+                ? "bg-ink-card text-charcoal-900 shadow-sm"
                 : "text-charcoal-500 hover:text-charcoal-700"
             )}
           >
@@ -97,7 +97,7 @@ export default function SocialView({ initialPosts }: Props) {
       {tab === "generate" && (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Form */}
-          <div className="bg-white border border-ivory-300 rounded-xl p-6 shadow-card">
+          <div className="bg-ink-card border border-ivory-300 rounded-xl p-6 shadow-card">
             <p className="text-xs font-semibold text-charcoal-400 uppercase tracking-widest mb-5">
               Nouvelle création
             </p>
@@ -203,7 +203,7 @@ export default function SocialView({ initialPosts }: Props) {
                 )}
               >
                 <span
-                  className="absolute top-1 w-4 h-4 bg-white rounded-full shadow-sm transition-all duration-200"
+                  className="absolute top-1 w-4 h-4 bg-ink-card rounded-full shadow-sm transition-all duration-200"
                   style={{ left: useTrends ? "20px" : "4px" }}
                 />
               </button>
@@ -226,7 +226,7 @@ export default function SocialView({ initialPosts }: Props) {
             {latest ? (
               <PostCard post={latest} onDelete={handleDelete} />
             ) : (
-              <div className="bg-white border border-ivory-300 rounded-xl p-8 shadow-card flex items-center justify-center h-full min-h-[300px]">
+              <div className="bg-ink-card border border-ivory-300 rounded-xl p-8 shadow-card flex items-center justify-center h-full min-h-[300px]">
                 <div className="text-center">
                   <Sparkles size={32} className="text-ivory-300 mx-auto mb-3" />
                   <p className="text-charcoal-400 text-sm font-body">

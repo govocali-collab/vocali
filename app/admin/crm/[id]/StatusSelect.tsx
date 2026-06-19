@@ -44,7 +44,7 @@ export default function StatusSelect({ defaultValue }: { defaultValue: ProspectS
       </button>
 
       {open && (
-        <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-ivory-300 rounded-xl shadow-lg z-50 overflow-hidden">
+        <div className="absolute top-full left-0 right-0 mt-1 bg-ink-card border border-ivory-300 rounded-xl shadow-lg z-50 overflow-hidden">
           {STATUSES.map((s) => {
             const c = STATUS_CONFIG[s]
             const selected = s === value

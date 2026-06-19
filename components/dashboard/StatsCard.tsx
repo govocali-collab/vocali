@@ -12,7 +12,7 @@ export default function StatsCard({ title, value, icon, description, highlight }
   return (
     <div
       className={cn(
-        "bg-white rounded-xl p-5 border shadow-card",
+        "bg-ink-card rounded-xl p-5 border shadow-card",
         highlight ? "border-gold-300" : "border-ivory-300"
       )}
     >

@@ -22,7 +22,7 @@ function FAQItem({ q, a, index }: { q: string; a: string; index: number }) {
           "w-full text-left border rounded-2xl px-7 py-6 transition-all duration-200 group",
           open
             ? "bg-ivory-50 border-gold-300 shadow-card"
-            : "bg-white border-ivory-300 hover:border-gold-200 hover:bg-ivory-50"
+            : "bg-ink-card border-ivory-300 hover:border-gold-200 hover:bg-ivory-50"
         )}
         aria-expanded={open}
       >

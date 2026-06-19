@@ -50,7 +50,7 @@ export default function SearchForm({ onSearch, disabled }: Props) {
   const inputClass =
     "w-full border border-ivory-300 rounded-lg px-3 py-2 text-sm font-body text-charcoal-800 focus:outline-none focus:border-gold-400"
   const selectClass =
-    "w-full appearance-none border border-ivory-300 rounded-lg pl-3 pr-9 py-2 text-sm font-body text-charcoal-800 focus:outline-none focus:border-gold-400 bg-white"
+    "w-full appearance-none border border-ivory-300 rounded-lg pl-3 pr-9 py-2 text-sm font-body text-charcoal-800 focus:outline-none focus:border-gold-400 bg-ink-card"
   const labelClass = "block text-xs font-semibold font-body text-charcoal-400 uppercase tracking-widest mb-1.5"
 
   function handleSubmit(e: React.FormEvent) {

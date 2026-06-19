@@ -263,7 +263,7 @@ function MetricCard({
 
   return (
     <div className={cn(
-      "bg-white rounded-xl border p-4 shadow-card",
+      "bg-ink-card rounded-xl border p-4 shadow-card",
       accent ? "border-gold-300 bg-gold-50/30" : "border-ivory-300",
       alert ? "border-red-200 bg-red-50/20" : "",
     )}>

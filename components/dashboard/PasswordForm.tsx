@@ -37,7 +37,7 @@ export default function PasswordForm() {
   }
 
   return (
-    <section className="bg-white rounded-xl border border-ivory-300 p-5 shadow-card">
+    <section className="bg-ink-card rounded-xl border border-ivory-300 p-5 shadow-card">
       <div className="flex items-center gap-2 mb-4">
         <div className="w-7 h-7 rounded-lg bg-ivory-100 border border-ivory-300 flex items-center justify-center flex-shrink-0">
           <Lock size={13} className="text-charcoal-400" />

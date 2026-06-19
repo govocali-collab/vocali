@@ -99,7 +99,7 @@ export default function CsvImporter() {
   const previewItems = headers.length ? buildItems().slice(0, 4) : []
 
   return (
-    <section className="bg-white rounded-xl border border-ivory-300 p-5 shadow-card">
+    <section className="bg-ink-card rounded-xl border border-ivory-300 p-5 shadow-card">
       <div className="flex items-center gap-2 mb-1">
         <FileSpreadsheet size={15} className="text-gold-600" />
         <h2 className="text-charcoal-700 font-body font-semibold">Importer depuis un fichier CSV</h2>
