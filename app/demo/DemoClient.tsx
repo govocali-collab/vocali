@@ -97,8 +97,7 @@ export default function DemoClient() {
         .demo-page { font-family: 'Inter', sans-serif; color: #2E2A26; background: #FBF8F3; min-height: 100vh; }
         .demo-serif { font-family: 'Playfair Display', serif; }
         .demo-header { display: flex; align-items: center; justify-content: center; padding: 28px 24px; border-bottom: 1px solid #ECE3D5; }
-        .demo-logo { font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 600; letter-spacing: 1px; }
-        .demo-logo span { color: #C9A86A; }
+        .demo-logo-img { height: 54px; width: auto; display: block; }
         .demo-hero { max-width: 760px; margin: 0 auto; padding: 64px 24px 48px; text-align: center; }
         .demo-hero h1 { font-family: 'Playfair Display', serif; font-size: 44px; line-height: 1.15; font-weight: 600; margin: 0 0 18px; }
         .demo-hero h1 em { color: #C9A86A; font-style: normal; }
@@ -135,7 +134,7 @@ export default function DemoClient() {
 
       <div className="demo-page">
         <header className="demo-header">
-          <div className="demo-logo">Salon <span>Élégance</span></div>
+          <img src="/studio-elegance-logo.png" alt="Salon Élégance" className="demo-logo-img" />
         </header>
 
         <section className="demo-hero">
