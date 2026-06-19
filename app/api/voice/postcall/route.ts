@@ -70,10 +70,16 @@ export async function POST(req: Request) {
       locationId = loc?.id
     }
 
-    // 2) Analyse IA (extraction du lead via Claude). Le résumé vient d'ElevenLabs
-    // s'il est présent, sinon de Claude, sinon valeur par défaut.
+    // 2) Analyse IA (extraction du lead via Claude — résumé en FRANÇAIS québécois).
+    // On privilégie le résumé français de Claude ; on retombe sur celui d'ElevenLabs
+    // (anglais) uniquement si Claude n'a pas produit de vrai résumé.
     const analysis = await analyzeTranscript(transcriptText)
-    const summary = elevenSummary || analysis.summary
+    const claudeSummary =
+      analysis.summary &&
+      !["Aucun échange enregistré.", "Résumé indisponible."].includes(analysis.summary)
+        ? analysis.summary
+        : ""
+    const summary = claudeSummary || elevenSummary || analysis.summary
 
     // 3) Upsert de la session avec transcript (tableau) + résumé + durée.
     const { data: upserted } = await supabase
