@@ -114,7 +114,7 @@ export default async function AdminClinicsPage() {
 function ClinicRow({ clinic }: { clinic: ClinicWithStats }) {
   const config = (clinic.clinic_config ?? {}) as Record<string, unknown>
   const city = (config.city as string) ?? "—"
-  const agentName = (config.agent_name as string) ?? "Alexandra"
+  const agentName = (config.agent_name as string) ?? "Sarah"
   const status = getStatus(clinic)
   const style = STATUS_STYLE[status]
 

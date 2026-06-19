@@ -7,7 +7,7 @@ interface Props {
 
 export default async function ConfirmationPage({ searchParams }: Props) {
   const params = await searchParams
-  const agentName = params.agent ?? "Alexandra"
+  const agentName = params.agent ?? "Sarah"
   const clinicName = params.clinic ?? "votre clinique"
 
   return (

@@ -15,7 +15,7 @@ interface Line {
 // Timestamps are estimates based on ~51s audio with 3s pauses between AI lines.
 // Adjust time/endTime values if highlight is off.
 const TRANSCRIPT_FR: Line[] = [
-  { role: "ai",     text: "Clinique Dermavia, bonjour ! Je suis Alexandra, l'assistante virtuelle de la clinique. Comment puis-je vous aider aujourd'hui ?",      time: 0,    endTime: 6.5 },
+  { role: "ai",     text: "Clinique Dermavia, bonjour ! Je suis Sarah, l'assistante virtuelle de la clinique. Comment puis-je vous aider aujourd'hui ?",      time: 0,    endTime: 6.5 },
   { role: "client", text: "Bonjour, je voudrais prendre un rendez-vous pour un soin du visage.",                                                      time: 6.5 },
   { role: "ai",     text: "Bien sûr ! Nous offrons plusieurs soins du visage — hydratation, éclat, anti-âge. Vous avez une préférence, ou souhaitez-vous une consultation pour trouver le soin idéal ?", time: 9.5,  endTime: 19.5 },
   { role: "client", text: "Je pense que je voudrais quelque chose pour l'éclat.",                                                                     time: 19.5},
@@ -27,7 +27,7 @@ const TRANSCRIPT_FR: Line[] = [
 ]
 
 const TRANSCRIPT_EN: Line[] = [
-  { role: "ai",     text: "Dermavia Clinic, hello! I'm Alexandra, the clinic's virtual assistant. How can I help you today?",                                                                                          time: 0,    endTime: 6.5 },
+  { role: "ai",     text: "Dermavia Clinic, hello! I'm Sarah, the clinic's virtual assistant. How can I help you today?",                                                                                          time: 0,    endTime: 6.5 },
   { role: "client", text: "Hi, I'd like to book an appointment for a facial.",                                                                                                                                      time: 6.5 },
   { role: "ai",     text: "Of course! We offer several facial treatments — hydration, radiance, and anti-aging. Do you have a preference, or would you like a consultation to find the ideal treatment for you?",   time: 9.5,  endTime: 19.5 },
   { role: "client", text: "I think I'd like something for radiance.",                                                                                                                                               time: 19.5 },

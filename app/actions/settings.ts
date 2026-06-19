@@ -95,7 +95,7 @@ export async function setAgentActive(active: boolean) {
     const config = (clinic.clinic_config ?? {}) as Record<string, string>
     sendAgentPausedNotification({
       clinicName: clinic.name,
-      agentName: config.agent_name ?? "Alexandra",
+      agentName: config.agent_name ?? "Sarah",
       ownerName: [config.owner_first_name, config.owner_last_name].filter(Boolean).join(" "),
       ownerEmail: user.email,
       clinicId: clinic.id,

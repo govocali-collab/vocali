@@ -61,7 +61,7 @@ export async function POST(
             const timer = setTimeout(() => ctrl.abort(), 10_000)
             const res = await fetch(pageUrl, {
               signal: ctrl.signal,
-              headers: { "User-Agent": "Mozilla/5.0 (compatible; AlexandraBot/1.0; +https://vocali.ca)" },
+              headers: { "User-Agent": "Mozilla/5.0 (compatible; SarahBot/1.0; +https://vocali.ca)" },
             })
             clearTimeout(timer)
             if (!res.ok) continue
@@ -124,7 +124,7 @@ async function fetchSitemapProducts(origin: string): Promise<string[]> {
     const timer = setTimeout(() => ctrl.abort(), 12_000)
     const res = await fetch(`${origin}/sitemap.xml`, {
       signal: ctrl.signal,
-      headers: { "User-Agent": "Mozilla/5.0 (compatible; AlexandraBot/1.0; +https://vocali.ca)" },
+      headers: { "User-Agent": "Mozilla/5.0 (compatible; SarahBot/1.0; +https://vocali.ca)" },
     })
     clearTimeout(timer)
     if (!res.ok) return []
