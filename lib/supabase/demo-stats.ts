@@ -30,11 +30,14 @@ export async function upsertDemoAttribution(a: DemoAttribution): Promise<void> {
   )
 }
 
-/** En fin d'appel (webhook) : enregistre la durée + si c'est un prospect. */
+export type TranscriptTurn = { role: string; content: string }
+
+/** En fin d'appel (webhook) : enregistre la durée, le statut prospect, la transcription. */
 export async function upsertDemoOutcome(o: {
   conversation_id: string
   duration_sec?: number | null
   is_prospect?: boolean
+  transcript?: TranscriptTurn[] | null
 }): Promise<void> {
   if (!o.conversation_id) return
   const supabase = admin()
@@ -43,9 +46,35 @@ export async function upsertDemoOutcome(o: {
       conversation_id: o.conversation_id,
       duration_sec: o.duration_sec ?? null,
       is_prospect: Boolean(o.is_prospect),
+      ...(o.transcript ? { transcript: o.transcript } : {}),
     },
     { onConflict: "conversation_id" },
   )
+}
+
+export interface DemoSession {
+  id: string
+  created_at: string
+  src: string | null
+  duration_sec: number | null
+  is_prospect: boolean
+  transcript: TranscriptTurn[] | null
+}
+
+/** Sessions de démo récentes (avec transcription) pour l'affichage admin. */
+export async function getRecentDemoSessions(limit = 50): Promise<DemoSession[]> {
+  try {
+    const supabase = admin()
+    const { data, error } = await supabase
+      .from("demo_sessions")
+      .select("id, created_at, src, duration_sec, is_prospect, transcript")
+      .order("created_at", { ascending: false })
+      .limit(limit)
+    if (error || !data) return []
+    return data as DemoSession[]
+  } catch {
+    return []
+  }
 }
 
 export interface DemoSourceStat {

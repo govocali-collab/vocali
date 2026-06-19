@@ -56,7 +56,7 @@ export async function POST(req: Request) {
     // Appels de DÉMO (agent Salon Élégance) : pas de clinique ni de lead client —
     // on capture plutôt les PROSPECTS intéressés par Vocali (CRM + email interne).
     if (String(data?.agent_id || "") === DEMO_AGENT_ID) {
-      await handleDemoProspect(transcriptText, String(data?.conversation_id || callSid), durationSec)
+      await handleDemoProspect(transcriptText, String(data?.conversation_id || callSid), durationSec, transcriptArray)
       return new NextResponse("ok", { status: 200 })
     }
 
@@ -167,6 +167,7 @@ async function handleDemoProspect(
   transcriptText: string,
   conversationId: string,
   durationSec: number | null,
+  transcriptArray: { role: string; content: string }[],
 ) {
   let isProspect = false
   try {
@@ -206,10 +207,11 @@ async function handleDemoProspect(
     console.error("[demo.prospect] handle", e)
   }
 
-  // Toujours enregistrer la session de démo (durée + prospect) pour les stats.
+  // Toujours enregistrer la session de démo (durée + prospect + transcription).
   await upsertDemoOutcome({
     conversation_id: conversationId,
     duration_sec: durationSec,
     is_prospect: isProspect,
+    transcript: transcriptArray,
   }).catch((e) => console.error("[demo.stats] outcome", e))
 }

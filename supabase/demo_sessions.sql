@@ -10,7 +10,8 @@ create table if not exists public.demo_sessions (
   utm_medium text,
   utm_campaign text,
   duration_sec integer,
-  is_prospect boolean not null default false
+  is_prospect boolean not null default false,
+  transcript jsonb
 );
 
 grant all on public.demo_sessions to service_role;
