@@ -249,7 +249,7 @@ export default function ScraperView({ initialSessions }: Props) {
 
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
           {/* Search form */}
-          <div className="lg:col-span-3 bg-ink-card border border-ivory-300 rounded-xl p-6 shadow-card">
+          <div className="lg:col-span-3 bg-white border border-ivory-300 rounded-xl p-6 shadow-card">
             <p className="text-charcoal-400 text-xs font-semibold uppercase tracking-widest mb-5">
               Nouvelle recherche
             </p>
@@ -317,7 +317,7 @@ export default function ScraperView({ initialSessions }: Props) {
       />
 
       {/* Results table */}
-      <div className="bg-ink-card border border-ivory-300 rounded-xl px-5 py-4 shadow-card">
+      <div className="bg-white border border-ivory-300 rounded-xl px-5 py-4 shadow-card">
         <ResultsTable
           leads={displayLeads}
           selectedIds={selectedIds}

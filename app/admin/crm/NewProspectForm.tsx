@@ -34,7 +34,7 @@ export default function NewProspectForm() {
   }
 
   return (
-    <div className="bg-ink-card border border-ivory-300 rounded-xl p-5 shadow-card w-full sm:w-auto sm:min-w-[500px]">
+    <div className="bg-white border border-ivory-300 rounded-xl p-5 shadow-card w-full sm:w-auto sm:min-w-[500px]">
       <p className="text-charcoal-800 font-semibold font-body text-sm mb-4">Nouveau prospect</p>
       <form action={addProspectAction}>
         <div className="grid grid-cols-2 gap-3 mb-4">

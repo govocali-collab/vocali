@@ -40,7 +40,7 @@ export function Navbar({ dict, lang }: Props) {
         className={cn(
           "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
           scrolled
-            ? "bg-ink-card/90 backdrop-blur-md shadow-[0_1px_20px_rgba(0,0,0,0.08)] border-b border-ivory-300"
+            ? "bg-white/90 backdrop-blur-md shadow-[0_1px_20px_rgba(0,0,0,0.08)] border-b border-ivory-300"
             : "bg-transparent"
         )}
       >
@@ -89,7 +89,7 @@ export function Navbar({ dict, lang }: Props) {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -16 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-40 bg-ink-card pt-20 px-6 pb-10 flex flex-col lg:hidden"
+            className="fixed inset-0 z-40 bg-white pt-20 px-6 pb-10 flex flex-col lg:hidden"
           >
             <nav className="flex flex-col gap-1 mb-8">
               {links.map((link) => (

@@ -34,7 +34,7 @@ export default function ImportModal({ open, count, onClose, onImport }: Props) {
       className="fixed inset-0 bg-black/40 z-50 flex items-center justify-center p-4"
       onClick={(e) => { if (e.target === e.currentTarget) onClose() }}
     >
-      <div className="bg-ink-card border border-ivory-300 rounded-xl p-6 shadow-card w-full max-w-md">
+      <div className="bg-white border border-ivory-300 rounded-xl p-6 shadow-card w-full max-w-md">
         <h2 className="text-charcoal-900 font-display text-xl font-semibold mb-1">
           Importer {count} prospect{count !== 1 ? "s" : ""}
         </h2>

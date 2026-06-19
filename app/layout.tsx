@@ -1,10 +1,9 @@
 import type { Metadata } from "next"
-import { Space_Grotesk, Inter } from "next/font/google"
+import { Playfair_Display, Inter, Cormorant_Garamond, DM_Sans } from "next/font/google"
 import { headers } from "next/headers"
 import "./globals.css"
 
-// Thème vocali2 : titres en Space Grotesk, texte en Inter.
-const playfair = Space_Grotesk({
+const playfair = Playfair_Display({
   subsets: ["latin"],
   variable: "--font-playfair",
   display: "swap",
@@ -13,6 +12,19 @@ const playfair = Space_Grotesk({
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
+  display: "swap",
+})
+
+const cormorant = Cormorant_Garamond({
+  subsets: ["latin"],
+  variable: "--font-cormorant",
+  weight: ["300", "400", "500", "600", "700"],
+  display: "swap",
+})
+
+const dmSans = DM_Sans({
+  subsets: ["latin"],
+  variable: "--font-dm-sans",
   display: "swap",
 })
 
@@ -53,7 +65,7 @@ export default async function RootLayout({
 
   return (
     <html lang={lang} suppressHydrationWarning>
-      <body className={`${inter.variable} ${playfair.variable} font-sans`} suppressHydrationWarning>
+      <body className={`${inter.variable} ${playfair.variable} ${cormorant.variable} ${dmSans.variable} font-sans`} suppressHydrationWarning>
         {children}
       </body>
     </html>

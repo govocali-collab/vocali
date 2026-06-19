@@ -21,7 +21,7 @@ export default function AdminNav() {
   const pathname = usePathname()
 
   return (
-    <header className="bg-ink-card border-b border-ivory-300 mb-8">
+    <header className="bg-white border-b border-ivory-300 mb-8">
       <div className="max-w-5xl mx-auto px-5">
         <div className="flex items-center justify-between h-14">
           <Link href="/admin/clinics">

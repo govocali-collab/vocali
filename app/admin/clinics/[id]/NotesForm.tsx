@@ -28,7 +28,7 @@ export default function NotesForm({ clinicId, initialNotes }: { clinicId: string
   }
 
   return (
-    <div className="bg-ink-card rounded-xl border border-ivory-300 p-6 shadow-card">
+    <div className="bg-white rounded-xl border border-ivory-300 p-6 shadow-card">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
           <div className="w-6 h-6 rounded-lg bg-gold-50 border border-gold-200 flex items-center justify-center">

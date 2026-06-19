@@ -44,7 +44,7 @@ export default function OwnerForm({ firstName, lastName, phone, email }: Props) 
   }
 
   return (
-    <section className="bg-ink-card rounded-xl border border-ivory-300 p-5 shadow-card">
+    <section className="bg-white rounded-xl border border-ivory-300 p-5 shadow-card">
       <h2 className="text-charcoal-400 text-xs font-body font-medium uppercase tracking-wider mb-4">
         Propriétaire
       </h2>

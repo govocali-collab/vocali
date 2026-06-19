@@ -208,7 +208,7 @@ export default function ClinicConfigForm({ clinic }: { clinic: ClinicRow }) {
   }
 
   return (
-    <div className="bg-ink-card rounded-xl border border-ivory-300 p-6 shadow-card">
+    <div className="bg-white rounded-xl border border-ivory-300 p-6 shadow-card">
       <p className="text-charcoal-400 text-xs font-semibold uppercase tracking-widest mb-4">
         Configuration de l'agent
       </p>
@@ -286,7 +286,7 @@ export default function ClinicConfigForm({ clinic }: { clinic: ClinicRow }) {
               {searchResults.length > 0 && (
                 <div className="space-y-1.5 max-h-48 overflow-y-auto">
                   {searchResults.map((n) => (
-                    <div key={n.phoneNumber} className="flex items-center justify-between bg-ink-card border border-ivory-200 rounded-lg px-3 py-2">
+                    <div key={n.phoneNumber} className="flex items-center justify-between bg-white border border-ivory-200 rounded-lg px-3 py-2">
                       <div>
                         <span className="text-charcoal-900 text-sm font-body font-mono">{n.friendlyName}</span>
                         {(n.locality || n.region) && (
@@ -476,7 +476,7 @@ export default function ClinicConfigForm({ clinic }: { clinic: ClinicRow }) {
             type="button"
             onClick={() => save(false)}
             disabled={saving || activating}
-            className="text-charcoal-600 border border-ivory-300 bg-ink-card font-body font-medium text-sm rounded-lg px-5 py-2.5 hover:border-gold-300 disabled:opacity-50 transition-colors"
+            className="text-charcoal-600 border border-ivory-300 bg-white font-body font-medium text-sm rounded-lg px-5 py-2.5 hover:border-gold-300 disabled:opacity-50 transition-colors"
           >
             {saving ? "Sauvegarde…" : saved ? "✓ Sauvegardé" : "Sauvegarder"}
           </button>
@@ -485,7 +485,7 @@ export default function ClinicConfigForm({ clinic }: { clinic: ClinicRow }) {
             type="button"
             onClick={accessAccount}
             disabled={impersonating}
-            className="text-charcoal-500 border border-ivory-300 bg-ink-card font-body font-medium text-sm rounded-lg px-5 py-2.5 hover:border-charcoal-300 disabled:opacity-50 transition-colors"
+            className="text-charcoal-500 border border-ivory-300 bg-white font-body font-medium text-sm rounded-lg px-5 py-2.5 hover:border-charcoal-300 disabled:opacity-50 transition-colors"
           >
             {impersonating ? "Connexion…" : "Accéder au compte →"}
           </button>
@@ -545,7 +545,7 @@ export default function ClinicConfigForm({ clinic }: { clinic: ClinicRow }) {
               <button
                 type="button"
                 onClick={() => setShowDeleteConfirm(false)}
-                className="text-charcoal-500 border border-ivory-300 bg-ink-card font-body text-sm rounded-lg px-4 py-2 hover:border-charcoal-300 transition-colors"
+                className="text-charcoal-500 border border-ivory-300 bg-white font-body text-sm rounded-lg px-4 py-2 hover:border-charcoal-300 transition-colors"
               >
                 Annuler
               </button>

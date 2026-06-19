@@ -74,7 +74,7 @@ export default function AdminQuotesPage() {
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-5">
-          <div className="bg-ink-card rounded-xl border border-ivory-300 p-6 shadow-card">
+          <div className="bg-white rounded-xl border border-ivory-300 p-6 shadow-card">
             <p className="text-charcoal-400 text-xs font-semibold uppercase tracking-widest mb-4">Compte cliente</p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="sm:col-span-2">
@@ -96,13 +96,13 @@ export default function AdminQuotesPage() {
             </div>
           </div>
 
-          <div className="bg-ink-card rounded-xl border border-ivory-300 p-6 shadow-card">
+          <div className="bg-white rounded-xl border border-ivory-300 p-6 shadow-card">
             <p className="text-charcoal-400 text-xs font-semibold uppercase tracking-widest mb-4">Facturation</p>
             <div className="space-y-4">
               <Field label="Facturation">
                 <div className="flex gap-2 mt-0.5">
                   {([["month", "Mensuel"], ["year", "Annuel"]] as const).map(([val, lbl]) => (
-                    <label key={val} className={`flex-1 flex items-center justify-center px-4 py-2.5 rounded-lg border text-sm font-body cursor-pointer transition-colors ${billing === val ? "bg-gold-50 border-gold-400 text-gold-700 font-medium" : "bg-ink-card border-ivory-300 text-charcoal-500 hover:border-gold-300"}`}>
+                    <label key={val} className={`flex-1 flex items-center justify-center px-4 py-2.5 rounded-lg border text-sm font-body cursor-pointer transition-colors ${billing === val ? "bg-gold-50 border-gold-400 text-gold-700 font-medium" : "bg-white border-ivory-300 text-charcoal-500 hover:border-gold-300"}`}>
                       <input type="radio" name="billing" value={val} checked={billing === val} onChange={() => setBilling(val)} className="sr-only" />
                       {lbl}
                     </label>
@@ -135,7 +135,7 @@ export default function AdminQuotesPage() {
                   onClick={() => setTrial(!trial)}
                   className={`w-10 h-6 rounded-full transition-colors relative flex-shrink-0 ${trial ? "bg-gold-400" : "bg-ivory-300"}`}
                 >
-                  <span className={`absolute top-1 w-4 h-4 rounded-full bg-ink-card shadow transition-transform ${trial ? "translate-x-5" : "translate-x-1"}`} />
+                  <span className={`absolute top-1 w-4 h-4 rounded-full bg-white shadow transition-transform ${trial ? "translate-x-5" : "translate-x-1"}`} />
                 </div>
                 <div>
                   <p className="text-charcoal-700 text-sm font-body font-medium">Essai gratuit de 30 jours</p>
@@ -163,13 +163,13 @@ export default function AdminQuotesPage() {
         {checkoutUrl && (
           <div className="mt-5 bg-green-50 border border-green-200 rounded-xl p-5">
             <p className="text-green-700 text-sm font-body font-semibold mb-3">Lien de paiement prêt ✓</p>
-            <div className="flex items-center gap-2 bg-ink-card border border-green-200 rounded-lg px-3 py-2.5 mb-3">
+            <div className="flex items-center gap-2 bg-white border border-green-200 rounded-lg px-3 py-2.5 mb-3">
               <span className="text-charcoal-600 text-xs font-body truncate flex-1">{checkoutUrl}</span>
             </div>
             <div className="flex gap-2">
               <button
                 onClick={copyLink}
-                className="flex items-center gap-2 bg-ink-card border border-green-300 text-green-700 font-body font-medium text-sm rounded-lg px-4 py-2 hover:bg-green-50 transition-colors"
+                className="flex items-center gap-2 bg-white border border-green-300 text-green-700 font-body font-medium text-sm rounded-lg px-4 py-2 hover:bg-green-50 transition-colors"
               >
                 {copied ? <Check size={14} /> : <Copy size={14} />}
                 {copied ? "Copié !" : "Copier"}
@@ -178,7 +178,7 @@ export default function AdminQuotesPage() {
                 href={checkoutUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2 bg-ink-card border border-green-300 text-green-700 font-body font-medium text-sm rounded-lg px-4 py-2 hover:bg-green-50 transition-colors"
+                className="flex items-center gap-2 bg-white border border-green-300 text-green-700 font-body font-medium text-sm rounded-lg px-4 py-2 hover:bg-green-50 transition-colors"
               >
                 <ExternalLink size={14} />
                 Tester

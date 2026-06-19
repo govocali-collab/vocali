@@ -31,7 +31,7 @@ export default function AdminLoginPage() {
           <Image src="/vocali-logo-black.png" alt="Vocali" width={127} height={39} priority />
         </div>
 
-        <div className="bg-ink-card border border-ivory-300 rounded-2xl p-8 shadow-card">
+        <div className="bg-white border border-ivory-300 rounded-2xl p-8 shadow-card">
           <h1 className="text-charcoal-900 font-display text-xl font-semibold mb-1">Accès admin</h1>
           <p className="text-charcoal-400 text-sm mb-6">Zone réservée à l'équipe Vocali.</p>
 

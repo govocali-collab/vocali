@@ -88,7 +88,7 @@ function DraggableCard({ p }: { p: Prospect }) {
     <div
       ref={setNodeRef}
       style={style}
-      className="bg-ink-card rounded-xl border border-ivory-300 p-3 shadow-sm relative"
+      className="bg-white rounded-xl border border-ivory-300 p-3 shadow-sm relative"
     >
       {/* Drag handle */}
       <button
@@ -110,7 +110,7 @@ function DraggableCard({ p }: { p: Prospect }) {
 function CardOverlay({ p }: { p: Prospect }) {
   const lastContact = formatDate(p.last_contact_at)
   return (
-    <div className="bg-ink-card rounded-xl border border-gold-300 p-3 shadow-2xl w-52 rotate-1 scale-105">
+    <div className="bg-white rounded-xl border border-gold-300 p-3 shadow-2xl w-52 rotate-1 scale-105">
       <p className="text-charcoal-900 font-body font-semibold text-[13px] leading-snug mb-0.5">
         {p.clinic_name}
       </p>
@@ -156,7 +156,7 @@ function DroppableColumn({
           <span className={cn("w-2 h-2 rounded-full flex-shrink-0", cfg.dot)} />
           <span className="text-xs font-semibold font-body text-charcoal-700">{cfg.label}</span>
         </div>
-        <span className="text-[10px] font-medium text-charcoal-400 bg-ink-card/70 px-1.5 py-0.5 rounded-full">
+        <span className="text-[10px] font-medium text-charcoal-400 bg-white/70 px-1.5 py-0.5 rounded-full">
           {prospects.length}
         </span>
       </div>

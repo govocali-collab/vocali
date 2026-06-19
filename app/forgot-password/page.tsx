@@ -35,7 +35,7 @@ export default function ForgotPasswordPage() {
           <Image src="/vocali-logo-black.png" alt="Vocali" width={127} height={39} priority />
         </div>
 
-        <div className="bg-ink-card border border-ivory-300 rounded-2xl p-8 shadow-card">
+        <div className="bg-white border border-ivory-300 rounded-2xl p-8 shadow-card">
           {sent ? (
             <div className="text-center">
               <div className="w-12 h-12 rounded-full bg-green-50 border border-green-200 flex items-center justify-center mx-auto mb-4">

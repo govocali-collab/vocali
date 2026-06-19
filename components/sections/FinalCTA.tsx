@@ -21,7 +21,7 @@ export function FinalCTA({ dict, lang = "fr" }: Props) {
           backgroundSize: "28px 28px",
         }}
       />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-ink-card/5 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-white/5 rounded-full blur-3xl pointer-events-none" />
 
       <div className="relative max-w-3xl mx-auto px-6 lg:px-8 text-center">
         <AnimateOnScroll variant="fadeUp">

@@ -30,7 +30,7 @@ export function Pilot({ dict, lang = "fr" }: Props) {
         <div className="grid lg:grid-cols-3 gap-5 mb-12">
           {[0, 1, 2].map((i) => (
             <AnimateOnScroll key={i} variant="fadeUp" delay={i * 0.1}>
-              <div className="bg-ink-card border border-dashed border-ivory-400 rounded-3xl p-8 h-48 flex flex-col items-center justify-center text-center group hover:border-gold-300 hover:bg-ivory-50 transition-all duration-300">
+              <div className="bg-white border border-dashed border-ivory-400 rounded-3xl p-8 h-48 flex flex-col items-center justify-center text-center group hover:border-gold-300 hover:bg-ivory-50 transition-all duration-300">
                 <Quote size={28} className="text-ivory-400 group-hover:text-gold-300 transition-colors mb-3" />
                 <p className="text-charcoal-300 text-sm italic group-hover:text-charcoal-400 transition-colors">
                   {p.testimonialPlaceholder}
@@ -41,7 +41,7 @@ export function Pilot({ dict, lang = "fr" }: Props) {
         </div>
 
         <AnimateOnScroll variant="scaleIn" delay={0.3}>
-          <div className="bg-ink-card border border-gold-200 rounded-3xl p-10 lg:p-14 text-center shadow-card">
+          <div className="bg-white border border-gold-200 rounded-3xl p-10 lg:p-14 text-center shadow-card">
             <div className="inline-flex items-center gap-2 bg-emerald-50 text-emerald-600 text-sm font-semibold px-4 py-2 rounded-full mb-6">
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
               {p.spotsLeft}
