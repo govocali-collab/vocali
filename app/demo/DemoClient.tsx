@@ -7,21 +7,36 @@ const AGENT_ID = "agent_3801kvc085yce259k5k87380shga"
 
 function VoiceButton() {
   const [isConnecting, setIsConnecting] = useState(false)
+  const [preparing, setPreparing] = useState(false)
   const [permissionDenied, setPermissionDenied] = useState(false)
 
   const conversation = useConversation({
-    onError: () => setIsConnecting(false),
+    onError: () => {
+      setIsConnecting(false)
+      setPreparing(false)
+    },
   })
 
   const isActive = conversation.status === "connected"
 
+  // « preparing » = du clic jusqu'à ce que Sophia commence à parler → barre de
+  // progression. On l'enlève dès qu'elle parle ou si la connexion se ferme.
+  useEffect(() => {
+    if (conversation.isSpeaking) setPreparing(false)
+  }, [conversation.isSpeaking])
+  useEffect(() => {
+    if (conversation.status === "disconnected") setPreparing(false)
+  }, [conversation.status])
+
   const start = useCallback(async () => {
     setPermissionDenied(false)
     setIsConnecting(true)
+    setPreparing(true)
     try {
       await navigator.mediaDevices.getUserMedia({ audio: true })
       await conversation.startSession({ agentId: AGENT_ID, connectionType: "webrtc" })
     } catch (error) {
+      setPreparing(false)
       if (
         error instanceof DOMException &&
         (error.name === "NotAllowedError" || error.name === "PermissionDeniedError")
@@ -34,6 +49,7 @@ function VoiceButton() {
   }, [conversation])
 
   const stop = useCallback(async () => {
+    setPreparing(false)
     await conversation.endSession()
   }, [conversation])
 
@@ -45,22 +61,29 @@ function VoiceButton() {
       <button
         type="button"
         onClick={isActive ? stop : start}
-        disabled={isConnecting}
-        className={`demo-btn ${isActive ? "demo-btn--active" : ""}`}
+        disabled={isConnecting || preparing}
+        className={`demo-btn ${isActive && !preparing ? "demo-btn--active" : ""}`}
       >
-        {isActive ? (
+        {preparing ? (
+          "Connexion…"
+        ) : isActive ? (
           <>
             <span className="demo-pulse" />
             Sophia écoute…
           </>
-        ) : isConnecting ? (
-          "Connexion…"
         ) : (
           "🎙️ Parler à Sophia"
         )}
       </button>
+      {preparing && (
+        <div className="demo-progress" role="progressbar" aria-label="Connexion à Sophia">
+          <div className="demo-progress__fill" />
+        </div>
+      )}
       <p className="demo-hint2">
-        {isActive
+        {preparing
+          ? "Connexion à Sophia…"
+          : isActive
           ? conversation.isSpeaking
             ? "Sophia parle"
             : "Sophia vous écoute"
@@ -113,6 +136,9 @@ export default function DemoClient() {
         .demo-pulse::before { content: ""; position: absolute; inset: 0; border-radius: 999px; background: #fff; opacity: .75; animation: demo-ping 1.2s cubic-bezier(0,0,.2,1) infinite; }
         @keyframes demo-ping { 75%, 100% { transform: scale(2.2); opacity: 0; } }
         .demo-hint2 { font-size: 13px; color: #9A9082; }
+        .demo-progress { width: 220px; max-width: 80%; height: 6px; background: #ECE3D5; border-radius: 999px; overflow: hidden; }
+        .demo-progress__fill { width: 40%; height: 100%; border-radius: 999px; background: linear-gradient(90deg, #C9A86A, #B8945A); animation: demo-progress-slide 1.15s ease-in-out infinite; }
+        @keyframes demo-progress-slide { 0% { transform: translateX(-110%); } 100% { transform: translateX(300%); } }
         .demo-skeleton { width: 40px; height: 40px; border-radius: 999px; background: #ECE3D5; animation: demo-skel 1.2s ease-in-out infinite; }
         @keyframes demo-skel { 50% { opacity: .4; } }
         .demo-perm { font-size: 13px; color: #B4453C; background: rgba(180,69,60,0.08); padding: 8px 12px; border-radius: 10px; }
