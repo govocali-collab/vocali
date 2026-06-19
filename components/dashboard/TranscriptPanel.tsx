@@ -48,7 +48,7 @@ export default function TranscriptPanel({ lead, call, onClose }: Props) {
 
       <div
         className={cn(
-          "fixed top-0 right-0 h-full w-full max-w-md bg-white border-l border-ivory-300 z-50",
+          "fixed top-0 right-0 h-full w-full max-w-md bg-ink-card border-l border-ivory-300 z-50",
           "flex flex-col transition-transform duration-300 ease-out shadow-luxury",
           isOpen ? "translate-x-0" : "translate-x-full"
         )}
@@ -130,7 +130,7 @@ export default function TranscriptPanel({ lead, call, onClose }: Props) {
                       "px-3 py-1 rounded-full text-xs font-body border transition-all",
                       lead.status === opt.value
                         ? opt.color
-                        : "text-charcoal-400 bg-white border-ivory-300 hover:border-ivory-400"
+                        : "text-charcoal-400 bg-ink-card border-ivory-300 hover:border-ivory-400"
                     )}
                   >
                     {opt.label}

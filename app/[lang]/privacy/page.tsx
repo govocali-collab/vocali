@@ -151,13 +151,13 @@ export default async function PrivacyPage({ params }: Props) {
             <p className="text-charcoal-400 text-sm">{c.updated}</p>
           </div>
 
-          <div className="bg-white rounded-2xl border border-ivory-300 p-8 shadow-card mb-6">
+          <div className="bg-ink-card rounded-2xl border border-ivory-300 p-8 shadow-card mb-6">
             <p className="text-charcoal-600 leading-relaxed">{c.intro}</p>
           </div>
 
           <div className="space-y-6">
             {c.sections.map((section) => (
-              <div key={section.title} className="bg-white rounded-2xl border border-ivory-300 p-8 shadow-card">
+              <div key={section.title} className="bg-ink-card rounded-2xl border border-ivory-300 p-8 shadow-card">
                 <h2 className="font-display text-lg font-semibold text-charcoal-900 mb-4 pb-3 border-b border-ivory-200">
                   {section.title}
                 </h2>

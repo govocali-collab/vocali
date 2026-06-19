@@ -67,7 +67,7 @@ export default function CatalogEditor({
     : rows
 
   return (
-    <section className="bg-white rounded-xl border border-ivory-300 p-5 shadow-card">
+    <section className="bg-ink-card rounded-xl border border-ivory-300 p-5 shadow-card">
       <div className="flex flex-wrap items-center justify-between gap-3 mb-3">
         <h2 className="text-charcoal-700 font-body font-semibold">
           {title} <span className="text-charcoal-300 font-normal">· {rows.length}</span>

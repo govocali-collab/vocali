@@ -53,7 +53,7 @@ export default function BillingTable({ invoices }: { invoices: Invoice[] }) {
 
   if (invoices.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center py-20 bg-white rounded-xl border border-ivory-300 text-center">
+      <div className="flex flex-col items-center justify-center py-20 bg-ink-card rounded-xl border border-ivory-300 text-center">
         <p className="text-charcoal-400 font-body text-base">Aucun paiement pour l'instant.</p>
         <p className="text-charcoal-300 font-body text-sm mt-1">
           Vos reçus mensuels apparaîtront ici.
@@ -63,7 +63,7 @@ export default function BillingTable({ invoices }: { invoices: Invoice[] }) {
   }
 
   return (
-    <div className="rounded-xl border border-ivory-300 overflow-hidden bg-white">
+    <div className="rounded-xl border border-ivory-300 overflow-hidden bg-ink-card">
       <div className="overflow-x-auto">
         <table className="w-full">
           <thead>

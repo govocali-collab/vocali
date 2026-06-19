@@ -32,7 +32,7 @@ export function HowItWorks({ dict }: Props) {
               <AnimateOnScroll key={step.number} variant="fadeUp" delay={i * 0.15}>
                 <div className="relative flex flex-col items-center text-center lg:items-center">
                   <div className="relative mb-8">
-                    <div className="w-16 h-16 rounded-full bg-white border-2 border-gold-300 shadow-gold flex items-center justify-center z-10 relative">
+                    <div className="w-16 h-16 rounded-full bg-ink-card border-2 border-gold-300 shadow-gold flex items-center justify-center z-10 relative">
                       <span className="font-serif text-xl font-bold text-gold-600">
                         {step.number}
                       </span>

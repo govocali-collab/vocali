@@ -103,7 +103,7 @@ export default async function AdminClinicsPage() {
         )}
 
         {clinics.length === 0 && (
-          <div className="bg-white rounded-xl border border-ivory-300 p-12 text-center">
+          <div className="bg-ink-card rounded-xl border border-ivory-300 p-12 text-center">
             <p className="text-charcoal-400 text-sm">Aucune clinique pour l'instant.</p>
           </div>
         )}
@@ -119,7 +119,7 @@ function ClinicRow({ clinic }: { clinic: ClinicWithStats }) {
   const style = STATUS_STYLE[status]
 
   return (
-    <div className={cn("flex items-center gap-4 bg-white rounded-xl border px-5 py-4", style.row)}>
+    <div className={cn("flex items-center gap-4 bg-ink-card rounded-xl border px-5 py-4", style.row)}>
 
       {/* Status icon */}
       <div className={cn(

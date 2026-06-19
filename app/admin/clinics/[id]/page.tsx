@@ -42,7 +42,7 @@ export default async function ClinicDetailPage({ params }: Props) {
         </div>
 
         {/* Infos soumises par la clinique */}
-        <div className="bg-white rounded-xl border border-ivory-300 p-6 shadow-card mb-5">
+        <div className="bg-ink-card rounded-xl border border-ivory-300 p-6 shadow-card mb-5">
           <p className="text-charcoal-400 text-xs font-semibold uppercase tracking-widest mb-4">
             Informations soumises par la clinique
           </p>

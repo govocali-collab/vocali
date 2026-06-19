@@ -10,7 +10,7 @@ export function Founder({ dict }: Props) {
   const f = dict.founder
 
   return (
-    <section id="fondateur" className="bg-white py-16 lg:py-28 relative overflow-hidden">
+    <section id="fondateur" className="bg-ink-card py-16 lg:py-28 relative overflow-hidden">
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[400px] h-[1px] bg-gradient-to-r from-transparent via-gold-300/60 to-transparent" />
 
       <div className="max-w-4xl mx-auto px-6 lg:px-8">

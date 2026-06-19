@@ -127,7 +127,7 @@ export default function DemoAudioModal({ open, onClose, lang }: Props) {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 8 }}
             transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
-            className="bg-white rounded-3xl shadow-2xl w-full max-w-md overflow-hidden"
+            className="bg-ink-card rounded-3xl shadow-2xl w-full max-w-md overflow-hidden"
           >
             {/* Header */}
             <div className="flex items-center justify-between px-6 pt-6 pb-4">

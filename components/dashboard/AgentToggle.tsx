@@ -28,7 +28,7 @@ export default function AgentToggle({ agentName, isActive }: { agentName: string
   return (
     <section className={cn(
       "rounded-xl border p-5",
-      active ? "bg-white border-ivory-300 shadow-card" : "bg-amber-50 border-amber-200"
+      active ? "bg-ink-card border-ivory-300 shadow-card" : "bg-amber-50 border-amber-200"
     )}>
       <div className="flex items-center justify-between gap-4">
         <div className="flex items-center gap-3">

@@ -18,7 +18,7 @@ const variants: Record<Variant, string> = {
   secondary:
     "bg-transparent border-2 border-charcoal-800 text-charcoal-800 hover:bg-charcoal-900 hover:text-white hover:border-charcoal-900",
   white:
-    "bg-white text-gold-700 font-bold shadow-luxury hover:shadow-[0_20px_60px_rgba(255,255,255,0.3)] hover:-translate-y-1",
+    "bg-ink-card text-gold-700 font-bold shadow-luxury hover:shadow-[0_20px_60px_rgba(255,255,255,0.3)] hover:-translate-y-1",
   "outline-gold":
     "bg-transparent border-2 border-gold-500 text-gold-400 hover:bg-gold-500/10 hover:-translate-y-0.5 active:translate-y-0",
 }

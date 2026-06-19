@@ -61,7 +61,7 @@ const radioClass = (active: boolean) =>
     "flex-1 flex items-center justify-center gap-2 px-3 py-2.5 rounded-lg border text-sm font-body cursor-pointer transition-colors",
     active
       ? "bg-gold-50 border-gold-400 text-gold-700 font-medium"
-      : "bg-white border-ivory-300 text-charcoal-500 hover:border-gold-300"
+      : "bg-ink-card border-ivory-300 text-charcoal-500 hover:border-gold-300"
   )
 
 export default function OnboardingPage() {
@@ -184,7 +184,7 @@ export default function OnboardingPage() {
 
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* ── CLINIC INFO ── */}
-          <div className="bg-white rounded-xl border border-ivory-300 p-6 shadow-card">
+          <div className="bg-ink-card rounded-xl border border-ivory-300 p-6 shadow-card">
             <SectionTitle>Informations de la clinique</SectionTitle>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <Field label="Nom de la clinique">
@@ -222,7 +222,7 @@ export default function OnboardingPage() {
           </div>
 
           {/* ── NUMÉRO DE TÉLÉPHONE ── */}
-          <div className="bg-white rounded-xl border border-ivory-300 p-6 shadow-card">
+          <div className="bg-ink-card rounded-xl border border-ivory-300 p-6 shadow-card">
             <SectionTitle>Numéro de téléphone</SectionTitle>
             <p className="text-charcoal-500 text-sm mb-4">
               Cherche et choisis le numéro Twilio de la clinique. Laisse vide pour qu'un numéro soit choisi automatiquement selon la ville.
@@ -278,7 +278,7 @@ export default function OnboardingPage() {
                         key={n.phoneNumber}
                         type="button"
                         onClick={() => { setSelectedNumber(n.phoneNumber); setNumberResults([]) }}
-                        className="w-full flex items-center justify-between bg-white border border-ivory-200 rounded-lg px-3 py-2 hover:border-gold-300 transition-colors text-left"
+                        className="w-full flex items-center justify-between bg-ink-card border border-ivory-200 rounded-lg px-3 py-2 hover:border-gold-300 transition-colors text-left"
                       >
                         <span className="text-charcoal-900 text-sm font-body font-mono">{n.friendlyName}</span>
                         {(n.locality || n.region) && (
@@ -299,7 +299,7 @@ export default function OnboardingPage() {
           </div>
 
           {/* ── AGENT CONFIG ── */}
-          <div className="bg-white rounded-xl border border-ivory-300 p-6 shadow-card">
+          <div className="bg-ink-card rounded-xl border border-ivory-300 p-6 shadow-card">
             <SectionTitle>Configuration de l'agent</SectionTitle>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
               <Field label="Nom de l'agent" hint="Affiché dans les emails et le dashboard">
@@ -338,7 +338,7 @@ export default function OnboardingPage() {
           </div>
 
           {/* ── SERVICES ── */}
-          <div className="bg-white rounded-xl border border-ivory-300 p-6 shadow-card">
+          <div className="bg-ink-card rounded-xl border border-ivory-300 p-6 shadow-card">
             <SectionTitle>Services offerts</SectionTitle>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mb-4">
               {PREDEFINED_SERVICES.map((service) => {
@@ -350,7 +350,7 @@ export default function OnboardingPage() {
                       "flex items-center gap-2.5 px-3 py-2 rounded-lg border text-sm font-body cursor-pointer transition-colors",
                       checked
                         ? "bg-gold-50 border-gold-300 text-gold-700"
-                        : "bg-white border-ivory-300 text-charcoal-600 hover:border-gold-200"
+                        : "bg-ink-card border-ivory-300 text-charcoal-600 hover:border-gold-200"
                     )}
                   >
                     <input
@@ -375,7 +375,7 @@ export default function OnboardingPage() {
           </div>
 
           {/* ── HOURS ── */}
-          <div className="bg-white rounded-xl border border-ivory-300 p-6 shadow-card">
+          <div className="bg-ink-card rounded-xl border border-ivory-300 p-6 shadow-card">
             <SectionTitle>Heures d'opération</SectionTitle>
             <div className="space-y-2">
               {DAYS.map(({ key, label }) => {
@@ -383,7 +383,7 @@ export default function OnboardingPage() {
                 return (
                   <div key={key} className={cn(
                     "grid grid-cols-[100px_1fr] sm:grid-cols-[120px_1fr] items-center gap-3 px-3 py-2.5 rounded-lg border",
-                    day.closed ? "bg-ivory-50 border-ivory-200" : "bg-white border-ivory-300"
+                    day.closed ? "bg-ivory-50 border-ivory-200" : "bg-ink-card border-ivory-300"
                   )}>
                     <label className="flex items-center gap-2 cursor-pointer">
                       <input
@@ -423,7 +423,7 @@ export default function OnboardingPage() {
           </div>
 
           {/* ── BOOKING ── */}
-          <div className="bg-white rounded-xl border border-ivory-300 p-6 shadow-card">
+          <div className="bg-ink-card rounded-xl border border-ivory-300 p-6 shadow-card">
             <SectionTitle>Système de réservation</SectionTitle>
             <Field label="Logiciel utilisé">
               <select

@@ -76,18 +76,18 @@ export default function AdminBillingPage() {
 
         {!loading && !error && invoices.length > 0 && (
           <div className="grid grid-cols-2 gap-4 mb-6">
-            <div className="bg-white rounded-xl border border-ivory-300 p-5 shadow-card">
+            <div className="bg-ink-card rounded-xl border border-ivory-300 p-5 shadow-card">
               <p className="text-charcoal-400 text-xs font-semibold uppercase tracking-widest mb-1">Factures payées</p>
               <p className="text-charcoal-900 font-display text-2xl font-semibold">{paid.length}</p>
             </div>
-            <div className="bg-white rounded-xl border border-ivory-300 p-5 shadow-card">
+            <div className="bg-ink-card rounded-xl border border-ivory-300 p-5 shadow-card">
               <p className="text-charcoal-400 text-xs font-semibold uppercase tracking-widest mb-1">Total encaissé</p>
               <p className="text-charcoal-900 font-display text-2xl font-semibold">{formatAmount(totalPaid, "CAD")}</p>
             </div>
           </div>
         )}
 
-        <div className="bg-white rounded-xl border border-ivory-300 shadow-card overflow-hidden">
+        <div className="bg-ink-card rounded-xl border border-ivory-300 shadow-card overflow-hidden">
           {loading && (
             <div className="flex items-center justify-center gap-3 py-16 text-charcoal-400">
               <Loader2 size={18} className="animate-spin" />
