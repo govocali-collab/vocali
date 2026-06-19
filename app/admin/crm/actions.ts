@@ -1,6 +1,6 @@
 "use server"
 
-import { createProspect, updateProspect } from "@/lib/supabase/prospects"
+import { createProspect, updateProspect, deleteProspect } from "@/lib/supabase/prospects"
 import type { ProspectStatus } from "@/lib/supabase/prospects"
 import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
@@ -41,4 +41,10 @@ export async function updateStatusAction(id: string, status: ProspectStatus) {
   await updateProspect(id, { status })
   revalidatePath("/admin/crm")
   revalidatePath(`/admin/crm/${id}`)
+}
+
+export async function deleteProspectAction(id: string) {
+  await deleteProspect(id)
+  revalidatePath("/admin/crm")
+  redirect("/admin/crm")
 }
