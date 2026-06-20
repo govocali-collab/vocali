@@ -10,7 +10,7 @@ export function Cost({ dict }: Props) {
   const c = dict.cost
 
   return (
-    <section id="cout" className="bg-white py-16 lg:py-36">
+    <section id="cout" className="bg-ivory-100 py-16 lg:py-36">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <AnimateOnScroll variant="fadeUp" className="text-center mb-16">
           <span className="section-badge mb-6 inline-flex">
@@ -28,7 +28,7 @@ export function Cost({ dict }: Props) {
         <div className="grid lg:grid-cols-2 gap-8 items-stretch">
           {/* Calcul */}
           <AnimateOnScroll variant="fadeUp" className="h-full">
-            <div className="bg-ivory-50 border border-ivory-200 rounded-3xl p-8 shadow-card h-full">
+            <div className="bg-white border border-ivory-200 rounded-3xl p-8 shadow-card h-full">
               <p className="text-xs font-semibold uppercase tracking-widest text-gold-600 mb-6">
                 {c.exampleLabel}
               </p>
@@ -57,7 +57,7 @@ export function Cost({ dict }: Props) {
 
           {/* Escalade */}
           <AnimateOnScroll variant="fadeUp" delay={0.15} className="h-full">
-            <div className="bg-ivory-50 border border-ivory-200 rounded-3xl p-8 shadow-card h-full">
+            <div className="bg-white border border-ivory-200 rounded-3xl p-8 shadow-card h-full">
               <h3 className="font-serif text-2xl lg:text-3xl font-bold text-charcoal-900 mb-8 leading-tight">
                 {c.escalateTitle}
               </h3>
