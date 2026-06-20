@@ -51,15 +51,15 @@ export function Hero({ dict, lang }: Props) {
         >
           {lang === "fr" ? (
             <>
-              Ne manquez{" "}
-              <span className="gold-text">plus jamais</span>
-              {" "}un appel client.
+              Arrêtez de perdre des{" "}
+              <span className="gold-text">clientes</span>
+              {" "}à cause des appels.
             </>
           ) : (
             <>
-              Never Miss{" "}
-              <span className="gold-text">Another</span>
-              {" "}Client Call.
+              Stop losing{" "}
+              <span className="gold-text">clients</span>
+              {" "}to missed calls.
             </>
           )}
         </motion.h1>

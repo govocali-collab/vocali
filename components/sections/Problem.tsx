@@ -63,6 +63,11 @@ export function Problem({ dict }: Props) {
             <p className="text-charcoal-300 leading-relaxed text-base whitespace-pre-line">
               {p.revenueDesc}
             </p>
+            {p.revenueHighlight && (
+              <p className="font-serif text-lg lg:text-xl font-bold text-gold-300 mt-5 italic">
+                {p.revenueHighlight}
+              </p>
+            )}
           </div>
         </AnimateOnScroll>
       </div>
