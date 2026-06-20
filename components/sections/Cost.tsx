@@ -25,10 +25,10 @@ export function Cost({ dict }: Props) {
           </p>
         </AnimateOnScroll>
 
-        <div className="grid lg:grid-cols-2 gap-8 items-start">
+        <div className="grid lg:grid-cols-2 gap-8 items-stretch">
           {/* Calcul */}
-          <AnimateOnScroll variant="fadeUp">
-            <div className="bg-ivory-50 border border-ivory-200 rounded-3xl p-8 shadow-card">
+          <AnimateOnScroll variant="fadeUp" className="h-full">
+            <div className="bg-ivory-50 border border-ivory-200 rounded-3xl p-8 shadow-card h-full">
               <p className="text-xs font-semibold uppercase tracking-widest text-gold-600 mb-6">
                 {c.exampleLabel}
               </p>
@@ -56,7 +56,7 @@ export function Cost({ dict }: Props) {
           </AnimateOnScroll>
 
           {/* Escalade */}
-          <AnimateOnScroll variant="fadeUp" delay={0.15}>
+          <AnimateOnScroll variant="fadeUp" delay={0.15} className="h-full">
             <div className="bg-ivory-50 border border-ivory-200 rounded-3xl p-8 shadow-card h-full">
               <h3 className="font-serif text-2xl lg:text-3xl font-bold text-charcoal-900 mb-8 leading-tight">
                 {c.escalateTitle}
