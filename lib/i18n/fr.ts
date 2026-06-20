@@ -72,7 +72,7 @@ export const fr: Dictionary = {
   },
   cost: {
     badge: "Le coût réel",
-    title: "Combien vous coûtent réellement vos appels manqués ?",
+    title: "Combien vous coûtent réellement vos appels manqués ?",
     subtitle:
       "Chaque fois que votre téléphone sonne sans réponse, vous risquez de perdre une cliente. Pas dans une semaine — immédiatement.",
     exampleLabel: "Exemple — supposons",

@@ -57,7 +57,7 @@ export function Cost({ dict }: Props) {
 
           {/* Escalade */}
           <AnimateOnScroll variant="fadeUp" delay={0.15}>
-            <div className="lg:pt-2">
+            <div className="bg-ivory-50 border border-ivory-200 rounded-3xl p-8 shadow-card h-full">
               <h3 className="font-serif text-2xl lg:text-3xl font-bold text-charcoal-900 mb-8 leading-tight">
                 {c.escalateTitle}
               </h3>
