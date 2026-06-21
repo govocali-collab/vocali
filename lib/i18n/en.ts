@@ -22,7 +22,7 @@ export const en: Dictionary = {
     subheadline:
       "The system that answers incoming calls, informs your clients and helps book appointments, even when your team isn't available.",
     ctaPrimary: "Book a demo",
-    ctaSecondary: "Hear a sample call",
+    ctaSecondary: "Try the demo",
     trustedBy:
       "For medico-aesthetic clinics, beauty clinics, esthetics salons and training schools.",
     callCard: {

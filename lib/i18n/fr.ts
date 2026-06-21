@@ -22,7 +22,7 @@ export const fr: Dictionary = {
     subheadline:
       "Le système qui répond aux appels entrants, informe les clientes et facilite la prise de rendez-vous, même lorsque votre équipe n'est pas disponible.",
     ctaPrimary: "Réserver une démonstration",
-    ctaSecondary: "Écouter un appel exemple",
+    ctaSecondary: "Essayez la démo",
     trustedBy:
       "Pour les cliniques médico-esthétiques, cliniques beauté, salons d'esthétique et écoles de formation.",
     callCard: {
