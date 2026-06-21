@@ -2,7 +2,7 @@ import type { Dictionary } from "./types"
 
 export const fr: Dictionary = {
   meta: {
-    title: "Vocali — Le Système Vocali 24/7™ pour cliniques et salons au Québec",
+    title: "Le Système Vocali 24/7™ pour cliniques et salons au Québec",
     description:
       "Arrêtez de perdre des clientes à cause des appels. Le Système Vocali 24/7™ répond aux appels entrants, informe les clientes et facilite la prise de rendez-vous, même lorsque votre équipe n'est pas disponible.",
     keywords:
@@ -46,7 +46,7 @@ export const fr: Dictionary = {
     badge: "Le constat",
     title: "Vous manquez probablement plus de clientes que vous le croyez.",
     subtitle:
-      "Le téléphone sonne. Vous êtes en soin, en formation ou avec une cliente. Vous ne pouvez pas répondre — et souvent, la cliente a déjà réservé ailleurs.",
+      "Le téléphone sonne. Vous êtes en soin, en formation ou avec une cliente. Vous ne pouvez pas répondre. Et souvent, la cliente a déjà réservé ailleurs.",
     items: [
       {
         title: "Vous interrompez vos soins",
@@ -67,15 +67,15 @@ export const fr: Dictionary = {
     ],
     revenueTitle: "Le vrai problème n'est pas celui que vous croyez.",
     revenueDesc:
-      "Vous pensez perdre quelques clientes parce que vous manquez quelques appels.\nEn réalité, votre entreprise cesse d'être disponible dès que personne ne peut répondre. Et les clientes veulent une réponse — pas demain, pas dans deux heures. Maintenant.",
+      "Vous pensez perdre quelques clientes parce que vous manquez quelques appels.\nEn réalité, votre entreprise cesse d'être disponible dès que personne ne peut répondre. Et les clientes veulent une réponse, pas demain, pas dans deux heures. Maintenant.",
     revenueHighlight: "Vous perdez des rendez-vous. Vous perdez des clientes. Vous perdez des revenus.",
   },
   cost: {
     badge: "Le coût réel",
     title: "Combien vous coûtent réellement vos appels manqués ?",
     subtitle:
-      "Chaque fois que votre téléphone sonne sans réponse, vous risquez de perdre une cliente. Pas dans une semaine — immédiatement.",
-    exampleLabel: "Exemple — supposons",
+      "Chaque fois que votre téléphone sonne sans réponse, vous risquez de perdre une cliente. Pas dans une semaine. Immédiatement.",
+    exampleLabel: "Supposons",
     rows: [
       { label: "Appels manqués / semaine", value: "5" },
       { label: "Appels manqués / mois", value: "20" },
@@ -96,13 +96,13 @@ export const fr: Dictionary = {
     escalateLead: "La perte réelle peut rapidement dépasser",
     escalateValue: "20 000 $ / an",
     escalateNote:
-      "Vous ne saurez jamais combien de clientes vous avez perdues — parce qu'elles ne vous le diront jamais. Elles appelleront simplement le prochain établissement.",
+      "Vous ne saurez jamais combien de clientes vous avez perdues, parce qu'elles ne vous le diront jamais. Elles appelleront simplement le prochain établissement.",
   },
   solution: {
     badge: "La solution",
     title: "Le Système Vocali 24/7™",
     subtitle:
-      "Au lieu d'engager une réceptionniste, de rappeler les appels manqués ou d'interrompre vos soins — un système qui répond à votre place. Sans réceptionniste à temps plein, sans rappels manuels, sans interruption constante.",
+      "Au lieu d'engager une réceptionniste, de rappeler les appels manqués ou d'interrompre vos soins : un système qui répond à votre place. Sans réceptionniste à temps plein, sans rappels manuels, sans interruption constante.",
     features: [
       {
         title: "Répond aux appels entrants",
@@ -122,7 +122,7 @@ export const fr: Dictionary = {
       },
       {
         title: "Répond aux questions fréquentes",
-        desc: "Horaires, adresse, stationnement, politiques — instantanément.",
+        desc: "Horaires, adresse, stationnement, politiques, instantanément.",
       },
       {
         title: "Vérifie les disponibilités",
@@ -134,7 +134,7 @@ export const fr: Dictionary = {
       },
       {
         title: "Fonctionne 24 heures sur 24",
-        desc: "Jour, nuit, fins de semaine et jours fériés — sans interruption.",
+        desc: "Jour, nuit, fins de semaine et jours fériés, sans interruption.",
       },
     ],
   },
@@ -156,7 +156,7 @@ export const fr: Dictionary = {
       {
         number: "03",
         title: "Activation",
-        desc: "Nous activons le système. Il répond à chaque appel entrant, informe les clientes et facilite la prise de rendez-vous — même lorsque vous êtes en soin, même lorsque votre établissement est fermé.",
+        desc: "Nous activons le système. Il répond à chaque appel entrant, informe les clientes et facilite la prise de rendez-vous, même lorsque vous êtes en soin, même lorsque votre établissement est fermé.",
       },
     ],
   },
@@ -195,7 +195,7 @@ export const fr: Dictionary = {
   fit: {
     badge: "Est-ce pour vous ?",
     title: "Cette offre est faite pour certaines entreprises.",
-    subtitle: "Vocali n'est pas pour tout le monde — et c'est voulu.",
+    subtitle: "Vocali n'est pas pour tout le monde, et c'est voulu.",
     forTitle: "Pour vous si…",
     forItems: [
       "Vous gérez une clinique médico-esthétique",
@@ -231,7 +231,7 @@ export const fr: Dictionary = {
       },
       {
         title: "Image de marque protégée",
-        desc: "Votre ton, vos valeurs, votre image — uniformes dans toutes vos cliniques.",
+        desc: "Votre ton, vos valeurs, votre image, uniformes dans toutes vos cliniques.",
       },
       {
         title: "Gestion centralisée",
@@ -271,7 +271,7 @@ export const fr: Dictionary = {
     items: [
       {
         q: "Est-ce que le système remplace ma réceptionniste?",
-        a: "Non. Le Système Vocali 24/7™ est un outil complémentaire qui prend en charge les appels quand votre équipe est indisponible — en soin, le soir, la fin de semaine. Il libère votre personnel pour se concentrer sur l'expérience en établissement, là où votre touche humaine est irremplaçable.",
+        a: "Non. Le Système Vocali 24/7™ est un outil complémentaire qui prend en charge les appels quand votre équipe est indisponible : en soin, le soir, la fin de semaine. Il libère votre personnel pour se concentrer sur l'expérience en établissement, là où votre touche humaine est irremplaçable.",
       },
       {
         q: "Peut-il répondre en français?",
@@ -283,7 +283,7 @@ export const fr: Dictionary = {
       },
       {
         q: "Combien de temps prend l'installation?",
-        a: "La mise en place prend généralement moins de 48 heures. Notre équipe configure tout en fonction de vos services, vos horaires et votre ton — sans que vous ayez à vous occuper de la technique.",
+        a: "La mise en place prend généralement moins de 48 heures. Notre équipe configure tout en fonction de vos services, vos horaires et votre ton, sans que vous ayez à vous occuper de la technique.",
       },
       {
         q: "Puis-je conserver mon numéro de téléphone actuel?",

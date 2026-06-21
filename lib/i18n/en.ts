@@ -2,7 +2,7 @@ import type { Dictionary } from "./types"
 
 export const en: Dictionary = {
   meta: {
-    title: "Vocali — The Vocali 24/7™ System for clinics and salons in Quebec",
+    title: "The Vocali 24/7™ System for clinics and salons in Quebec",
     description:
       "Stop losing clients to missed calls. The Vocali 24/7™ System answers incoming calls, informs clients and helps book appointments, even when your team isn't available.",
     keywords:
@@ -46,7 +46,7 @@ export const en: Dictionary = {
     badge: "The reality",
     title: "You're probably losing more clients than you think.",
     subtitle:
-      "The phone rings. You're in a treatment, teaching a class or with a client. You can't answer — and often, she has already booked somewhere else.",
+      "The phone rings. You're in a treatment, teaching a class or with a client. You can't answer. And often, she has already booked somewhere else.",
     items: [
       {
         title: "You interrupt your treatments",
@@ -67,15 +67,15 @@ export const en: Dictionary = {
     ],
     revenueTitle: "The real problem isn't the one you think.",
     revenueDesc:
-      "You think you're losing a few clients because you miss a few calls.\nIn reality, your business stops being available the moment no one can answer. And clients want an answer — not tomorrow, not in two hours. Now.",
+      "You think you're losing a few clients because you miss a few calls.\nIn reality, your business stops being available the moment no one can answer. And clients want an answer, not tomorrow, not in two hours. Now.",
     revenueHighlight: "You lose appointments. You lose clients. You lose revenue.",
   },
   cost: {
     badge: "The real cost",
     title: "How much are your missed calls really costing you?",
     subtitle:
-      "Every time your phone rings unanswered, you risk losing a client. Not in a week — immediately.",
-    exampleLabel: "Example — let's assume",
+      "Every time your phone rings unanswered, you risk losing a client. Not in a week. Immediately.",
+    exampleLabel: "Let's assume",
     rows: [
       { label: "Missed calls / week", value: "5" },
       { label: "Missed calls / month", value: "20" },
@@ -96,13 +96,13 @@ export const en: Dictionary = {
     escalateLead: "The real loss can quickly exceed",
     escalateValue: "$20,000 / year",
     escalateNote:
-      "You'll never know how many clients you've lost — because they'll never tell you. They simply call the next business.",
+      "You'll never know how many clients you've lost, because they'll never tell you. They simply call the next business.",
   },
   solution: {
     badge: "The solution",
     title: "The Vocali 24/7™ System",
     subtitle:
-      "Instead of hiring a receptionist, calling back missed calls or interrupting your treatments — a system that answers for you. No full-time receptionist, no manual callbacks, no constant interruptions.",
+      "Instead of hiring a receptionist, calling back missed calls or interrupting your treatments: a system that answers for you. No full-time receptionist, no manual callbacks, no constant interruptions.",
     features: [
       {
         title: "Answers incoming calls",
@@ -122,7 +122,7 @@ export const en: Dictionary = {
       },
       {
         title: "Answers frequent questions",
-        desc: "Hours, address, parking, policies — instantly.",
+        desc: "Hours, address, parking, policies, instantly.",
       },
       {
         title: "Checks availability",
@@ -134,7 +134,7 @@ export const en: Dictionary = {
       },
       {
         title: "Works around the clock",
-        desc: "Day, night, weekends and holidays — without interruption.",
+        desc: "Day, night, weekends and holidays, without interruption.",
       },
     ],
   },
@@ -156,7 +156,7 @@ export const en: Dictionary = {
       {
         number: "03",
         title: "Activation",
-        desc: "We activate the system. It answers every incoming call, informs clients and helps book appointments — even when you're in a treatment, even when your business is closed.",
+        desc: "We activate the system. It answers every incoming call, informs clients and helps book appointments, even when you're in a treatment, even when your business is closed.",
       },
     ],
   },
@@ -195,7 +195,7 @@ export const en: Dictionary = {
   fit: {
     badge: "Is it for you?",
     title: "This offer is made for certain businesses.",
-    subtitle: "Vocali isn't for everyone — and that's on purpose.",
+    subtitle: "Vocali isn't for everyone, and that's on purpose.",
     forTitle: "For you if…",
     forItems: [
       "You run a medico-aesthetic clinic",
@@ -231,7 +231,7 @@ export const en: Dictionary = {
       },
       {
         title: "Protected brand image",
-        desc: "Your tone, your values, your image — consistent across all locations.",
+        desc: "Your tone, your values, your image, consistent across all locations.",
       },
       {
         title: "Centralized management",
@@ -271,7 +271,7 @@ export const en: Dictionary = {
     items: [
       {
         q: "Does the system replace my receptionist?",
-        a: "No. The Vocali 24/7™ System is a complementary tool that handles calls when your team isn't available — during treatments, evenings, weekends. It frees your staff to focus on the in-person experience, where your human touch is irreplaceable.",
+        a: "No. The Vocali 24/7™ System is a complementary tool that handles calls when your team isn't available: during treatments, evenings, weekends. It frees your staff to focus on the in-person experience, where your human touch is irreplaceable.",
       },
       {
         q: "Can it answer in French?",
@@ -283,7 +283,7 @@ export const en: Dictionary = {
       },
       {
         q: "How long does setup take?",
-        a: "Setup usually takes less than 48 hours. Our team configures everything based on your services, hours and tone — without you having to deal with the technical side.",
+        a: "Setup usually takes less than 48 hours. Our team configures everything based on your services, hours and tone, without you having to deal with the technical side.",
       },
       {
         q: "Can I keep my current phone number?",

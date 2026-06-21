@@ -11,7 +11,7 @@ interface Props {
 const STR = {
   fr: {
     title: "Réserver une démonstration",
-    subtitle: "Laissez-nous vos coordonnées — nous vous recontactons sous 24 h.",
+    subtitle: "Laissez-nous vos coordonnées, nous vous recontactons sous 24 h.",
     fullName: "Prénom et nom",
     company: "Entreprise",
     email: "Courriel",
@@ -29,7 +29,7 @@ const STR = {
   },
   en: {
     title: "Book a demo",
-    subtitle: "Leave us your details — we'll get back to you within 24 hours.",
+    subtitle: "Leave us your details, we'll get back to you within 24 hours.",
     fullName: "Full name",
     company: "Business",
     email: "Email",
