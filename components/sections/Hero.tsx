@@ -3,7 +3,7 @@
 import { motion } from "framer-motion"
 import { ArrowRight, Play } from "lucide-react"
 import { Button } from "@/components/ui/Button"
-import { CalPopupButton } from "@/components/ui/CalPopupButton"
+import { DemoRequestButton } from "@/components/ui/DemoRequestButton"
 import type { Dictionary } from "@/lib/i18n"
 
 interface Props {
@@ -76,10 +76,10 @@ export function Hero({ dict, lang }: Props) {
           transition={{ duration: 0.5, delay: 0.4 }}
           className="flex flex-col sm:flex-row gap-4 mb-10 justify-center"
         >
-          <CalPopupButton size="lg" lang={lang}>
+          <DemoRequestButton size="lg" lang={lang}>
             {h.ctaPrimary}
             <ArrowRight size={18} />
-          </CalPopupButton>
+          </DemoRequestButton>
           <Button variant="secondary" size="lg" href="/demo">
             <Play size={16} className="shrink-0" />
             {h.ctaSecondary}
