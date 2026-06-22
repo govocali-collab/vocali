@@ -23,7 +23,8 @@ export async function sendWelcomeEmail({
   const displayEmail = tempEmail ?? ownerEmail;
   return resend.emails.send({
     from: "Vocali <support@vocali.ca>",
-    to: mailTo(ownerEmail),
+    // Courriel d'accès / bienvenue : va TOUJOURS à la vraie cliente (pas de redirection).
+    to: ownerEmail,
     subject: `Bienvenue chez Vocali — ${agentName} arrive bientôt ✨`,
     html: `
 <!DOCTYPE html>
