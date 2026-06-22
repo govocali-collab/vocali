@@ -18,13 +18,13 @@ const SIZES = {
   preview: {
     square: "w-[338px] h-[423px]",
     story:  "w-[238px] h-[423px]",
-    text:   { headline: "text-[20px]", body: "text-[14px]", logo: "text-[13px]", num: "text-[13px]" },
+    text:   { headline: "text-[20px]", body: "text-[14px]", logo: "text-[10px]", num: "text-[13px]" },
     pad:    "p-6",
   },
   export: {
     square: "w-[1080px] h-[1350px]",
     story:  "w-[608px] h-[1080px]",
-    text:   { headline: "text-[52px]", body: "text-[36px]", logo: "text-[32px]", num: "text-[30px]" },
+    text:   { headline: "text-[52px]", body: "text-[36px]", logo: "text-[22px]", num: "text-[30px]" },
     pad:    "p-20",
   },
 }
