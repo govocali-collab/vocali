@@ -329,7 +329,7 @@ export async function sendAgentPausedNotification({
 
   return resend.emails.send({
     from: "Vocali <support@vocali.ca>",
-    to: mailTo("contact@peaklocals.com"),
+    to: mailTo("alerte@vocali.ca"),
     subject: `⏸️ Agent mis en pause — ${clinicName}`,
     html: `
 <!DOCTYPE html>
@@ -463,7 +463,7 @@ export async function sendPauseReminderNotification({
 
   return resend.emails.send({
     from: "Vocali <support@vocali.ca>",
-    to: mailTo("contact@peaklocals.com"),
+    to: mailTo("alerte@vocali.ca"),
     subject: `⏸️ Rappel — Agent toujours en pause · ${clinicName}`,
     html: `
 <!DOCTYPE html>
@@ -761,7 +761,7 @@ export async function sendPaymentFailedNotification({
   const year = new Date().getFullYear()
   return resend.emails.send({
     from: "Vocali — Paiement <paiement@vocali.ca>",
-    to: mailTo("contact@peaklocals.com"),
+    to: mailTo("alerte@vocali.ca"),
     subject: `⚠️ Paiement échoué — ${clinicName}`,
     html: `
 <!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"/></head>
@@ -819,7 +819,7 @@ export async function sendSubscriptionCancelledNotification({
   const year = new Date().getFullYear()
   return resend.emails.send({
     from: "Vocali — Paiement <paiement@vocali.ca>",
-    to: mailTo("contact@peaklocals.com"),
+    to: mailTo("alerte@vocali.ca"),
     subject: `❌ Abonnement annulé — ${clinicName}`,
     html: `
 <!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"/></head>
