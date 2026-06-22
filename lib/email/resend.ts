@@ -978,3 +978,38 @@ export async function sendDemoProspectEmail(p: DemoProspectEmailParams) {
 </body></html>`.trim(),
   })
 }
+
+/** Message de support envoyé par une cliente depuis son tableau de bord. */
+export async function sendSupportMessage(p: { clinicName: string; email: string; message: string }) {
+  const year = new Date().getFullYear()
+  const safe = p.message
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/\n/g, "<br/>")
+  return resend.emails.send({
+    from: "Vocali <app@vocali.ca>",
+    to: mailTo("support@vocali.ca"),
+    replyTo: p.email,
+    subject: `Support — ${p.clinicName}`,
+    html: `<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8" /></head>
+<body style="margin:0;padding:0;background:#FAF7F2;font-family:Helvetica,Arial,sans-serif;">
+<table width="100%" cellpadding="0" cellspacing="0" style="background:#FAF7F2;padding:40px 0;"><tr><td align="center">
+  <table width="560" cellpadding="0" cellspacing="0" style="max-width:560px;width:100%;background:#FFFFFF;border-radius:12px;border:1px solid #EDE3D4;">
+    <tr><td style="padding:32px 48px 8px;">
+      <p style="margin:0 0 4px;font-size:13px;color:#A88840;font-weight:600;text-transform:uppercase;letter-spacing:1px;">Message de support</p>
+      <h1 style="margin:0;font-size:22px;color:#2A2A2E;">${p.clinicName}</h1>
+      <p style="margin:8px 0 0;font-size:14px;color:#8A8A8E;">De : ${p.email}</p>
+    </td></tr>
+    <tr><td style="padding:16px 48px 28px;">
+      <div style="background:#FAF7F2;border:1px solid #EDE3D4;border-radius:8px;padding:16px 18px;font-size:15px;color:#2A2A2E;line-height:1.6;">${safe}</div>
+      <p style="margin:16px 0 0;font-size:13px;color:#8A8A8E;">Répondez directement à ce courriel pour répondre à la cliente.</p>
+    </td></tr>
+    <tr><td style="background:#FFFFFF;border-top:1px solid #EDE3D4;border-radius:0 0 12px 12px;padding:20px 48px;text-align:center;">
+      <p style="margin:0;font-size:12px;color:#B0B0B3;">© ${year} Vocali · Tableau de bord client</p>
+    </td></tr>
+  </table>
+</td></tr></table>
+</body></html>`.trim(),
+  })
+}
