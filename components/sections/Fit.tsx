@@ -10,7 +10,7 @@ export function Fit({ dict }: Props) {
   const f = dict.fit
 
   return (
-    <section id="franchises" className="bg-ivory-100 py-16 lg:py-36">
+    <section id="pour-qui" className="bg-ivory-100 py-16 lg:py-36">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <AnimateOnScroll variant="fadeUp" className="text-center mb-16">
           <span className="section-badge mb-6 inline-flex">

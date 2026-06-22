@@ -7,6 +7,11 @@
     scroll-behavior: smooth;
   }
 
+  /* Décale les ancres (#solution, #pour-qui, etc.) sous la navbar fixe. */
+  section[id] {
+    scroll-margin-top: 96px;
+  }
+
   body {
     @apply bg-white text-charcoal-800 antialiased;
     font-feature-settings: "kern" 1, "liga" 1, "calt" 1;

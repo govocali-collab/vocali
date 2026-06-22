@@ -18,7 +18,7 @@ interface Props {
 const navLinks = (dict: Dictionary, lang: string) => [
   { label: dict.nav.solution, href: `/${lang}#solution` },
   { label: dict.nav.howItWorks, href: `/${lang}#fonctionnement` },
-  { label: dict.nav.franchise, href: `/${lang}#franchises` },
+  { label: dict.nav.franchise, href: `/${lang}#pour-qui` },
   { label: dict.nav.faq, href: `/${lang}#faq` },
 ]
 
