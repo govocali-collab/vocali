@@ -81,7 +81,8 @@ export default function OnboardingForm({ prefill }: { prefill?: Prefill }) {
   const [selectedServices, setSelectedServices] = useState<string[]>([])
   const [customServices, setCustomServices] = useState("")
   const [hours, setHours] = useState<Record<string, HoursEntry>>(DEFAULT_HOURS)
-  const [bookingSystem, setBookingSystem] = useState<"Jane App" | "Acuity" | "Bookly" | "Mindbody" | "Aucun">("Aucun")
+  const [bookingSystem, setBookingSystem] = useState<"Jane App" | "Acuity" | "Bookly" | "Mindbody" | "Autre" | "Aucun">("Aucun")
+  const [bookingSystemOther, setBookingSystemOther] = useState("")
 
   const toggleService = (s: string) =>
     setSelectedServices((prev) => prev.includes(s) ? prev.filter((x) => x !== s) : [...prev, s])
@@ -100,7 +101,8 @@ export default function OnboardingForm({ prefill }: { prefill?: Prefill }) {
         body: JSON.stringify({
           clinicName, ownerFirstName, ownerLastName, ownerEmail, ownerPhone,
           city, language, agentName, tone, selectedServices, customServices,
-          hours, bookingSystem,
+          hours,
+          bookingSystem: bookingSystem === "Autre" ? (bookingSystemOther.trim() || "Autre") : bookingSystem,
         }),
       })
       const data = await res.json()
@@ -257,13 +259,23 @@ export default function OnboardingForm({ prefill }: { prefill?: Prefill }) {
             <h2 className="text-charcoal-900 font-body font-semibold text-base mb-1">Logiciel de réservation</h2>
             <p className="text-charcoal-400 text-sm mb-4">Quel outil utilisez-vous pour gérer vos rendez-vous ?</p>
             <div className="flex flex-wrap gap-2">
-              {(["Jane App", "Acuity", "Bookly", "Mindbody", "Aucun"] as const).map((s) => (
+              {(["Jane App", "Acuity", "Bookly", "Mindbody", "Autre", "Aucun"] as const).map((s) => (
                 <label key={s} className={chipClass(bookingSystem === s)}>
                   <input type="radio" name="bookingSystem" value={s} checked={bookingSystem === s} onChange={() => setBookingSystem(s)} className="sr-only" />
                   {s}
                 </label>
               ))}
             </div>
+            {bookingSystem === "Autre" && (
+              <input
+                type="text"
+                value={bookingSystemOther}
+                onChange={(e) => setBookingSystemOther(e.target.value)}
+                placeholder="Lequel ? (ex. SimplyBook, Square Appointments…)"
+                className={`${inputClass} mt-3`}
+                autoFocus
+              />
+            )}
           </div>
 
           {error && (
