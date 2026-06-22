@@ -2,35 +2,36 @@ import type { Dictionary } from "./types"
 
 export const fr: Dictionary = {
   meta: {
-    title: "Vocali — Réceptionniste IA 24/7 pour cliniques esthétiques au Québec",
+    title: "Le Système Vocali 24/7™ pour cliniques et salons au Québec",
     description:
-      "Ne manquez plus jamais un appel client. Vocali fournit une réceptionniste IA disponible 24/7 qui répond aux appels, qualifie les demandes et aide à remplir votre agenda.",
+      "Arrêtez de perdre des clientes à cause des appels. Le Système Vocali 24/7™ répond aux appels entrants, informe les clientes et facilite la prise de rendez-vous, même lorsque votre équipe n'est pas disponible.",
     keywords:
-      "réceptionniste IA, clinique beauté, médecine esthétique, spa médical, Québec, rendez-vous automatique, appels manqués",
+      "réceptionniste IA, système Vocali 24/7, clinique médico-esthétique, clinique beauté, salon d'esthétique, école de formation, Québec, appels manqués, prise de rendez-vous",
   },
   nav: {
     solution: "Solution",
     howItWorks: "Fonctionnement",
-    franchise: "Franchises",
+    franchise: "Pour qui",
     faq: "FAQ",
-    cta: "Réserver une démo",
+    cta: "Réserver une démonstration",
     logo: "Vocali",
   },
   hero: {
-    badge: "Programme pilote au Québec · Places limitées",
-    headline: "Ne manquez plus jamais un appel client.",
+    badge: "Système Vocali 24/7™ · Programme fondateur",
+    headline: "Arrêtez de perdre des clientes à cause des appels.",
     subheadline:
-      "Une réceptionniste IA disponible 24/7 pour répondre aux appels, qualifier les demandes et aider à remplir votre agenda.",
-    ctaPrimary: "Demander une démonstration",
-    ctaSecondary: "Écouter un appel exemple",
-    trustedBy: "Pour les cliniques esthétiques et médico-esthétiques.",
+      "Le système qui répond aux appels entrants, informe les clientes et facilite la prise de rendez-vous, même lorsque votre équipe n'est pas disponible.",
+    ctaPrimary: "Réserver une démonstration",
+    ctaSecondary: "Essayez la démo",
+    trustedBy:
+      "Pour les cliniques médico-esthétiques, cliniques beauté, salons d'esthétique et écoles de formation.",
     callCard: {
       live: "En direct",
       incomingCall: "Appel entrant",
       newClient: "Nouvelle cliente",
       phone: "+1 (514) 555-0192",
       online: "En ligne",
-      aiName: "Vocali IA",
+      aiName: "Vocali 24/7",
       message: "Bonjour ! Bienvenue chez Clinique Dermavia. Comment puis-je vous aider aujourd'hui ?",
       stat1Label: "Délai",
       stat1Value: "< 1s",
@@ -42,120 +43,181 @@ export const fr: Dictionary = {
     },
   },
   problem: {
-    badge: "Le coût des appels manqués",
-    title: "Combien vous coûte chaque appel manqué?",
+    badge: "Le constat",
+    title: "Vous manquez probablement plus de clientes que vous le croyez.",
     subtitle:
-      "Chaque fois que votre équipe est occupée, un appel sonne dans le vide — et une cliente potentielle s'en va.",
+      "Le téléphone sonne. Vous êtes en soin, en formation ou avec une cliente. Vous ne pouvez pas répondre. Et souvent, la cliente a déjà réservé ailleurs.",
     items: [
       {
-        title: "Appels pendant les traitements",
-        desc: "Votre équipe est en cabine. La cliente raccroche et appelle la concurrence.",
+        title: "Vous interrompez vos soins",
+        desc: "Répondre au téléphone vous force à délaisser la cliente devant vous.",
       },
       {
-        title: "Appels après les heures d'ouverture",
-        desc: "Votre bureau est fermé à 21h. La demande arrive, mais personne ne répond.",
+        title: "Vous répétez les mêmes réponses",
+        desc: "Services, prix, horaires : les mêmes questions, encore et encore.",
       },
       {
-        title: "Rendez-vous restés sans suite",
-        desc: "Des demandes restent sans réponse. Les plages horaires demeurent vides.",
+        title: "Vous rappelez sans fin",
+        desc: "Les appels manqués s'accumulent et les rappels grugent vos journées.",
       },
       {
-        title: "Personnel déjà surchargé",
-        desc: "Votre équipe jongle entre les clientes présentes et celles au téléphone.",
+        title: "Votre entreprise cesse d'être disponible",
+        desc: "Dès que personne ne répond, vous n'existez plus pour la cliente qui appelle.",
       },
     ],
-    revenueTitle: "Un appel manqué, c'est un rendez-vous qui n'aura pas lieu.",
+    revenueTitle: "Le vrai problème n'est pas celui que vous croyez.",
     revenueDesc:
-      "Combien vous coûte chaque appel sans réponse ?\nLa plupart des cliniques ne le savent pas — parce qu'un appel perdu ne laisse pas de trace.",
+      "Vous pensez perdre quelques clientes parce que vous manquez quelques appels.\nEn réalité, votre entreprise cesse d'être disponible dès que personne ne peut répondre. Et les clientes veulent une réponse, pas demain, pas dans deux heures. Maintenant.",
+    revenueHighlight: "Vous perdez des rendez-vous. Vous perdez des clientes. Vous perdez des revenus.",
+  },
+  cost: {
+    badge: "Le coût réel",
+    title: "Combien vous coûtent réellement vos appels manqués ?",
+    subtitle:
+      "Chaque fois que votre téléphone sonne sans réponse, vous risquez de perdre une cliente. Pas dans une semaine. Immédiatement.",
+    exampleLabel: "Supposons",
+    rows: [
+      { label: "Appels manqués / semaine", value: "5" },
+      { label: "Appels manqués / mois", value: "20" },
+      { label: "Si 25 % auraient réservé", value: "5 RDV" },
+      { label: "Valeur d'un rendez-vous", value: "150 $" },
+    ],
+    resultLabel: "5 RDV × 150 $",
+    resultValue: "750 $ / mois",
+    bigLabel: "750 $ × 12 mois",
+    bigValue: "9 000 $ / an",
+    note: "Pour seulement 5 appels manqués par semaine.",
+    escalateTitle: "Et la perte réelle est souvent bien plus grande.",
+    escalateItems: [
+      "Plus d'appels manqués par semaine",
+      "Une valeur moyenne par soin plus élevée",
+      "Des clientes qui reviennent plusieurs fois par année",
+    ],
+    escalateLead: "La perte réelle peut rapidement dépasser",
+    escalateValue: "20 000 $ / an",
+    escalateNote:
+      "Vous ne saurez jamais combien de clientes vous avez perdues, parce qu'elles ne vous le diront jamais. Elles appelleront simplement le prochain établissement.",
   },
   solution: {
     badge: "La solution",
-    title: "Une réceptionniste qui répond à chaque appel.",
-    subtitle: "Toujours disponible. Toujours professionnelle. Toujours à votre image.",
+    title: "Le Système Vocali 24/7™",
+    subtitle:
+      "Au lieu d'engager une réceptionniste, de rappeler les appels manqués ou d'interrompre vos soins : un système qui répond à votre place. Sans réceptionniste à temps plein, sans rappels manuels, sans interruption constante.",
     features: [
       {
-        title: "Répond instantanément",
-        desc: "Aucune attente, aucun message laissé sans réponse. La première sonnerie suffit.",
+        title: "Répond aux appels entrants",
+        desc: "Chaque appel reçoit une réponse immédiate, dès la première sonnerie.",
       },
       {
-        title: "Disponible 24/7",
-        desc: "Jour, nuit, fins de semaine et jours fériés — votre clinique est toujours ouverte.",
+        title: "Informe les clientes",
+        desc: "Des réponses claires et professionnelles, toujours à votre image.",
       },
       {
-        title: "Bilingue français et anglais",
-        desc: "S'adapte automatiquement à la langue préférée de la personne qui appelle.",
+        title: "Présente vos services",
+        desc: "Soins, options et détails : tout est expliqué avec justesse.",
+      },
+      {
+        title: "Communique vos tarifs",
+        desc: "Les prix sont transmis de façon cohérente, sans approximation.",
       },
       {
         title: "Répond aux questions fréquentes",
-        desc: "Services, prix, disponibilités — elle connaît votre clinique sur le bout des doigts.",
+        desc: "Horaires, adresse, stationnement, politiques, instantanément.",
       },
       {
-        title: "Capture les coordonnées",
-        desc: "Nom, numéro, raison de l'appel — chaque information est notée avec précision.",
+        title: "Vérifie les disponibilités",
+        desc: "Consulte les plages libres et oriente la cliente vers la bonne option.",
       },
       {
-        title: "Aide à réserver un rendez-vous",
-        desc: "Dirige les clientes vers la prise de rendez-vous selon vos disponibilités.",
+        title: "Facilite la prise de rendez-vous",
+        desc: "Guide la cliente jusqu'à la réservation, selon votre calendrier.",
       },
       {
-        title: "Confirmation par texto",
-        desc: "Un message de suivi automatique est envoyé après chaque appel pris en charge.",
+        title: "Fonctionne 24 heures sur 24",
+        desc: "Jour, nuit, fins de semaine et jours fériés, sans interruption.",
       },
     ],
   },
   howItWorks: {
-    badge: "Processus simple",
+    badge: "Mise en place · En 3 étapes",
     title: "Comment ça fonctionne",
-    subtitle: "Simple pour vos clientes. Puissant pour votre entreprise.",
+    subtitle: "Vous n'avez rien à gérer. Nous mettons tout en place pour vous.",
     steps: [
       {
         number: "01",
-        title: "Une cliente appelle",
-        desc: "Votre numéro habituel, votre identité. Notre réceptionniste répond en votre nom, avec votre ton et vos informations de clinique.",
+        title: "Configuration",
+        desc: "Nous configurons le Système Vocali 24/7™ selon votre établissement : services, tarifs, horaires et questions fréquentes. Résultat : le système connaît votre entreprise.",
       },
       {
         number: "02",
-        title: "L'IA prend en charge",
-        desc: "Elle répond aux questions, note toute l'information pertinente et guide la cliente vers la prochaine étape selon vos paramètres.",
+        title: "Connexion",
+        desc: "Nous connectons le système à votre calendrier. Résultat : les clientes peuvent prendre rendez-vous rapidement.",
       },
       {
         number: "03",
-        title: "Votre équipe reçoit tout",
-        desc: "Un résumé complet de chaque appel est transmis à votre équipe en temps réel, prête à donner suite rapidement.",
+        title: "Activation",
+        desc: "Nous activons le système. Il répond à chaque appel entrant, informe les clientes et facilite la prise de rendez-vous, même lorsque vous êtes en soin, même lorsque votre établissement est fermé.",
       },
     ],
   },
   benefits: {
-    badge: "Les bénéfices",
-    title: "Des résultats concrets pour votre clinique",
+    badge: "Le résultat",
+    title: "Ce que vous obtenez",
     subtitle:
-      "Chaque fonctionnalité est pensée pour avoir un impact direct sur vos revenus et votre expérience client.",
+      "À chaque appel : une cliente servie, un rendez-vous capturé, aucun soin interrompu.",
     items: [
       {
-        title: "Zéro appel manqué",
-        desc: "Fini les occasions perdues. Chaque cliente est accueillie, peu importe l'heure.",
+        title: "Configuration complète",
+        desc: "Nous mettons tout en place pour vous, de A à Z.",
       },
       {
-        title: "Plus de rendez-vous confirmés",
-        desc: "Chaque appel devient une opportunité concrète de remplir votre agenda.",
+        title: "Personnalisation",
+        desc: "Adaptée à votre établissement et à votre ton.",
       },
       {
-        title: "Disponibilité 24/7",
-        desc: "Votre clinique ne ferme plus jamais pour les nouvelles demandes entrantes.",
+        title: "Calendrier connecté",
+        desc: "Vos disponibilités synchronisées en temps réel.",
       },
       {
-        title: "Aucune mise en attente",
-        desc: "Vos clientes sont prises en charge immédiatement — sans musique d'attente, sans frustration.",
+        title: "Réponses personnalisées",
+        desc: "Services, tarifs, horaires et informations importantes.",
       },
       {
-        title: "Expérience client soignée",
-        desc: "Un accueil professionnel et chaleureux à chaque interaction, sans exception.",
+        title: "Prise de rendez-vous automatisée",
+        desc: "Disponible 24/7, sans intervention de votre part.",
       },
       {
-        title: "Équipe soulagée",
-        desc: "Libérez votre personnel pour ce qui compte vraiment : vos clientes présentes.",
+        title: "Accompagnement",
+        desc: "Un support humain pendant toute la mise en place.",
       },
     ],
+  },
+  fit: {
+    badge: "Est-ce pour vous ?",
+    title: "Cette offre est faite pour certaines entreprises.",
+    subtitle: "Vocali n'est pas pour tout le monde, et c'est voulu.",
+    forTitle: "Pour vous si…",
+    forItems: [
+      "Vous gérez une clinique médico-esthétique",
+      "Vous gérez une clinique beauté",
+      "Vous gérez un salon d'esthétique",
+      "Vous dirigez une école de formation",
+      "Vous recevez déjà des appels chaque semaine",
+      "Vous souhaitez récupérer davantage de rendez-vous",
+      "Vous voulez gagner du temps",
+      "Vous refusez d'engager une réceptionniste à temps plein",
+    ],
+    notTitle: "Pas pour vous si…",
+    notItems: [
+      "Vous cherchez une solution miracle",
+      "Vous ne recevez pratiquement aucun appel",
+      "Vous souhaitez continuer à gérer tous les appels manuellement",
+      "Vous n'accordez aucune valeur à votre temps",
+    ],
+    offerBadge: "Offre fondatrice",
+    offerTitle: "Nos 10 premières entreprises partenaires.",
+    offerDesc:
+      "En échange de vos commentaires et de votre retour d'expérience, vous bénéficiez d'un tarif fondateur exclusif pendant vos 3 premiers mois.",
   },
   franchise: {
     badge: "Multi-succursales",
@@ -169,7 +231,7 @@ export const fr: Dictionary = {
       },
       {
         title: "Image de marque protégée",
-        desc: "Votre ton, vos valeurs, votre image — uniformes dans toutes vos cliniques.",
+        desc: "Votre ton, vos valeurs, votre image, uniformes dans toutes vos cliniques.",
       },
       {
         title: "Gestion centralisée",
@@ -185,7 +247,7 @@ export const fr: Dictionary = {
   founder: {
     badge: "Le fondateur",
     headline: "Bâti par quelqu'un qui comprend votre réalité.",
-    body: "Je m'appelle Jonathan. J'ai développé Vocali après avoir constaté que les cliniques esthétiques et médico-esthétiques au Québec perdaient des clientes non pas par manque de qualité, mais par manque de disponibilité. Sarah, c'est la réceptionniste que j'aurais voulu leur donner dès le premier jour.",
+    body: "Je m'appelle Jonathan. J'ai développé le Système Vocali 24/7™ après avoir constaté que les cliniques et salons au Québec perdaient des clientes non pas par manque de qualité, mais par manque de disponibilité. Vocali, c'est la réceptionniste que j'aurais voulu leur donner dès le premier jour.",
     photoAlt: "Jonathan, fondateur de Vocali",
     name: "Jonathan",
     title: "Fondateur, Vocali",
@@ -193,50 +255,50 @@ export const fr: Dictionary = {
   },
   pilot: {
     badge: "Déploiement en cours",
-    title: "Programme pilote au Québec",
+    title: "Programme fondateur au Québec",
     subtitle:
-      "Actuellement en déploiement auprès de cliniques esthétiques et cliniques médico-esthétiques.",
+      "Actuellement en déploiement auprès des premières cliniques et premiers salons partenaires.",
     testimonialPlaceholder:
-      "Les témoignages de nos partenaires pilotes arrivent bientôt. Rejoignez le programme pour être parmi les premiers.",
-    cta: "Rejoindre le programme pilote",
-    spotsLeft: "Places limitées disponibles",
+      "Les témoignages de nos partenaires fondateurs arrivent bientôt. Rejoignez le programme pour être parmi les premiers.",
+    cta: "Rejoindre le programme fondateur",
+    spotsLeft: "10 places fondatrices seulement",
     ctaTitle: "Prêt à ne plus manquer un seul appel ?",
-    ctaSubtitle: "Rejoignez les premières cliniques à déployer Vocali au Québec.",
+    ctaSubtitle: "Rejoignez les premières cliniques à déployer le Système Vocali 24/7™ au Québec.",
   },
   faq: {
     badge: "Questions fréquentes",
     title: "Tout ce que vous voulez savoir",
     items: [
       {
-        q: "Est-ce que l'IA remplace ma réceptionniste?",
-        a: "Non. Notre réceptionniste IA est un outil complémentaire qui prend en charge les appels quand votre équipe est indisponible — en traitement, le soir, la fin de semaine. Elle libère votre personnel pour se concentrer sur l'expérience en clinique, là où votre touche humaine est irremplaçable.",
+        q: "Est-ce que le système remplace ma réceptionniste?",
+        a: "Non. Le Système Vocali 24/7™ est un outil complémentaire qui prend en charge les appels quand votre équipe est indisponible : en soin, le soir, la fin de semaine. Il libère votre personnel pour se concentrer sur l'expérience en établissement, là où votre touche humaine est irremplaçable.",
       },
       {
-        q: "Peut-elle répondre en français?",
-        a: "Absolument. Le français est la langue par défaut. Elle s'adapte automatiquement à l'anglais selon la préférence de la personne qui appelle, ce qui est particulièrement utile pour les cliniques dans les régions bilingues.",
+        q: "Peut-il répondre en français?",
+        a: "Absolument. Le français est la langue par défaut. Le système s'adapte automatiquement à l'anglais selon la préférence de la personne qui appelle, ce qui est particulièrement utile dans les régions bilingues.",
       },
       {
         q: "Comment les rendez-vous sont-ils gérés?",
-        a: "L'IA peut informer les clientes sur vos disponibilités, capturer leurs coordonnées et les guider vers la réservation. Une intégration avec votre logiciel de gestion de clinique est également possible selon votre configuration.",
+        a: "Le système informe les clientes sur vos disponibilités, capture leurs coordonnées et les guide vers la réservation. Nous le connectons à votre calendrier afin que les rendez-vous se prennent rapidement.",
       },
       {
         q: "Combien de temps prend l'installation?",
-        a: "La mise en place prend généralement moins de 48 heures. Notre équipe configure tout en fonction de vos services, vos horaires et votre ton de communication — sans que vous ayez à vous occuper de la technique.",
+        a: "La mise en place prend généralement moins de 48 heures. Notre équipe configure tout en fonction de vos services, vos horaires et votre ton, sans que vous ayez à vous occuper de la technique.",
       },
       {
         q: "Puis-je conserver mon numéro de téléphone actuel?",
-        a: "Oui. Votre numéro existant est conservé. Nous configurons simplement le renvoi d'appels pour que notre réceptionniste prenne le relais quand vous êtes indisponible. Rien ne change pour vos clientes.",
+        a: "Oui. Votre numéro existant est conservé. Nous configurons simplement le renvoi d'appels pour que le système prenne le relais quand vous êtes indisponible. Rien ne change pour vos clientes.",
       },
     ],
   },
   finalCta: {
-    title: "Découvrez ce qu'une réceptionniste IA peut faire pour votre entreprise.",
-    subtitle: "Rejoignez les cliniques québécoises qui ne manquent plus jamais un appel.",
+    title: "Découvrez Vocali dans votre établissement.",
+    subtitle: "Parce qu'un appel manqué ne devrait jamais devenir une cliente perdue.",
     cta: "Réserver une démonstration",
-    note: "Aucun engagement requis · Réponse dans les 24 heures",
+    note: "Aucun engagement · Notre équipe analyse vos besoins et vous répond rapidement.",
   },
   footer: {
-    tagline: "La réceptionniste que votre clinique mérite.",
+    tagline: "Parce qu'un appel manqué ne devrait jamais devenir une cliente perdue.",
     links: {
       privacy: "Politique de confidentialité",
       terms: "Conditions d'utilisation",

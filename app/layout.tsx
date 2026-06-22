@@ -28,9 +28,9 @@ const dmSans = DM_Sans({
   display: "swap",
 })
 
-const SITE_TITLE = "Vocali — Réceptionniste virtuelle IA pour cliniques esthétiques"
+const SITE_TITLE = "Vocali · Réceptionniste virtuelle IA pour cliniques esthétiques"
 const SITE_DESC =
-  "Votre réceptionniste virtuelle, disponible 24/7. Elle répond aux appels, renseigne vos clientes et prend les rendez-vous — même quand vous êtes occupée."
+  "Votre réceptionniste virtuelle, disponible 24/7. Elle répond aux appels, renseigne vos clientes et prend les rendez-vous, même quand vous êtes occupée."
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://vocali.ca"),
@@ -44,7 +44,7 @@ export const metadata: Metadata = {
     siteName: "Vocali",
     title: SITE_TITLE,
     description: SITE_DESC,
-    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "Vocali — Réceptionniste virtuelle IA" }],
+    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "Vocali · Réceptionniste virtuelle IA" }],
   },
   twitter: {
     card: "summary_large_image",

@@ -1,6 +1,6 @@
 import { ArrowRight } from "lucide-react"
 import { AnimateOnScroll } from "@/components/ui/AnimateOnScroll"
-import { CalPopupButton } from "@/components/ui/CalPopupButton"
+import { DemoRequestButton } from "@/components/ui/DemoRequestButton"
 import type { Dictionary } from "@/lib/i18n"
 
 interface Props {
@@ -30,10 +30,10 @@ export function FinalCTA({ dict, lang = "fr" }: Props) {
           </h2>
           <p className="text-white/75 text-lg mb-10">{c.subtitle}</p>
 
-          <CalPopupButton variant="white" size="lg" lang={lang}>
+          <DemoRequestButton variant="white" size="lg" lang={lang}>
             {c.cta}
             <ArrowRight size={20} />
-          </CalPopupButton>
+          </DemoRequestButton>
 
           <p className="text-white/50 text-sm mt-6">{c.note}</p>
         </AnimateOnScroll>

@@ -12,7 +12,7 @@ export function Problem({ dict }: Props) {
   const p = dict.problem
 
   return (
-    <section id="probleme" className="bg-dark-warm py-16 lg:py-36 relative overflow-hidden">
+    <section id="probleme" className="bg-dark-warm pt-16 lg:pt-36 pb-32 lg:pb-52 relative overflow-hidden">
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[1px] bg-gradient-to-r from-transparent via-gold-700/50 to-transparent" />
       <div className="absolute inset-0 opacity-[0.03]"
         style={{
@@ -63,11 +63,16 @@ export function Problem({ dict }: Props) {
             <p className="text-charcoal-300 leading-relaxed text-base whitespace-pre-line">
               {p.revenueDesc}
             </p>
+            {p.revenueHighlight && (
+              <p className="font-serif text-lg lg:text-xl font-bold text-gold-300 mt-5 italic">
+                {p.revenueHighlight}
+              </p>
+            )}
           </div>
         </AnimateOnScroll>
       </div>
 
-      <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-white to-transparent pointer-events-none" />
+      <div className="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-ivory-100 to-transparent pointer-events-none" />
     </section>
   )
 }

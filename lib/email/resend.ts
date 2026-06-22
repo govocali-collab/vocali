@@ -1,4 +1,5 @@
 import { Resend } from "resend";
+import { mailTo } from "./recipient";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -22,7 +23,7 @@ export async function sendWelcomeEmail({
   const displayEmail = tempEmail ?? ownerEmail;
   return resend.emails.send({
     from: "Vocali <support@vocali.ca>",
-    to: ownerEmail,
+    to: mailTo(ownerEmail),
     subject: `Bienvenue chez Vocali — ${agentName} arrive bientôt ✨`,
     html: `
 <!DOCTYPE html>
@@ -166,7 +167,7 @@ export async function sendPaymentLinkEmail({
 
   return resend.emails.send({
     from: "Vocali <support@vocali.ca>",
-    to: email,
+    to: mailTo(email),
     subject: `Votre accès à Vocali — Secrétaire IA`,
     html: `
 <!DOCTYPE html>
@@ -314,7 +315,7 @@ export async function sendAgentPausedNotification({
 
   return resend.emails.send({
     from: "Vocali <support@vocali.ca>",
-    to: "contact@peaklocals.com",
+    to: mailTo("contact@peaklocals.com"),
     subject: `⏸️ Agent mis en pause — ${clinicName}`,
     html: `
 <!DOCTYPE html>
@@ -448,7 +449,7 @@ export async function sendPauseReminderNotification({
 
   return resend.emails.send({
     from: "Vocali <support@vocali.ca>",
-    to: "contact@peaklocals.com",
+    to: mailTo("contact@peaklocals.com"),
     subject: `⏸️ Rappel — Agent toujours en pause · ${clinicName}`,
     html: `
 <!DOCTYPE html>
@@ -576,7 +577,7 @@ export async function sendAdminNotification({
 }: SendAdminNotificationParams) {
   return resend.emails.send({
     from: "Vocali <support@vocali.ca>",
-    to: "jonathan@vocali.ca",
+    to: mailTo("jonathan@vocali.ca"),
     subject: `🆕 Nouvelle clinique : ${clinicName}`,
     html: `
 <div style="font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;max-width:600px;margin:0 auto;padding:32px;background:#FAF7F2;border-radius:12px;">
@@ -628,7 +629,7 @@ export async function sendAgentLiveEmail({
   const year = new Date().getFullYear()
   return resend.emails.send({
     from: "Vocali <support@vocali.ca>",
-    to: ownerEmail,
+    to: mailTo(ownerEmail),
     subject: `${agentName} est maintenant en ligne ✨`,
     html: `
 <!DOCTYPE html>
@@ -746,7 +747,7 @@ export async function sendPaymentFailedNotification({
   const year = new Date().getFullYear()
   return resend.emails.send({
     from: "Vocali <support@vocali.ca>",
-    to: "contact@peaklocals.com",
+    to: mailTo("contact@peaklocals.com"),
     subject: `⚠️ Paiement échoué — ${clinicName}`,
     html: `
 <!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"/></head>
@@ -804,7 +805,7 @@ export async function sendSubscriptionCancelledNotification({
   const year = new Date().getFullYear()
   return resend.emails.send({
     from: "Vocali <support@vocali.ca>",
-    to: "contact@peaklocals.com",
+    to: mailTo("contact@peaklocals.com"),
     subject: `❌ Abonnement annulé — ${clinicName}`,
     html: `
 <!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"/></head>
@@ -933,7 +934,7 @@ export async function sendDemoProspectEmail(p: DemoProspectEmailParams) {
     : ""
   return resend.emails.send({
     from: "Vocali <support@vocali.ca>",
-    to: "contact@vocali.ca",
+    to: mailTo("contact@vocali.ca"),
     subject: `Nouveau prospect demo${p.clinicName ? " - " + p.clinicName : ""}`,
     html: `<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8" /></head>
 <body style="margin:0;padding:0;background:#FAF7F2;font-family:Helvetica,Arial,sans-serif;">

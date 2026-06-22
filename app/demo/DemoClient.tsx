@@ -215,7 +215,7 @@ export default function DemoClient() {
             <div className="demo-feat">
               <span className="ic">💬</span>
               <h3>Répondre aux questions</h3>
-              <p>Prix, services, horaires, adresse — instantanément.</p>
+              <p>Prix, services, horaires, adresse, instantanément.</p>
             </div>
             <div className="demo-feat">
               <span className="ic">🔄</span>

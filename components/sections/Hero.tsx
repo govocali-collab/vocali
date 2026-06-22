@@ -1,11 +1,9 @@
 "use client"
 
-import { useState } from "react"
 import { motion } from "framer-motion"
 import { ArrowRight, Play } from "lucide-react"
 import { Button } from "@/components/ui/Button"
-import { CalPopupButton } from "@/components/ui/CalPopupButton"
-import DemoAudioModal from "@/components/DemoAudioModal"
+import { DemoRequestButton } from "@/components/ui/DemoRequestButton"
 import type { Dictionary } from "@/lib/i18n"
 
 interface Props {
@@ -15,7 +13,6 @@ interface Props {
 
 export function Hero({ dict, lang }: Props) {
   const h = dict.hero
-  const [demoOpen, setDemoOpen] = useState(false)
 
   return (
     <section
@@ -51,15 +48,15 @@ export function Hero({ dict, lang }: Props) {
         >
           {lang === "fr" ? (
             <>
-              Ne manquez{" "}
-              <span className="gold-text">plus jamais</span>
-              {" "}un appel client.
+              Arrêtez de perdre des{" "}
+              <span className="gold-text">clientes</span>
+              {" "}à cause des appels.
             </>
           ) : (
             <>
-              Never Miss{" "}
-              <span className="gold-text">Another</span>
-              {" "}Client Call.
+              Stop losing{" "}
+              <span className="gold-text">clients</span>
+              {" "}to missed calls.
             </>
           )}
         </motion.h1>
@@ -79,11 +76,11 @@ export function Hero({ dict, lang }: Props) {
           transition={{ duration: 0.5, delay: 0.4 }}
           className="flex flex-col sm:flex-row gap-4 mb-10 justify-center"
         >
-          <CalPopupButton size="lg" lang={lang}>
+          <DemoRequestButton size="lg" lang={lang}>
             {h.ctaPrimary}
             <ArrowRight size={18} />
-          </CalPopupButton>
-          <Button variant="secondary" size="lg" onClick={() => setDemoOpen(true)}>
+          </DemoRequestButton>
+          <Button variant="secondary" size="lg" href="/demo">
             <Play size={16} className="shrink-0" />
             {h.ctaSecondary}
           </Button>
@@ -100,8 +97,6 @@ export function Hero({ dict, lang }: Props) {
       </div>
 
       <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-white to-transparent pointer-events-none" />
-
-      <DemoAudioModal open={demoOpen} onClose={() => setDemoOpen(false)} lang={lang} />
     </section>
   )
 }

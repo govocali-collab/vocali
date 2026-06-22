@@ -45,6 +45,23 @@ export type Dictionary = {
     revenueDesc: string
     revenueHighlight?: string
   }
+  cost: {
+    badge: string
+    title: string
+    subtitle: string
+    exampleLabel: string
+    rows: Array<{ label: string; value: string }>
+    resultLabel: string
+    resultValue: string
+    bigLabel: string
+    bigValue: string
+    note: string
+    escalateTitle: string
+    escalateItems: string[]
+    escalateLead: string
+    escalateValue: string
+    escalateNote: string
+  }
   solution: {
     badge: string
     title: string
@@ -62,6 +79,18 @@ export type Dictionary = {
     title: string
     subtitle: string
     items: Array<{ title: string; desc: string }>
+  }
+  fit: {
+    badge: string
+    title: string
+    subtitle: string
+    forTitle: string
+    forItems: string[]
+    notTitle: string
+    notItems: string[]
+    offerBadge: string
+    offerTitle: string
+    offerDesc: string
   }
   franchise: {
     badge: string
