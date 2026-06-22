@@ -47,9 +47,9 @@ export function Cost({ dict }: Props) {
                 <span className="text-charcoal-600 text-sm font-medium">{c.resultLabel}</span>
                 <span className="font-serif text-2xl font-bold text-charcoal-900">{c.resultValue}</span>
               </div>
-              <div className="bg-charcoal-900 rounded-2xl px-6 py-5 flex items-center justify-between gap-4">
+              <div className="bg-charcoal-900 rounded-2xl px-5 sm:px-6 py-5 flex items-center justify-between gap-3">
                 <span className="text-charcoal-300 text-sm">{c.bigLabel}</span>
-                <span className="gold-text font-serif text-3xl font-bold">{c.bigValue}</span>
+                <span className="gold-text font-serif text-2xl sm:text-3xl font-bold whitespace-nowrap">{c.bigValue}</span>
               </div>
               <p className="text-charcoal-400 text-xs mt-4 text-center">{c.note}</p>
             </div>
@@ -71,8 +71,8 @@ export function Cost({ dict }: Props) {
                   </li>
                 ))}
               </ul>
-              <div className="bg-charcoal-900 rounded-3xl px-8 py-7 flex items-center justify-between gap-5 mb-5">
-                <span className="text-charcoal-300 text-sm leading-snug max-w-[160px]">
+              <div className="bg-charcoal-900 rounded-3xl px-6 py-6 sm:px-8 sm:py-7 flex flex-col items-start gap-2 sm:flex-row sm:items-center sm:justify-between sm:gap-5 mb-5">
+                <span className="text-charcoal-300 text-sm leading-snug sm:max-w-[160px]">
                   {c.escalateLead}
                 </span>
                 <span className="gold-text font-serif text-3xl lg:text-4xl font-bold whitespace-nowrap">

@@ -10,6 +10,7 @@
   body {
     @apply bg-white text-charcoal-800 antialiased;
     font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
+    overflow-x: hidden;
   }
 
   ::selection {
