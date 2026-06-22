@@ -47,21 +47,15 @@ export async function POST(
       description: i.description || null,
       price: i.price || null,
       duration: i.duration || null,
+      // Extraction = action admin → BROUILLON (invisible cliente jusqu'au Push).
+      published: false,
     }))
   const inserted = await bulkCreateCatalogItems(id, toInsert).catch(() => 0)
 
-  // Garde aussi l'ancienne liste à jour (repli de l'agent si le catalogue est vide).
-  await supabase
-    .from("locations")
-    .update({
-      services: items.map((i) => ({
-        name: i.name,
-        description: i.description,
-        price_range: i.price,
-        duration: i.duration,
-      })),
-    })
-    .eq("id", location.id)
+  // NB : on NE met PAS à jour location.services ici. Les services extraits restent
+  // des BROUILLONS (catalog_items.published=false) invisibles pour la cliente ET
+  // pour l'agent (le repli location.services exposerait sinon les brouillons).
+  // Ils deviennent visibles uniquement après « Pousser vers la cliente ».
 
   return Response.json({ servicesFound: inserted })
 }
