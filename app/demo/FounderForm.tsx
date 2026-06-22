@@ -108,6 +108,9 @@ export default function FounderForm() {
         .founder-submit:disabled { opacity: .65; cursor: default; }
         .founder-err { margin-top: 14px; text-align: center; font-size: 14px; color: #B4453C; background: rgba(180,69,60,0.08); padding: 10px 14px; border-radius: 10px; }
         .founder-legal { margin-top: 16px; text-align: center; font-size: 12.5px; color: #9A9082; }
+        .founder-alt { margin-top: 24px; text-align: center; font-size: 15px; color: #6B6258; }
+        .founder-alt a { color: #B8945A; font-weight: 600; text-decoration: none; border-bottom: 1px solid rgba(184,148,90,0.4); transition: color .15s; }
+        .founder-alt a:hover { color: #8A6E2F; }
         .founder-success { background: #fff; border: 1px solid #ECE3D5; border-radius: 24px; padding: 56px 32px; text-align: center; box-shadow: 0 24px 70px rgba(201,168,106,0.14); }
         .founder-success .emoji { font-size: 52px; line-height: 1; }
         .founder-success h2 { font-family: 'Playfair Display', serif; font-size: 32px; font-weight: 600; margin: 18px 0 10px; color: #2E2A26; }
@@ -284,6 +287,11 @@ export default function FounderForm() {
                 Vos informations restent confidentielles et ne servent qu&apos;à vous recontacter.
               </p>
             </form>
+
+            <p className="founder-alt">
+              Pas prête à réserver ?{" "}
+              <a href="/guide">Téléchargez plutôt le guide complet (tarifs inclus) →</a>
+            </p>
           </>
         )}
       </div>
