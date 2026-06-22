@@ -229,7 +229,11 @@ export default function Calendar({
 
           {/* Aperçu du post */}
           <div className="mt-4 pt-4 border-t border-ivory-200 max-w-sm">
-            <PostCard key={selected.id} post={selected} />
+            <PostCard
+              key={selected.id}
+              post={selected}
+              onChange={(u) => onUpdate({ ...selected, ...u })}
+            />
           </div>
         </section>
       )}

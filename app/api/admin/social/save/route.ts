@@ -22,8 +22,12 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Aucun contenu à enregistrer" }, { status: 400 })
     }
 
+    // Titre du post = première ligne (titre de la 1re slide), sans balisage HTML.
+    const firstLine = (body.slides[0]?.headline ?? "").replace(/<[^>]+>/g, "").trim()
+    const topic = firstLine ? firstLine.slice(0, 120) : (body.topic ?? "")
+
     const post = await createSocialPost({
-      topic: body.topic ?? "",
+      topic,
       post_type: body.post_type ?? "single",
       style: body.style ?? "light",
       slides: body.slides,
