@@ -6,7 +6,7 @@ import { getRecentSocialPosts } from "@/lib/supabase/social"
 export default async function SocialPage() {
   let posts: Awaited<ReturnType<typeof getRecentSocialPosts>> = []
   try {
-    posts = await getRecentSocialPosts(30)
+    posts = await getRecentSocialPosts(300)
   } catch {
     // table not yet created
   }

@@ -16,6 +16,8 @@ export interface Slide {
   cta?: string
 }
 
+export type PostStatus = "prevu" | "publie"
+
 export interface SocialPost {
   id: string
   created_at: string
@@ -25,9 +27,13 @@ export interface SocialPost {
   slides: Slide[]
   caption: string
   hashtags: string[]
+  scheduled_date?: string | null
+  status?: PostStatus
 }
 
-export async function createSocialPost(data: Omit<SocialPost, "id" | "created_at">): Promise<SocialPost> {
+export async function createSocialPost(
+  data: Omit<SocialPost, "id" | "created_at" | "scheduled_date" | "status">
+): Promise<SocialPost> {
   const supabase = getClient()
   const { data: row, error } = await supabase
     .from("social_posts")
@@ -36,6 +42,22 @@ export async function createSocialPost(data: Omit<SocialPost, "id" | "created_at
     .single()
   if (error) throw new Error(error.message)
   return row as SocialPost
+}
+
+/** Met à jour la planification (date) et/ou le statut (prévu/publié) d'un post. */
+export async function updateSocialPost(
+  id: string,
+  patch: { scheduled_date?: string | null; status?: PostStatus }
+): Promise<SocialPost> {
+  const supabase = getClient()
+  const { data, error } = await supabase
+    .from("social_posts")
+    .update(patch)
+    .eq("id", id)
+    .select()
+    .single()
+  if (error) throw new Error(error.message)
+  return data as SocialPost
 }
 
 export async function getRecentSocialPosts(limit = 30): Promise<SocialPost[]> {
