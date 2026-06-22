@@ -87,6 +87,7 @@ ${customContent ? "- Respecte les idées et le sens du texte fourni, mais ramèn
 - Contenu des slides : 1-3 phrases max
 - Le call-to-action ramène TOUJOURS vers Vocali (ex. « Réservez une démo → », « Découvrez Vocali », « vocali.ca »)
 - INTERDIT : n'utilise JAMAIS le tiret long « — » (em dash) dans les titres, corps de texte, captions ou hashtags. Remplace-le par une virgule, un point, ou reformule la phrase.
+- MOTS-CLÉS EN OR (OBLIGATOIRE) : dans CHAQUE slide, mettez en couleur or le ou les 1 à 2 mots LES PLUS IMPORTANTS (le mot porteur du message) en les entourant EXACTEMENT de <span style="color:#C9A864">mot</span>. Maximum 1 à 2 mots par slide, dans le titre et/ou le corps. Ne mettez PAS d'or dans la caption ni les hashtags.
 
 Génère aussi :
 - Une caption Instagram engageante destinée aux propriétaires de cliniques/salons (question, émotion ou valeur, 2-3 phrases + emoji) qui mène vers vocali.ca
@@ -102,6 +103,7 @@ Réponds UNIQUEMENT en JSON valide avec ce format exact :
   "hashtags": ["...", "...", "...", "...", "..."]
 }
 
+- Les champs "headline" et "body" DOIVENT contenir le balisage <span style="color:#C9A864">...</span> autour des 1 à 2 mots clés (guillemets correctement échappés dans le JSON).
 - Pour les slides sans body (couverture), mets body à "".
 - Pour la DERNIÈRE slide d'un carousel (slide call-to-action), mets un texte CTA court dans "cta" (ex: "Prendre rendez-vous →"). Pour toutes les autres slides, mets cta à "".`
 }
