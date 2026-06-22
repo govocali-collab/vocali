@@ -1,8 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import Link from "next/link"
-import { FileText, ExternalLink, Download, Plus, Loader2 } from "lucide-react"
+import { FileText, ExternalLink, Download, Loader2, Check, Copy, Send } from "lucide-react"
 
 type Invoice = {
   id: string
@@ -17,6 +16,24 @@ type Invoice = {
   pdfUrl: string | null
 }
 
+// Les deux forfaits Vocali (prix mensuels réguliers, modifiables au besoin).
+const PLANS = [
+  {
+    key: "essentiel",
+    name: "Vocali Essentiel",
+    price: 247,
+    tagline: "Jusqu'à 60 appels / mois",
+    desc: "Vocali Essentiel — réceptionniste IA (jusqu'à 60 appels par mois)",
+  },
+  {
+    key: "illimite",
+    name: "Vocali Illimité",
+    price: 497,
+    tagline: "Appels illimités · recommandé",
+    desc: "Vocali Illimité — réceptionniste IA (appels illimités)",
+  },
+] as const
+
 const statusConfig: Record<string, { label: string; className: string }> = {
   paid:   { label: "Payée",     className: "bg-green-50 text-green-700 border-green-200" },
   open:   { label: "En attente", className: "bg-amber-50 text-amber-700 border-amber-200" },
@@ -26,18 +43,17 @@ const statusConfig: Record<string, { label: string; className: string }> = {
 }
 
 function formatDate(unix: number) {
-  return new Date(unix * 1000).toLocaleDateString("fr-CA", {
-    year: "numeric", month: "short", day: "numeric",
-  })
+  return new Date(unix * 1000).toLocaleDateString("fr-CA", { year: "numeric", month: "short", day: "numeric" })
+}
+function formatAmount(amount: number, currency: string) {
+  return new Intl.NumberFormat("fr-CA", { style: "currency", currency }).format(amount)
 }
 
-function formatAmount(amount: number, currency: string) {
-  return new Intl.NumberFormat("fr-CA", {
-    style: "currency", currency,
-  }).format(amount)
-}
+const inputClass =
+  "w-full bg-ivory-50 border border-ivory-300 rounded-lg px-3.5 py-2.5 text-sm text-charcoal-900 placeholder-charcoal-300 focus:outline-none focus:border-gold-400 transition-colors"
 
 export default function AdminBillingPage() {
+  // ---- Historique ----
   const [invoices, setInvoices] = useState<Invoice[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState("")
@@ -56,22 +72,168 @@ export default function AdminBillingPage() {
   const paid = invoices.filter((i) => i.status === "paid")
   const totalPaid = paid.reduce((sum, i) => sum + i.amount, 0)
 
+  // ---- Création de facture ----
+  const [plan, setPlan] = useState<string>("essentiel")
+  const [clinicName, setClinicName] = useState("")
+  const [firstName, setFirstName] = useState("")
+  const [lastName, setLastName] = useState("")
+  const [email, setEmail] = useState("")
+  const [price, setPrice] = useState("247")
+  const [billing, setBilling] = useState<"month" | "year">("month")
+  const [trial, setTrial] = useState(true)
+  const [creating, setCreating] = useState(false)
+  const [createError, setCreateError] = useState("")
+  const [checkoutUrl, setCheckoutUrl] = useState("")
+  const [copied, setCopied] = useState(false)
+
+  function selectPlan(p: (typeof PLANS)[number]) {
+    setPlan(p.key)
+    setPrice(String(p.price))
+  }
+
+  async function handleCreate(e: React.FormEvent) {
+    e.preventDefault()
+    setCreateError("")
+    setCheckoutUrl("")
+    setCreating(true)
+    try {
+      const selected = PLANS.find((p) => p.key === plan) ?? PLANS[0]
+      const res = await fetch("/api/admin/quotes", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          clinicName,
+          firstName,
+          lastName,
+          email,
+          price: parseFloat(price),
+          description: selected.desc,
+          billing,
+          trial,
+        }),
+      })
+      const data = await res.json()
+      if (!data.success) throw new Error(data.error)
+      setCheckoutUrl(data.url)
+    } catch (err) {
+      setCreateError(err instanceof Error ? err.message : "Erreur inconnue")
+    } finally {
+      setCreating(false)
+    }
+  }
+
+  function copyLink() {
+    navigator.clipboard.writeText(checkoutUrl)
+    setCopied(true)
+    setTimeout(() => setCopied(false), 2000)
+  }
+
   return (
     <div className="min-h-screen bg-ivory-100 font-body">
       <div className="max-w-5xl mx-auto px-5 py-8">
+        <div className="mb-8">
+          <h1 className="text-charcoal-900 font-display text-2xl font-semibold">Facturation</h1>
+          <p className="text-charcoal-500 text-sm mt-1">Crée une facture et envoie-la par courriel · suivi des paiements</p>
+        </div>
 
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h1 className="text-charcoal-900 font-display text-2xl font-semibold">Facturation</h1>
-            <p className="text-charcoal-500 text-sm mt-1">Historique des paiements Stripe</p>
-          </div>
-          <Link
-            href="/admin/quotes"
-            className="flex items-center gap-2 bg-gold-gradient text-white font-body font-semibold text-sm rounded-xl px-5 py-2.5 hover:opacity-90 transition-opacity"
-          >
-            <Plus size={15} />
-            Nouveau lien
-          </Link>
+        {/* ============ Créer une facture ============ */}
+        <section className="bg-white rounded-xl border border-ivory-300 shadow-card p-6 mb-8">
+          <h2 className="text-charcoal-900 font-display text-lg font-semibold mb-1">Créer une facture</h2>
+          <p className="text-charcoal-500 text-sm mb-5">Choisis un forfait, remplis les infos de la cliente, et envoie le lien Stripe par courriel.</p>
+
+          {checkoutUrl ? (
+            <div className="rounded-xl border border-green-200 bg-green-50 p-5">
+              <div className="flex items-center gap-2 text-green-700 font-semibold text-sm mb-2">
+                <Check size={16} /> Facture créée et envoyée à {email}
+              </div>
+              <div className="flex items-center gap-2">
+                <input readOnly value={checkoutUrl} className="flex-1 bg-white border border-green-200 rounded-lg px-3 py-2 text-xs text-charcoal-600" />
+                <button onClick={copyLink} className="flex items-center gap-1.5 bg-white border border-green-200 text-green-700 text-xs font-medium px-3 py-2 rounded-lg hover:bg-green-100 transition-colors">
+                  {copied ? <Check size={13} /> : <Copy size={13} />}
+                  {copied ? "Copié" : "Copier"}
+                </button>
+              </div>
+              <button onClick={() => { setCheckoutUrl(""); setClinicName(""); setFirstName(""); setLastName(""); setEmail("") }} className="mt-4 text-sm text-charcoal-500 hover:text-gold-600 transition-colors">
+                ← Créer une autre facture
+              </button>
+            </div>
+          ) : (
+            <form onSubmit={handleCreate} className="space-y-5">
+              {/* Forfaits */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {PLANS.map((p) => (
+                  <button
+                    type="button"
+                    key={p.key}
+                    onClick={() => selectPlan(p)}
+                    className={`text-left rounded-xl border p-4 transition-colors ${plan === p.key ? "border-gold-400 bg-gold-50 ring-1 ring-gold-300" : "border-ivory-300 bg-white hover:border-gold-300"}`}
+                  >
+                    <div className="flex items-baseline justify-between gap-2">
+                      <span className="font-display font-semibold text-charcoal-900">{p.name}</span>
+                      <span className="font-display font-bold text-charcoal-900">{p.price} $<span className="text-charcoal-400 text-xs font-body font-normal"> /mois</span></span>
+                    </div>
+                    <p className="text-charcoal-500 text-xs mt-1">{p.tagline}</p>
+                  </button>
+                ))}
+              </div>
+
+              {/* Cliente */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="sm:col-span-2">
+                  <label className="block text-charcoal-400 text-xs font-medium mb-1.5">Nom de la clinique</label>
+                  <input className={inputClass} value={clinicName} onChange={(e) => setClinicName(e.target.value)} required placeholder="Clinique Dermavia" />
+                </div>
+                <div>
+                  <label className="block text-charcoal-400 text-xs font-medium mb-1.5">Prénom</label>
+                  <input className={inputClass} value={firstName} onChange={(e) => setFirstName(e.target.value)} required placeholder="Marie" />
+                </div>
+                <div>
+                  <label className="block text-charcoal-400 text-xs font-medium mb-1.5">Nom</label>
+                  <input className={inputClass} value={lastName} onChange={(e) => setLastName(e.target.value)} required placeholder="Tremblay" />
+                </div>
+                <div className="sm:col-span-2">
+                  <label className="block text-charcoal-400 text-xs font-medium mb-1.5">Courriel</label>
+                  <input className={inputClass} type="email" value={email} onChange={(e) => setEmail(e.target.value)} required placeholder="marie@cliniquedermavia.ca" />
+                </div>
+              </div>
+
+              {/* Prix + facturation */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 items-end">
+                <div>
+                  <label className="block text-charcoal-400 text-xs font-medium mb-1.5">Prix (CAD / {billing === "month" ? "mois" : "an"})</label>
+                  <input className={inputClass} type="number" step="0.01" value={price} onChange={(e) => setPrice(e.target.value)} required />
+                </div>
+                <div>
+                  <label className="block text-charcoal-400 text-xs font-medium mb-1.5">Fréquence</label>
+                  <div className="flex gap-1.5">
+                    {([["month", "Mensuel"], ["year", "Annuel"]] as const).map(([val, lbl]) => (
+                      <button type="button" key={val} onClick={() => setBilling(val)} className={`flex-1 px-3 py-2.5 rounded-lg border text-sm transition-colors ${billing === val ? "bg-gold-50 border-gold-400 text-gold-700 font-medium" : "bg-white border-ivory-300 text-charcoal-500 hover:border-gold-300"}`}>
+                        {lbl}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                <label className="flex items-center gap-2.5 cursor-pointer pb-1">
+                  <button type="button" onClick={() => setTrial(!trial)} className={`w-10 h-6 rounded-full transition-colors relative flex-shrink-0 ${trial ? "bg-gold-400" : "bg-ivory-300"}`}>
+                    <span className={`absolute top-1 w-4 h-4 rounded-full bg-white shadow transition-transform ${trial ? "translate-x-5" : "translate-x-1"}`} />
+                  </button>
+                  <span className="text-sm text-charcoal-600">Essai 30 jours</span>
+                </label>
+              </div>
+
+              {createError && <p className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg px-3 py-2">{createError}</p>}
+
+              <button type="submit" disabled={creating} className="flex items-center justify-center gap-2 bg-gold-gradient disabled:opacity-60 text-white font-semibold text-sm rounded-lg px-6 py-3 hover:opacity-90 transition-opacity">
+                {creating ? <><Loader2 size={15} className="animate-spin" /> Création…</> : <><Send size={15} /> Créer la facture et envoyer par courriel</>}
+              </button>
+              <p className="text-charcoal-300 text-xs">Astuce : pour le tarif fondateur des 3 premiers mois, ajuste le prix manuellement (ex. 123,50 $).</p>
+            </form>
+          )}
+        </section>
+
+        {/* ============ Historique de paiement ============ */}
+        <div className="flex items-center justify-between mb-3">
+          <h2 className="text-charcoal-900 font-display text-lg font-semibold">Historique de paiement</h2>
         </div>
 
         {!loading && !error && invoices.length > 0 && (
@@ -90,24 +252,17 @@ export default function AdminBillingPage() {
         <div className="bg-white rounded-xl border border-ivory-300 shadow-card overflow-hidden">
           {loading && (
             <div className="flex items-center justify-center gap-3 py-16 text-charcoal-400">
-              <Loader2 size={18} className="animate-spin" />
-              <span className="text-sm font-body">Chargement…</span>
+              <Loader2 size={18} className="animate-spin" /><span className="text-sm">Chargement…</span>
             </div>
           )}
-
-          {error && (
-            <div className="py-10 text-center text-red-500 text-sm font-body">{error}</div>
-          )}
-
+          {error && <div className="py-10 text-center text-red-500 text-sm">{error}</div>}
           {!loading && !error && invoices.length === 0 && (
             <div className="flex flex-col items-center justify-center py-16 gap-3 text-charcoal-400">
-              <FileText size={28} className="text-ivory-400" />
-              <p className="text-sm font-body">Aucune facture trouvée</p>
+              <FileText size={28} className="text-ivory-400" /><p className="text-sm">Aucune facture trouvée</p>
             </div>
           )}
-
           {!loading && !error && invoices.length > 0 && (
-            <table className="w-full text-sm font-body">
+            <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-ivory-200">
                   <th className="text-left text-charcoal-400 text-xs font-semibold uppercase tracking-widest px-5 py-3.5">Clinique</th>
@@ -129,25 +284,13 @@ export default function AdminBillingPage() {
                       <td className="px-5 py-4 text-charcoal-600">{formatDate(inv.created)}</td>
                       <td className="px-5 py-4 text-charcoal-900 font-medium">{formatAmount(inv.amount, inv.currency)}</td>
                       <td className="px-5 py-4">
-                        <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium border ${status.className}`}>
-                          {status.label}
-                        </span>
+                        <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium border ${status.className}`}>{status.label}</span>
                       </td>
                       <td className="px-5 py-4">
                         <div className="flex items-center justify-end gap-2">
-                          {inv.hostedUrl && (
-                            <a href={inv.hostedUrl} target="_blank" rel="noopener noreferrer" title="Voir le reçu" className="text-charcoal-400 hover:text-gold-600 transition-colors">
-                              <ExternalLink size={15} />
-                            </a>
-                          )}
-                          {inv.pdfUrl && (
-                            <a href={inv.pdfUrl} target="_blank" rel="noopener noreferrer" title="Télécharger PDF" className="text-charcoal-400 hover:text-gold-600 transition-colors">
-                              <Download size={15} />
-                            </a>
-                          )}
-                          {!inv.hostedUrl && !inv.pdfUrl && (
-                            <span className="text-charcoal-300 text-xs">—</span>
-                          )}
+                          {inv.hostedUrl && <a href={inv.hostedUrl} target="_blank" rel="noopener noreferrer" title="Voir le reçu" className="text-charcoal-400 hover:text-gold-600 transition-colors"><ExternalLink size={15} /></a>}
+                          {inv.pdfUrl && <a href={inv.pdfUrl} target="_blank" rel="noopener noreferrer" title="Télécharger PDF" className="text-charcoal-400 hover:text-gold-600 transition-colors"><Download size={15} /></a>}
+                          {!inv.hostedUrl && !inv.pdfUrl && <span className="text-charcoal-300 text-xs">—</span>}
                         </div>
                       </td>
                     </tr>
