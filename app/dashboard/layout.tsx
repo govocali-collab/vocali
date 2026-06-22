@@ -3,6 +3,7 @@ import { createClient } from "@/lib/supabase/server"
 import { getClinic } from "@/lib/supabase/dashboard"
 import Sidebar from "@/components/dashboard/Sidebar"
 import AuthRefresh from "@/components/dashboard/AuthRefresh"
+import ForcePasswordChange from "@/components/dashboard/ForcePasswordChange"
 
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
   const supabase = await createClient()
@@ -39,10 +40,13 @@ export default async function DashboardLayout({ children }: { children: React.Re
     )
   }
 
+  const mustChangePassword = user.user_metadata?.must_change_password === true
+
   return (
     <div className="min-h-screen bg-ivory-100 flex flex-col lg:flex-row font-body">
       <Sidebar clinic={clinic} />
       <main className="flex-1 overflow-auto min-w-0">{children}</main>
+      {mustChangePassword && <ForcePasswordChange />}
     </div>
   )
 }
