@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { Sparkles, History, Loader2, TrendingUp, RotateCcw } from "lucide-react"
+import { Sparkles, History, Loader2, TrendingUp, RotateCcw, Save, CheckCircle } from "lucide-react"
 import { cn } from "@/lib/utils"
 import type { SocialPost, PostType, PostStyle } from "@/lib/supabase/social"
 import PostCard from "./PostCard"
@@ -27,6 +27,8 @@ export default function SocialView({ initialPosts }: Props) {
   const [generating, setGenerating] = useState(false)
   const [posts, setPosts] = useState<SocialPost[]>(initialPosts)
   const [latest, setLatest] = useState<SocialPost | null>(null)
+  const [saving, setSaving] = useState(false)
+  const [savedLatest, setSavedLatest] = useState(false)
 
   const canGenerate = !generating && (topic.trim().length > 0 || customContent.trim().length > 0)
 
@@ -47,11 +49,44 @@ export default function SocialView({ initialPosts }: Props) {
       }
       const { post } = await res.json() as { post: SocialPost }
       setLatest(post)
-      setPosts(prev => [post, ...prev])
+      setSavedLatest(false)
     } catch (err) {
       alert(err instanceof Error ? err.message : "Erreur lors de la génération")
     } finally {
       setGenerating(false)
+    }
+  }
+
+  async function handleSave() {
+    if (!latest || savedLatest) return
+    setSaving(true)
+    try {
+      const res = await fetch("/api/admin/social/save", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          topic: latest.topic,
+          post_type: latest.post_type,
+          style: latest.style,
+          slides: latest.slides,
+          caption: latest.caption,
+          hashtags: latest.hashtags,
+        }),
+      })
+      if (!res.ok) {
+        let errMsg = "Erreur lors de l'enregistrement"
+        try { const err = await res.json() as { error?: string }; errMsg = err.error ?? errMsg } catch { /* ignore */ }
+        alert(errMsg)
+        return
+      }
+      const { post } = await res.json() as { post: SocialPost }
+      setPosts(prev => [post, ...prev])
+      setLatest(post)
+      setSavedLatest(true)
+    } catch (err) {
+      alert(err instanceof Error ? err.message : "Erreur lors de l'enregistrement")
+    } finally {
+      setSaving(false)
     }
   }
 
@@ -62,6 +97,7 @@ export default function SocialView({ initialPosts }: Props) {
     setStyle("light")
     setUseTrends(false)
     setLatest(null)
+    setSavedLatest(false)
   }
 
   function handleDelete(id: string) {
@@ -245,7 +281,32 @@ export default function SocialView({ initialPosts }: Props) {
           {/* Preview of latest */}
           <div>
             {latest ? (
-              <PostCard key={latest.id} post={latest} onDelete={handleDelete} />
+              <div className="space-y-3">
+                <div className="flex items-center justify-between gap-3 bg-white border border-ivory-300 rounded-xl px-4 py-3 shadow-card">
+                  <p className="text-charcoal-500 text-sm font-body">
+                    {savedLatest
+                      ? "Ce post est dans l'historique."
+                      : "Aperçu — non enregistré. Cliquez pour l'ajouter à l'historique."}
+                  </p>
+                  {savedLatest ? (
+                    <span className="flex items-center gap-1.5 text-green-700 text-sm font-body font-medium whitespace-nowrap">
+                      <CheckCircle size={15} className="text-green-600" /> Enregistré
+                    </span>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={handleSave}
+                      disabled={saving}
+                      className="inline-flex items-center gap-2 bg-gold-gradient text-white text-sm font-semibold rounded-lg px-4 py-2 hover:opacity-90 disabled:opacity-50 transition-opacity whitespace-nowrap"
+                    >
+                      {saving
+                        ? <><Loader2 size={15} className="animate-spin" /> Enregistrement…</>
+                        : <><Save size={15} /> Enregistrer dans l'historique</>}
+                    </button>
+                  )}
+                </div>
+                <PostCard key={latest.id} post={latest} onDelete={handleDelete} />
+              </div>
             ) : (
               <div className="bg-white border border-ivory-300 rounded-xl p-8 shadow-card flex items-center justify-center h-full min-h-[300px]">
                 <div className="text-center">
