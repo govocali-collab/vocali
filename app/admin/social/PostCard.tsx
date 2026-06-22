@@ -23,6 +23,8 @@ export default function PostCard({ post, onDelete, onChange }: Props) {
   const [editing, setEditing] = useState(false)
   const [slides, setSlides] = useState<Slide[]>(post.slides)
   const [caption, setCaption] = useState(post.caption)
+  const [savingEdit, setSavingEdit] = useState(false)
+  const [editSaved, setEditSaved] = useState(false)
   const slideRefs = useRef<(HTMLDivElement | null)[]>([])
   const previewRef = useRef<HTMLDivElement>(null)
   const [slideScale, setSlideScale] = useState(1)
@@ -38,13 +40,35 @@ export default function PostCard({ post, onDelete, onChange }: Props) {
     return () => ro.disconnect()
   }, [])
 
-  // Remonte les éditions au parent (après le montage initial).
+  // Remonte les éditions au parent (après le montage initial) + marque non sauvegardé.
   const didMount = useRef(false)
   useEffect(() => {
     if (!didMount.current) { didMount.current = true; return }
     onChange?.({ slides, caption })
+    setEditSaved(false)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [slides, caption])
+
+  // Sauvegarde les modifications de contenu d'un post déjà enregistré.
+  async function saveEdits() {
+    if (post.id === "draft") return
+    setSavingEdit(true)
+    try {
+      const res = await fetch(`/api/admin/social/${post.id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ slides, caption }),
+      })
+      const data = await res.json()
+      if (!res.ok) { alert(data.error || "Erreur lors de l'enregistrement"); return }
+      setEditSaved(true)
+      onChange?.({ slides, caption })
+    } catch (err) {
+      alert(err instanceof Error ? err.message : "Erreur lors de l'enregistrement")
+    } finally {
+      setSavingEdit(false)
+    }
+  }
 
   function updateSlide(index: number, field: keyof Slide, value: string) {
     setSlides(prev => prev.map((s, i) => i === index ? { ...s, [field]: value } : s))
@@ -255,6 +279,24 @@ export default function PostCard({ post, onDelete, onChange }: Props) {
               className="w-full bg-white border border-ivory-300 rounded-lg px-3 py-2 text-sm text-charcoal-800 font-body placeholder:text-charcoal-300 focus:outline-none focus:border-gold-400 resize-none"
             />
           </div>
+
+          {post.id !== "draft" && (
+            <div className="mt-3 flex items-center gap-3">
+              <button
+                type="button"
+                onClick={saveEdits}
+                disabled={savingEdit}
+                className="bg-gold-gradient text-white font-body font-semibold text-sm rounded-lg px-4 py-2 hover:opacity-90 disabled:opacity-50 transition-opacity"
+              >
+                {savingEdit ? "Enregistrement…" : "Enregistrer les modifications"}
+              </button>
+              {editSaved && (
+                <span className="flex items-center gap-1.5 text-green-700 text-sm font-body">
+                  <Check size={14} className="text-green-600" /> Enregistré
+                </span>
+              )}
+            </div>
+          )}
         </div>
       )}
 

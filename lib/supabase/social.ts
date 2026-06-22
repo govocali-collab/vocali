@@ -44,10 +44,17 @@ export async function createSocialPost(
   return row as SocialPost
 }
 
-/** Met à jour la planification (date) et/ou le statut (prévu/publié) d'un post. */
+/** Met à jour un post : planification, statut, et/ou contenu (slides, caption, etc.). */
 export async function updateSocialPost(
   id: string,
-  patch: { scheduled_date?: string | null; status?: PostStatus }
+  patch: {
+    scheduled_date?: string | null
+    status?: PostStatus
+    slides?: Slide[]
+    caption?: string
+    topic?: string
+    hashtags?: string[]
+  }
 ): Promise<SocialPost> {
   const supabase = getClient()
   const { data, error } = await supabase
