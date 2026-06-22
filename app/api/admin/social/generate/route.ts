@@ -106,7 +106,7 @@ Réponds UNIQUEMENT en JSON valide avec ce format exact :
 - Pour la DERNIÈRE slide d'un carousel (slide call-to-action), mets un texte CTA court dans "cta" (ex: "Prendre rendez-vous →"). Pour toutes les autres slides, mets cta à "".`
 }
 
-export const maxDuration = 60
+export const maxDuration = 120
 
 export async function POST(req: NextRequest) {
   const cookie = req.headers.get("cookie") ?? ""
@@ -127,7 +127,7 @@ export async function POST(req: NextRequest) {
 
     const message = await client.messages.create({
       model: "claude-opus-4-8",
-      max_tokens: 1024,
+      max_tokens: 3000,
       messages: [{ role: "user", content: buildPrompt(effectiveTopic, postType, trends, customContent) }],
     })
 

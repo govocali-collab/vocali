@@ -26,15 +26,43 @@ export function RichEditor({ value, onChange, multiline }: Props) {
     if (ref.current) onChange(ref.current.innerHTML)
   }
 
+  // Trouve un élément doré qui contient la sélection (pour pouvoir le retirer).
+  function findGoldAncestor(): HTMLElement | null {
+    const sel = window.getSelection()
+    if (!sel || !sel.anchorNode || !ref.current) return null
+    let node: Node | null = sel.anchorNode
+    while (node && node !== ref.current) {
+      if (node.nodeType === 1) {
+        const el = node as HTMLElement
+        if (/201,\s*168,\s*100|#c9a864/i.test(el.style?.color || "")) return el
+      }
+      node = node.parentNode
+    }
+    return null
+  }
+
   function format(kind: "bold" | "italic" | "gold") {
     const el = ref.current
     if (!el) return
     el.focus()
-    if (kind === "bold") document.execCommand("bold")
-    else if (kind === "italic") document.execCommand("italic")
-    else {
-      document.execCommand("styleWithCSS", false, "true")
-      document.execCommand("foreColor", false, GOLD)
+    if (kind === "bold") {
+      document.execCommand("bold")
+    } else if (kind === "italic") {
+      document.execCommand("italic")
+    } else {
+      const gold = findGoldAncestor()
+      if (gold) {
+        // Déjà en or → on retire la couleur (le mot reprend la couleur du thème).
+        gold.style.color = ""
+        if (gold.tagName === "SPAN" && !gold.getAttribute("style")) {
+          const parent = gold.parentNode
+          while (gold.firstChild) parent?.insertBefore(gold.firstChild, gold)
+          parent?.removeChild(gold)
+        }
+      } else {
+        document.execCommand("styleWithCSS", false, "true")
+        document.execCommand("foreColor", false, GOLD)
+      }
     }
     emit()
   }
