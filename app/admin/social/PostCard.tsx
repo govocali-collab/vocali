@@ -5,6 +5,7 @@ import { Download, Trash2, ChevronLeft, ChevronRight, Copy, Check, Pencil, X } f
 import { cn } from "@/lib/utils"
 import type { SocialPost, Slide } from "@/lib/supabase/social"
 import { PostSlide } from "./PostSlide"
+import { RichEditor } from "./RichEditor"
 
 const SLIDE_W = 338
 const SLIDE_H = 423
@@ -36,36 +37,6 @@ export default function PostCard({ post, onDelete }: Props) {
 
   function updateSlide(index: number, field: keyof Slide, value: string) {
     setSlides(prev => prev.map((s, i) => i === index ? { ...s, [field]: value } : s))
-  }
-
-  const headlineRef = useRef<HTMLInputElement>(null)
-  const bodyRef = useRef<HTMLTextAreaElement>(null)
-  const ctaRef = useRef<HTMLInputElement>(null)
-
-  // Entoure la sélection du champ avec un marqueur (**gras**, *italique*, ==or==).
-  function applyFormat(el: HTMLInputElement | HTMLTextAreaElement | null, field: keyof Slide, marker: string) {
-    if (!el) return
-    const start = el.selectionStart ?? 0
-    const end = el.selectionEnd ?? 0
-    const val = el.value
-    const sel = val.slice(start, end) || "texte"
-    const next = val.slice(0, start) + marker + sel + marker + val.slice(end)
-    updateSlide(activeSlide, field, next)
-    requestAnimationFrame(() => {
-      el.focus()
-      el.setSelectionRange(start + marker.length, start + marker.length + sel.length)
-    })
-  }
-
-  function FmtBtns({ getEl, field }: { getEl: () => HTMLInputElement | HTMLTextAreaElement | null; field: keyof Slide }) {
-    const b = "h-6 min-w-[26px] px-1.5 rounded border border-ivory-300 bg-white text-xs text-charcoal-600 hover:bg-ivory-100 transition-colors"
-    return (
-      <div className="flex gap-1 mb-1">
-        <button type="button" title="Gras" onMouseDown={e => e.preventDefault()} onClick={() => applyFormat(getEl(), field, "**")} className={cn(b, "font-bold")}>G</button>
-        <button type="button" title="Italique" onMouseDown={e => e.preventDefault()} onClick={() => applyFormat(getEl(), field, "*")} className={cn(b, "italic")}>I</button>
-        <button type="button" title="Mettre en or" onMouseDown={e => e.preventDefault()} onClick={() => applyFormat(getEl(), field, "==")} className={b} style={{ color: "#C9A864", fontWeight: 600 }}>Or</button>
-      </div>
-    )
   }
 
   async function downloadSlide(index: number) {
@@ -236,36 +207,28 @@ export default function PostCard({ post, onDelete }: Props) {
           <div className="space-y-2">
             <div>
               <label className="block text-xs text-charcoal-400 mb-1">Titre</label>
-              <FmtBtns getEl={() => headlineRef.current} field="headline" />
-              <input
-                ref={headlineRef}
-                type="text"
+              <RichEditor
+                key={`h-${activeSlide}`}
                 value={slides[activeSlide].headline}
-                onChange={e => updateSlide(activeSlide, "headline", e.target.value)}
-                className="w-full border border-ivory-300 rounded-lg px-3 py-2 text-sm text-charcoal-800 focus:outline-none focus:border-gold-400 bg-white"
+                onChange={v => updateSlide(activeSlide, "headline", v)}
               />
             </div>
             <div>
               <label className="block text-xs text-charcoal-400 mb-1">Corps</label>
-              <FmtBtns getEl={() => bodyRef.current} field="body" />
-              <textarea
-                ref={bodyRef}
+              <RichEditor
+                key={`b-${activeSlide}`}
                 value={slides[activeSlide].body ?? ""}
-                onChange={e => updateSlide(activeSlide, "body", e.target.value)}
-                rows={3}
-                className="w-full border border-ivory-300 rounded-lg px-3 py-2 text-sm text-charcoal-800 focus:outline-none focus:border-gold-400 bg-white resize-none"
+                onChange={v => updateSlide(activeSlide, "body", v)}
+                multiline
               />
             </div>
             {slides[activeSlide].cta !== undefined && (
               <div>
                 <label className="block text-xs text-charcoal-400 mb-1">CTA</label>
-                <FmtBtns getEl={() => ctaRef.current} field="cta" />
-                <input
-                  ref={ctaRef}
-                  type="text"
+                <RichEditor
+                  key={`c-${activeSlide}`}
                   value={slides[activeSlide].cta ?? ""}
-                  onChange={e => updateSlide(activeSlide, "cta", e.target.value)}
-                  className="w-full border border-ivory-300 rounded-lg px-3 py-2 text-sm text-charcoal-800 focus:outline-none focus:border-gold-400 bg-white"
+                  onChange={v => updateSlide(activeSlide, "cta", v)}
                 />
               </div>
             )}
