@@ -13,6 +13,57 @@ export async function updatePassword(newPassword: string) {
   if (error) throw new Error(error.message)
 }
 
+// Correspondance jour FR (affichage / clinics.hours) → EN (agent / locations.hours).
+const HOURS_FR_TO_EN: Record<string, string> = {
+  lundi: "monday", mardi: "tuesday", mercredi: "wednesday", jeudi: "thursday",
+  vendredi: "friday", samedi: "saturday", dimanche: "sunday",
+}
+
+/**
+ * Met à jour les heures d'ouverture. Écrit DEUX formats en sync :
+ * - clinics.hours = { jourFR: {open, close, closed} }  (affichage tableau de bord)
+ * - locations.hours = { jourEN: "ouv–ferm" | null, notes }  (lu par l'agent vocal)
+ */
+export async function updateHours(hours: Record<string, { open: string; close: string; closed: boolean }>) {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user?.email) throw new Error("Non autorisé")
+
+  const admin = createAdminClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
+  )
+
+  const { data: clinic } = await admin
+    .from("clinics")
+    .select("id")
+    .eq("owner_email", user.email)
+    .single()
+  if (!clinic) throw new Error("Clinique introuvable")
+
+  // 1) clinics.hours (affichage)
+  const { error: e1 } = await admin.from("clinics").update({ hours }).eq("id", clinic.id)
+  if (e1) throw new Error(e1.message)
+
+  // 2) locations.hours (agent vocal) — en préservant les notes de chaque emplacement
+  const { data: locations } = await admin
+    .from("locations")
+    .select("id, hours")
+    .eq("clinic_id", clinic.id)
+
+  for (const loc of locations ?? []) {
+    const notes = (loc.hours as { notes?: string | null } | null)?.notes ?? null
+    const locHours: Record<string, string | null> = { notes }
+    for (const [fr, en] of Object.entries(HOURS_FR_TO_EN)) {
+      const d = hours[fr]
+      locHours[en] = d && !d.closed ? `${d.open}–${d.close}` : null
+    }
+    await admin.from("locations").update({ hours: locHours }).eq("id", loc.id)
+  }
+
+  revalidatePath("/dashboard/settings")
+}
+
 export async function updateOwnerInfo(data: {
   firstName: string
   lastName: string
