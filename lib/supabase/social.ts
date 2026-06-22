@@ -71,6 +71,24 @@ export async function getRecentSocialPosts(limit = 30): Promise<SocialPost[]> {
   return (data ?? []) as SocialPost[]
 }
 
+/**
+ * Posts créés OU planifiés au cours des `days` derniers jours.
+ * Sert au générateur pour éviter de répéter le contenu récent.
+ */
+export async function getPostsSince(days: number): Promise<SocialPost[]> {
+  const supabase = getClient()
+  const cutoffIso = new Date(Date.now() - days * 24 * 60 * 60 * 1000).toISOString()
+  const cutoffDate = cutoffIso.slice(0, 10)
+  const { data, error } = await supabase
+    .from("social_posts")
+    .select("*")
+    .or(`created_at.gte.${cutoffIso},scheduled_date.gte.${cutoffDate}`)
+    .order("created_at", { ascending: false })
+    .limit(60)
+  if (error) throw new Error(error.message)
+  return (data ?? []) as SocialPost[]
+}
+
 export async function deleteSocialPost(id: string): Promise<void> {
   const supabase = getClient()
   await supabase.from("social_posts").delete().eq("id", id)

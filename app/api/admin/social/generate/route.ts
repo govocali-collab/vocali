@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server"
 import Anthropic from "@anthropic-ai/sdk"
 import type { MessageParam } from "@anthropic-ai/sdk/resources/messages"
+import { getPostsSince } from "@/lib/supabase/social"
 import type { PostType, PostStyle, Slide, SocialPost } from "@/lib/supabase/social"
 
 const client = new Anthropic()
@@ -53,7 +54,7 @@ Vocali (vocali.ca) est le « Système Vocali 24/7 » : une réceptionniste virtu
 Bénéfice clé : ne plus jamais perdre de clientes à cause des appels manqués.
 Public cible des posts : les PROPRIÉTAIRES de cliniques et de salons au Québec (pas les clientes finales).`
 
-function buildPrompt(topic: string, postType: PostType, trends: string, customContent?: string): string {
+function buildPrompt(topic: string, postType: PostType, trends: string, customContent?: string, recent?: string): string {
   const slideCount =
     postType === "single"    ? 1 :
     postType === "story"     ? 1 :
@@ -74,6 +75,7 @@ NOMBRE DE SLIDES : ${slideCount}
 
 ${customContent ? `TEXTE / CONTENU FOURNI (utilise ce contenu comme base principale, reformule et adapte au format):\n${customContent}\n` : ""}
 ${trends ? `TENDANCES ACTUELLES (basées sur recherche) :\n${trends}\n` : ""}
+${recent ? `POSTS DÉJÀ CRÉÉS OU PLANIFIÉS (4 dernières semaines) — NE RÉPÉTEZ PAS leur sujet, leur angle ni leur accroche. Le nouveau post doit être DIFFÉRENT et complémentaire de ceux-ci :\n${recent}\n` : ""}
 
 Instructions de création :
 ${slideCount === 1 ? "- 1 slide : titre accrocheur lié à Vocali (ex. appels manqués) + texte percutant (2-3 phrases)" : ""}
@@ -127,10 +129,27 @@ export async function POST(req: NextRequest) {
 
     const trends = useTrends ? await researchTrends(effectiveTopic) : ""
 
+    // Posts des 4 dernières semaines (créés ou planifiés) → éviter les répétitions.
+    let recent = ""
+    try {
+      const recentPosts = await getPostsSince(28)
+      recent = recentPosts
+        .map((p) => {
+          const head = (p.slides?.[0]?.headline ?? "").replace(/<[^>]+>/g, "").trim()
+          const label = (p.topic?.trim() || head || "").slice(0, 110)
+          return label ? `- ${label}` : ""
+        })
+        .filter(Boolean)
+        .slice(0, 40)
+        .join("\n")
+    } catch {
+      // table/colonnes indisponibles → pas de contrainte de répétition
+    }
+
     const message = await client.messages.create({
       model: "claude-opus-4-8",
       max_tokens: 3000,
-      messages: [{ role: "user", content: buildPrompt(effectiveTopic, postType, trends, customContent) }],
+      messages: [{ role: "user", content: buildPrompt(effectiveTopic, postType, trends, customContent, recent) }],
     })
 
     const text = message.content[0].type === "text" ? message.content[0].text : ""
