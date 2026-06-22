@@ -199,7 +199,7 @@ export default function DemoClient() {
             Prenez rendez-vous en parlant, comme avec une vraie réceptionniste. Essayez la démo dès maintenant.
           </p>
           <div className="demo-card">
-            <p className="demo-hint">Cliquez sur le bouton et parlez à Sarah 🎙️</p>
+            <p className="demo-hint">Cliquez sur le bouton et parlez à Sarah</p>
             <VoiceWidget />
           </div>
         </section>
