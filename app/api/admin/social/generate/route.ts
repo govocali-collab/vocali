@@ -1,8 +1,7 @@
 import { NextRequest, NextResponse } from "next/server"
 import Anthropic from "@anthropic-ai/sdk"
 import type { MessageParam } from "@anthropic-ai/sdk/resources/messages"
-import { createSocialPost } from "@/lib/supabase/social"
-import type { PostType, PostStyle, Slide } from "@/lib/supabase/social"
+import type { PostType, PostStyle, Slide, SocialPost } from "@/lib/supabase/social"
 
 const client = new Anthropic()
 
@@ -144,14 +143,17 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Erreur de parsing JSON" }, { status: 500 })
     }
 
-    const post = await createSocialPost({
+    // Brouillon NON persisté : l'admin l'enregistre manuellement via /api/admin/social/save.
+    const post: SocialPost = {
+      id: "draft",
+      created_at: "",
       topic: effectiveTopic,
       post_type: postType,
       style,
       slides: parsed.slides,
       caption: parsed.caption,
       hashtags: parsed.hashtags,
-    })
+    }
 
     return NextResponse.json({ post })
   } catch (err) {
