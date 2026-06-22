@@ -227,17 +227,6 @@ export default function DemoClient() {
 
         <FounderForm />
 
-        <section className="demo-info">
-          <h2 className="demo-serif">Salon <span>Élégance</span></h2>
-          <p>
-            📍 1234 Boulevard Saint-Laurent, Montréal, Québec
-            <br />
-            🕐 Lundi au vendredi : 9h00 – 20h00
-            <br />
-            Samedi : 9h00 – 17h00 · Dimanche : fermé
-          </p>
-        </section>
-
         <footer className="demo-footer">Démonstration propulsée par Vocali</footer>
       </div>
     </>
