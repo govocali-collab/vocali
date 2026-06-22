@@ -22,7 +22,7 @@ export async function sendWelcomeEmail({
 }: SendWelcomeEmailParams) {
   const displayEmail = tempEmail ?? ownerEmail;
   return resend.emails.send({
-    from: "Vocali <support@vocali.ca>",
+    from: "Vocali <app@vocali.ca>",
     // Courriel d'accès / bienvenue : va TOUJOURS à la vraie cliente (pas de redirection).
     to: ownerEmail,
     subject: `Bienvenue chez Vocali — ${agentName} arrive bientôt ✨`,
@@ -642,7 +642,7 @@ export async function sendAgentLiveEmail({
 }: SendAgentLiveParams) {
   const year = new Date().getFullYear()
   return resend.emails.send({
-    from: "Vocali <support@vocali.ca>",
+    from: "Vocali <app@vocali.ca>",
     to: mailTo(ownerEmail),
     subject: `${agentName} est maintenant en ligne ✨`,
     html: `
