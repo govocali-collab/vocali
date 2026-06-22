@@ -260,8 +260,8 @@ export default function AdminBillingPage() {
                   </div>
                 </div>
                 <label className="flex items-center gap-2.5 cursor-pointer pb-1">
-                  <button type="button" onClick={() => { const n = !trial; setTrial(n); if (n) setFounderRate(false) }} className={`w-10 h-6 rounded-full transition-colors relative flex-shrink-0 ${trial ? "bg-gold-400" : "bg-ivory-300"}`}>
-                    <span className={`absolute top-1 w-4 h-4 rounded-full bg-white shadow transition-transform ${trial ? "translate-x-5" : "translate-x-1"}`} />
+                  <button type="button" role="switch" aria-checked={trial} onClick={() => { const n = !trial; setTrial(n); if (n) setFounderRate(false) }} className={`relative inline-flex h-6 w-11 flex-shrink-0 items-center rounded-full transition-colors ${trial ? "bg-gold-400" : "bg-ivory-300"}`}>
+                    <span className={`inline-block h-4 w-4 transform rounded-full bg-white shadow transition-transform ${trial ? "translate-x-6" : "translate-x-1"}`} />
                   </button>
                   <span className="text-sm text-charcoal-600">Essai 30 jours</span>
                 </label>
@@ -270,18 +270,18 @@ export default function AdminBillingPage() {
               {/* Tarif fondateur */}
               <div className="rounded-xl border border-ivory-200 bg-ivory-50 p-4">
                 <label className="flex items-center gap-2.5 cursor-pointer">
-                  <button type="button" onClick={() => { const n = !founderRate; setFounderRate(n); if (n) setTrial(false) }} className={`w-10 h-6 rounded-full transition-colors relative flex-shrink-0 ${founderRate ? "bg-gold-400" : "bg-ivory-300"}`}>
-                    <span className={`absolute top-1 w-4 h-4 rounded-full bg-white shadow transition-transform ${founderRate ? "translate-x-5" : "translate-x-1"}`} />
+                  <button type="button" role="switch" aria-checked={founderRate} onClick={() => { const n = !founderRate; setFounderRate(n); if (n) setTrial(false) }} className={`relative inline-flex h-6 w-11 flex-shrink-0 items-center rounded-full transition-colors ${founderRate ? "bg-gold-400" : "bg-ivory-300"}`}>
+                    <span className={`inline-block h-4 w-4 transform rounded-full bg-white shadow transition-transform ${founderRate ? "translate-x-6" : "translate-x-1"}`} />
                   </button>
                   <span className="text-sm font-medium text-charcoal-700">Tarif fondateur — 50 % les 3 premiers mois</span>
                 </label>
                 {founderRate && parseFloat(price) > 0 && (
-                  <p className="text-xs text-gold-700 mt-2 ml-[50px]">
+                  <p className="text-xs text-gold-700 mt-2 ml-[54px]">
                     La cliente paiera <strong>{formatAmount(parseFloat(price) / 2, "CAD")}</strong> / {billing === "month" ? "mois" : "an"} pendant 3 mois, puis <strong>{formatAmount(parseFloat(price), "CAD")}</strong> / {billing === "month" ? "mois" : "an"}.
                   </p>
                 )}
                 {founderRate && trial && (
-                  <p className="text-xs text-charcoal-400 mt-1 ml-[50px]">L&apos;essai 30 jours est désactivé avec le tarif fondateur.</p>
+                  <p className="text-xs text-charcoal-400 mt-1 ml-[54px]">L&apos;essai 30 jours est désactivé avec le tarif fondateur.</p>
                 )}
               </div>
 
