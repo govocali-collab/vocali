@@ -12,7 +12,9 @@ export async function sendGuideToVisitor(email: string, firstName?: string | nul
   const hello = firstName ? `Bonjour ${firstName},` : "Bonjour,"
   return resend.emails.send({
     from: "Vocali <support@vocali.ca>",
-    to: mailTo(email),
+    // EXCEPTION : le guide va TOUJOURS au vrai courriel du prospect (pas de
+    // redirection vers la boîte de test), sinon il ne le recevrait jamais.
+    to: email,
     subject: "Votre guide Vocali (tarifs inclus) 📄",
     html: `<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /></head>
 <body style="margin:0;padding:0;background:#FAF7F2;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">
