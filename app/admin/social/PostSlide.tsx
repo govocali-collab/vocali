@@ -3,7 +3,7 @@
 import { forwardRef } from "react"
 import { cn } from "@/lib/utils"
 import type { Slide, PostType, PostStyle } from "@/lib/supabase/social"
-import { renderRich } from "./richText"
+import { safeHtml } from "./richText"
 
 interface Props {
   slide: Slide
@@ -81,9 +81,8 @@ export const PostSlide = forwardRef<HTMLDivElement, Props>(
               isCover && "text-center"
             )}
             style={{ fontFamily: "var(--font-playfair), serif" }}
-          >
-            {renderRich(slide.headline)}
-          </h2>
+            dangerouslySetInnerHTML={{ __html: safeHtml(slide.headline) }}
+          />
 
           {slide.body && (
             <p
@@ -94,9 +93,8 @@ export const PostSlide = forwardRef<HTMLDivElement, Props>(
                 isCover && "text-center"
               )}
               style={{ fontFamily: "var(--font-dm-sans), sans-serif" }}
-            >
-              {renderRich(slide.body)}
-            </p>
+              dangerouslySetInnerHTML={{ __html: safeHtml(slide.body) }}
+            />
           )}
 
           {/* CTA for last slide */}
@@ -106,9 +104,8 @@ export const PostSlide = forwardRef<HTMLDivElement, Props>(
               s.text.body
             )}
               style={{ fontFamily: "var(--font-dm-sans), sans-serif" }}
-            >
-              {renderRich(slide.cta)}
-            </div>
+              dangerouslySetInnerHTML={{ __html: safeHtml(slide.cta) }}
+            />
           )}
         </div>
 
