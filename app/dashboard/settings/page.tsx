@@ -43,6 +43,8 @@ export default async function SettingsPage() {
 
   const generalTab = (
     <>
+      <SupportCard />
+
       <AgentToggle agentName={agentName} isActive={clinic.is_active} />
 
       <section className="bg-white rounded-xl border border-ivory-300 p-5 shadow-card">
@@ -81,8 +83,6 @@ export default async function SettingsPage() {
       <HoursEditor initialHours={hours} />
 
       <PasswordForm />
-
-      <SupportCard />
     </>
   )
 
