@@ -2,6 +2,7 @@ export const dynamic = "force-dynamic"
 
 import { getDemoStats, getRecentDemoSessions } from "@/lib/supabase/demo-stats"
 import DemoTranscripts from "@/components/admin/DemoTranscripts"
+import ResetDemoStatsButton from "./ResetDemoStatsButton"
 import { Play, Clock, UserCheck, TrendingUp } from "lucide-react"
 
 function fmtDuration(sec: number): string {
@@ -23,11 +24,14 @@ export default async function DemoStatsPage() {
 
   return (
     <div>
-      <div className="mb-6">
-        <h1 className="text-charcoal-900 font-display text-2xl font-semibold">Stats démo</h1>
-        <p className="text-charcoal-400 text-sm font-body mt-0.5">
-          Utilisation de la démo vocale et provenance des visiteurs
-        </p>
+      <div className="mb-6 flex items-start justify-between gap-4">
+        <div>
+          <h1 className="text-charcoal-900 font-display text-2xl font-semibold">Stats démo</h1>
+          <p className="text-charcoal-400 text-sm font-body mt-0.5">
+            Utilisation de la démo vocale et provenance des visiteurs
+          </p>
+        </div>
+        <ResetDemoStatsButton />
       </div>
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-6">

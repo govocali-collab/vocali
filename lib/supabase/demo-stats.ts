@@ -77,6 +77,16 @@ export async function getRecentDemoSessions(limit = 50): Promise<DemoSession[]> 
   }
 }
 
+/** Réinitialise les stats démo : supprime TOUTES les sessions enregistrées. */
+export async function resetDemoStats(): Promise<void> {
+  const supabase = admin()
+  const { error } = await supabase
+    .from("demo_sessions")
+    .delete()
+    .gte("created_at", "1970-01-01T00:00:00Z")
+  if (error) throw error
+}
+
 export interface DemoSourceStat {
   src: string
   demos: number
