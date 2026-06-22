@@ -150,6 +150,7 @@ interface SendPaymentLinkParams {
   price: number;
   billing: "month" | "year";
   trial: boolean;
+  founderRate?: boolean;
   checkoutUrl: string;
 }
 
@@ -160,10 +161,14 @@ export async function sendPaymentLinkEmail({
   price,
   billing,
   trial,
+  founderRate,
   checkoutUrl,
 }: SendPaymentLinkParams) {
   const billingLabel = billing === "month" ? "mois" : "an";
-  const priceFormatted = new Intl.NumberFormat("fr-CA", { style: "currency", currency: "CAD" }).format(price);
+  const fmt = (n: number) => new Intl.NumberFormat("fr-CA", { style: "currency", currency: "CAD" }).format(n);
+  const priceFormatted = founderRate
+    ? `${fmt(price / 2)} / ${billingLabel} les 3 premiers mois, puis ${fmt(price)} / ${billingLabel}`
+    : `${fmt(price)} / ${billingLabel}`;
 
   return resend.emails.send({
     from: "Vocali <support@vocali.ca>",
@@ -213,7 +218,7 @@ export async function sendPaymentLinkEmail({
                       </tr>
                       <tr>
                         <td style="padding:5px 0;font-size:15px;color:#6C6C70;">Facturation</td>
-                        <td style="padding:5px 0;font-size:15px;color:#1C1C1E;font-weight:500;">${priceFormatted} / ${billingLabel}</td>
+                        <td style="padding:5px 0;font-size:15px;color:#1C1C1E;font-weight:500;">${priceFormatted}</td>
                       </tr>
                       ${trial ? `
                       <tr>

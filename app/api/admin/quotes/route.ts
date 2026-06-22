@@ -2,9 +2,27 @@ import { NextResponse } from "next/server"
 import Stripe from "stripe"
 import { sendPaymentLinkEmail } from "@/lib/email/resend"
 
+// Coupon « tarif fondateur » : 50 % de rabais pendant les 3 premiers mois.
+// Créé une seule fois puis réutilisé (id fixe).
+async function getFounderCoupon(stripe: Stripe): Promise<string> {
+  const id = "fondateur-50-3mois"
+  try {
+    await stripe.coupons.retrieve(id)
+  } catch {
+    await stripe.coupons.create({
+      id,
+      percent_off: 50,
+      duration: "repeating",
+      duration_in_months: 3,
+      name: "Tarif fondateur — 50 % (3 mois)",
+    })
+  }
+  return id
+}
+
 export async function POST(req: Request) {
   try {
-    const { clinicName, firstName, lastName, email, price, description, billing, trial } = await req.json()
+    const { clinicName, firstName, lastName, email, price, description, billing, trial, founderRate } = await req.json()
 
     const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
     const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000"
@@ -27,7 +45,8 @@ export async function POST(req: Request) {
         },
       ],
       subscription_data: trial ? { trial_period_days: 30 } : undefined,
-      metadata: { clinicName, firstName, lastName, email },
+      discounts: founderRate ? [{ coupon: await getFounderCoupon(stripe) }] : undefined,
+      metadata: { clinicName, firstName, lastName, email, founderRate: founderRate ? "oui" : "non" },
       success_url: `${appUrl}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${appUrl}/checkout/cancelled`,
       locale: "fr",
@@ -41,6 +60,7 @@ export async function POST(req: Request) {
       price,
       billing,
       trial,
+      founderRate: Boolean(founderRate),
       checkoutUrl: session.url!,
     })
 
