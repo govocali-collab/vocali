@@ -4,6 +4,7 @@ import { useState } from "react"
 import { ChevronLeft, ChevronRight, Check, Clock, X, CalendarDays, Loader2 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import type { SocialPost, PostStatus } from "@/lib/supabase/social"
+import PostCard from "./PostCard"
 
 const MONTHS = [
   "Janvier", "Février", "Mars", "Avril", "Mai", "Juin",
@@ -224,6 +225,11 @@ export default function Calendar({
             >
               <X size={14} /> Retirer du calendrier
             </button>
+          </div>
+
+          {/* Aperçu du post */}
+          <div className="mt-4 pt-4 border-t border-ivory-200 max-w-sm">
+            <PostCard post={selected} />
           </div>
         </section>
       )}
