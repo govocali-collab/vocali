@@ -54,18 +54,6 @@ export const PostSlide = forwardRef<HTMLDivElement, Props>(
           "bg-[#C9A864]"
         )} />
 
-        {/* Slide number badge */}
-        {total > 1 && (
-          <div className={cn(
-            "absolute top-0 right-0 bg-[#C9A864] text-white font-bold leading-none",
-            size === "preview"
-              ? "text-[7px] px-2 py-1 mt-[3px] rounded-bl-lg"
-              : "text-[28px] px-7 py-3 mt-[10px] rounded-bl-2xl"
-          )}>
-            {index + 1}/{total}
-          </div>
-        )}
-
         {/* Content */}
         <div className={cn("flex flex-col flex-1 justify-center", isCover && "items-center text-center")}>
           {/* Gold dot — centered, right above text */}
