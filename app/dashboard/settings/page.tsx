@@ -1,10 +1,11 @@
 import Stripe from "stripe"
 import { getClinic } from "@/lib/supabase/dashboard"
-import { Zap, List, Mail } from "lucide-react"
+import { Zap, List } from "lucide-react"
 import OwnerForm from "@/components/dashboard/OwnerForm"
 import AgentToggle from "@/components/dashboard/AgentToggle"
 import PasswordForm from "@/components/dashboard/PasswordForm"
 import HoursEditor from "@/components/dashboard/HoursEditor"
+import SupportCard from "@/components/dashboard/SupportCard"
 import BillingTable from "@/components/dashboard/BillingTable"
 import SettingsTabs from "@/components/dashboard/SettingsTabs"
 
@@ -81,19 +82,7 @@ export default async function SettingsPage() {
 
       <PasswordForm />
 
-      <section className="bg-gold-50 rounded-xl border border-gold-200 p-5">
-        <div className="flex items-start gap-3">
-          <div className="w-7 h-7 rounded-lg bg-gold-100 border border-gold-200 flex items-center justify-center flex-shrink-0 mt-0.5">
-            <Mail size={13} className="text-gold-600" />
-          </div>
-          <p className="text-charcoal-600 text-sm font-body leading-relaxed">
-            Pour toute autre modification, contactez{" "}
-            <a href="mailto:support@vocali.ca" className="text-gold-700 hover:text-gold-600 transition-colors underline underline-offset-2">
-              support@vocali.ca
-            </a>
-          </p>
-        </div>
-      </section>
+      <SupportCard />
     </>
   )
 
