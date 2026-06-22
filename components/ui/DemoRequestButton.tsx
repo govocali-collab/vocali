@@ -1,8 +1,7 @@
 "use client"
 
-import { useState } from "react"
+import Link from "next/link"
 import { cn } from "@/lib/utils"
-import DemoRequestModal from "@/components/DemoRequestModal"
 
 type Variant = "primary" | "secondary" | "white" | "outline-gold"
 type Size = "sm" | "md" | "lg"
@@ -33,23 +32,18 @@ interface Props {
 }
 
 export function DemoRequestButton({ variant = "primary", size = "md", className, lang = "fr", children }: Props) {
-  const [open, setOpen] = useState(false)
-
+  const href = lang === "en" ? "/contact?lang=en" : "/contact"
   return (
-    <>
-      <button
-        type="button"
-        onClick={() => setOpen(true)}
-        className={cn(
-          "inline-flex items-center justify-center font-semibold rounded-full transition-all duration-200 cursor-pointer select-none",
-          variants[variant],
-          sizes[size],
-          className
-        )}
-      >
-        {children}
-      </button>
-      {open && <DemoRequestModal lang={lang} onClose={() => setOpen(false)} />}
-    </>
+    <Link
+      href={href}
+      className={cn(
+        "inline-flex items-center justify-center font-semibold rounded-full transition-all duration-200 cursor-pointer select-none",
+        variants[variant],
+        sizes[size],
+        className
+      )}
+    >
+      {children}
+    </Link>
   )
 }
