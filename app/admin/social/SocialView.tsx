@@ -1,7 +1,8 @@
 "use client"
 
 import { useState } from "react"
-import { Sparkles, History, Loader2, TrendingUp, RotateCcw, Save, CheckCircle } from "lucide-react"
+import { Sparkles, History, Loader2, TrendingUp, RotateCcw, Save, CheckCircle, CalendarDays } from "lucide-react"
+import Calendar from "./Calendar"
 import { cn } from "@/lib/utils"
 import type { SocialPost, PostType, PostStyle } from "@/lib/supabase/social"
 import PostCard from "./PostCard"
@@ -18,7 +19,7 @@ interface Props {
 }
 
 export default function SocialView({ initialPosts }: Props) {
-  const [tab, setTab] = useState<"generate" | "history">("generate")
+  const [tab, setTab] = useState<"generate" | "calendar" | "history">("generate")
   const [topic, setTopic] = useState("")
   const [customContent, setCustomContent] = useState("")
   const [postType, setPostType] = useState<PostType>("single")
@@ -121,11 +122,12 @@ export default function SocialView({ initialPosts }: Props) {
       <div className="flex items-center bg-ivory-200 rounded-lg p-0.5 w-fit mb-6">
         {[
           { key: "generate", label: "Générer", icon: Sparkles },
+          { key: "calendar", label: "Calendrier", icon: CalendarDays },
           { key: "history",  label: `Historique (${posts.length})`, icon: History },
         ].map(({ key, label, icon: Icon }) => (
           <button
             key={key}
-            onClick={() => setTab(key as "generate" | "history")}
+            onClick={() => setTab(key as "generate" | "calendar" | "history")}
             className={cn(
               "flex items-center gap-1.5 px-4 py-1.5 rounded-md text-sm font-medium transition-colors",
               tab === key
@@ -324,6 +326,13 @@ export default function SocialView({ initialPosts }: Props) {
             )}
           </div>
         </div>
+      )}
+
+      {tab === "calendar" && (
+        <Calendar
+          posts={posts}
+          onUpdate={(p) => setPosts(prev => prev.map(x => x.id === p.id ? p : x))}
+        />
       )}
 
       {tab === "history" && (
