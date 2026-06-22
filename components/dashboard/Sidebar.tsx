@@ -22,7 +22,7 @@ export default function Sidebar({ clinic }: { clinic: Clinic }) {
     ...(clinic.offers_trainings
       ? [{ href: "/dashboard/formations", label: "Formations", icon: GraduationCap }]
       : []),
-    { href: "/dashboard/billing", label: "Facturation", icon: Receipt },
+    { href: "/dashboard/billing", label: "Reçus", icon: Receipt },
     { href: "/dashboard/settings", label: "Paramètres", icon: Settings },
   ]
 
