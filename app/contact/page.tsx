@@ -3,10 +3,28 @@ import Link from "next/link"
 import Image from "next/image"
 import ContactForm from "./ContactForm"
 
+const PAGE_TITLE = "Réserver une démonstration — Vocali"
+const PAGE_DESC =
+  "Laissez-nous vos coordonnées et notre équipe vous recontacte dans les 24 heures pour une démonstration de Vocali."
+
 export const metadata: Metadata = {
-  title: "Réserver une démonstration — Vocali",
-  description:
-    "Laissez-nous vos coordonnées et notre équipe vous recontacte dans les 24 heures pour une démonstration de Vocali.",
+  title: PAGE_TITLE,
+  description: PAGE_DESC,
+  alternates: { canonical: "https://vocali.ca/contact" },
+  openGraph: {
+    type: "website",
+    url: "https://vocali.ca/contact",
+    siteName: "Vocali",
+    title: PAGE_TITLE,
+    description: PAGE_DESC,
+    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "Vocali" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: PAGE_TITLE,
+    description: PAGE_DESC,
+    images: ["/og-image.png"],
+  },
 }
 
 const COPY = {
