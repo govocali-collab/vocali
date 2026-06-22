@@ -12,6 +12,7 @@ export type CatalogItem = {
   promotion: string | null
   duration: string | null
   active: boolean
+  published: boolean
   sort_order: number
 }
 
@@ -23,6 +24,7 @@ export type CatalogItemInput = {
   promotion?: string | null
   duration?: string | null
   active?: boolean
+  published?: boolean
   sort_order?: number
 }
 
@@ -30,9 +32,13 @@ function admin() {
   return createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!)
 }
 
-const COLS = "id, clinic_id, kind, name, description, price, promotion, duration, active, sort_order"
+const COLS = "id, clinic_id, kind, name, description, price, promotion, duration, active, published, sort_order"
 
-export async function listCatalog(clinicId: string, kind?: CatalogKind): Promise<CatalogItem[]> {
+export async function listCatalog(
+  clinicId: string,
+  kind?: CatalogKind,
+  opts?: { publishedOnly?: boolean },
+): Promise<CatalogItem[]> {
   let query = admin()
     .from("catalog_items")
     .select(COLS)
@@ -40,9 +46,24 @@ export async function listCatalog(clinicId: string, kind?: CatalogKind): Promise
     .order("sort_order", { ascending: true })
     .order("created_at", { ascending: true })
   if (kind) query = query.eq("kind", kind)
+  // Côté cliente / agent : ne montrer que les items publiés (pas les brouillons admin).
+  if (opts?.publishedOnly) query = query.eq("published", true)
   const { data, error } = await query
   if (error) throw new Error(error.message)
   return (data ?? []) as CatalogItem[]
+}
+
+/** Publie tous les brouillons (published=false) d'une clinique (optionnellement d'un type). */
+export async function publishCatalogDrafts(clinicId: string, kind?: CatalogKind): Promise<number> {
+  let query = admin()
+    .from("catalog_items")
+    .update({ published: true, updated_at: new Date().toISOString() })
+    .eq("clinic_id", clinicId)
+    .eq("published", false)
+  if (kind) query = query.eq("kind", kind)
+  const { data, error } = await query.select("id")
+  if (error) throw new Error(error.message)
+  return (data ?? []).length
 }
 
 export async function createCatalogItem(clinicId: string, item: CatalogItemInput): Promise<CatalogItem> {
@@ -57,6 +78,7 @@ export async function createCatalogItem(clinicId: string, item: CatalogItemInput
       promotion: item.promotion ?? null,
       duration: item.duration ?? null,
       active: item.active ?? true,
+      published: item.published ?? true,
       sort_order: item.sort_order ?? 0,
     })
     .select(COLS)
@@ -68,7 +90,7 @@ export async function createCatalogItem(clinicId: string, item: CatalogItemInput
 // Mise à jour scopée par clinic_id ET id (empêche d'éditer l'item d'une autre clinique).
 export async function updateCatalogItem(clinicId: string, id: string, patch: CatalogItemInput): Promise<void> {
   const update: Record<string, unknown> = { updated_at: new Date().toISOString() }
-  for (const k of ["kind", "name", "description", "price", "promotion", "duration", "active", "sort_order"] as const) {
+  for (const k of ["kind", "name", "description", "price", "promotion", "duration", "active", "published", "sort_order"] as const) {
     if (patch[k] !== undefined) update[k] = patch[k]
   }
   const { error } = await admin()

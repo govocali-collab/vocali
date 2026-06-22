@@ -8,7 +8,7 @@ export default async function ServicesPage() {
   if (!clinic) return null
 
   // Résilient : si le catalogue est indisponible, la page s'affiche quand même (vide).
-  const serviceItems = await listCatalog(clinic.id, "service").catch(() => [])
+  const serviceItems = await listCatalog(clinic.id, "service", { publishedOnly: true }).catch(() => [])
 
   return (
     <div className="px-5 py-6 lg:px-8 max-w-6xl">

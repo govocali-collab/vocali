@@ -62,7 +62,7 @@ export async function POST(req: Request) {
 
     // Base de connaissances : on privilégie le catalogue structuré (catalog_items),
     // sinon on retombe sur l'ancien tableau location.services.
-    const catalog = await listCatalog(location.clinic_id).catch(() => [])
+    const catalog = await listCatalog(location.clinic_id, undefined, { publishedOnly: true }).catch(() => [])
     const knowledgeBase = catalog.length ? buildKnowledgeFromCatalog(catalog) : buildKnowledge(location)
 
     // 3) Créer la session d'appel (le webhook post-call la complétera). Idempotent.
