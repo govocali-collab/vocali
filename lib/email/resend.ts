@@ -174,7 +174,8 @@ export async function sendPaymentLinkEmail({
 
   return resend.emails.send({
     from: "Vocali <support@vocali.ca>",
-    to: mailTo(email),
+    // La facture/lien de paiement va TOUJOURS à la vraie cliente (pas de redirection).
+    to: email,
     subject: `Votre accès à Vocali — Secrétaire IA`,
     html: `
 <!DOCTYPE html>
