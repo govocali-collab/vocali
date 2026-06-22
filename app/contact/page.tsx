@@ -3,7 +3,7 @@ import Link from "next/link"
 import Image from "next/image"
 import ContactForm from "./ContactForm"
 
-const PAGE_TITLE = "Réserver une démonstration — Vocali"
+const PAGE_TITLE = "Contactez-nous — Vocali"
 const PAGE_DESC =
   "Laissez-nous vos coordonnées et notre équipe vous recontacte dans les 24 heures pour une démonstration de Vocali."
 
@@ -30,13 +30,13 @@ export const metadata: Metadata = {
 const COPY = {
   fr: {
     badge: "Programme fondateur",
-    title: "Réserver une démonstration",
+    title: "Contactez-nous",
     subtitle: "Laissez-nous vos coordonnées, nous vous recontactons dans les 24 heures.",
     back: "← Retour",
   },
   en: {
     badge: "Founder program",
-    title: "Book a demo",
+    title: "Contact us",
     subtitle: "Leave us your details and we'll get back to you within 24 hours.",
     back: "← Back",
   },

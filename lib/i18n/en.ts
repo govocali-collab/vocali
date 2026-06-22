@@ -13,7 +13,7 @@ export const en: Dictionary = {
     howItWorks: "How it works",
     franchise: "Who it's for",
     faq: "FAQ",
-    cta: "Book a demo",
+    cta: "Contact us",
     logo: "Vocali",
   },
   hero: {
@@ -21,7 +21,7 @@ export const en: Dictionary = {
     headline: "Stop losing clients to missed calls.",
     subheadline:
       "The system that answers incoming calls, informs your clients and helps book appointments, even when your team isn't available.",
-    ctaPrimary: "Book a demo",
+    ctaPrimary: "Contact us",
     ctaSecondary: "Try the demo",
     trustedBy:
       "For medico-aesthetic clinics, beauty clinics, esthetics salons and training schools.",
@@ -294,7 +294,7 @@ export const en: Dictionary = {
   finalCta: {
     title: "Discover Vocali in your business.",
     subtitle: "Because a missed call should never become a lost client.",
-    cta: "Book a demo",
+    cta: "Contact us",
     note: "No commitment · Our team reviews your needs and gets back to you quickly.",
   },
   footer: {

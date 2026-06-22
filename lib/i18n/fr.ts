@@ -13,7 +13,7 @@ export const fr: Dictionary = {
     howItWorks: "Fonctionnement",
     franchise: "Pour qui",
     faq: "FAQ",
-    cta: "Réserver une démonstration",
+    cta: "Contactez-nous",
     logo: "Vocali",
   },
   hero: {
@@ -21,7 +21,7 @@ export const fr: Dictionary = {
     headline: "Arrêtez de perdre des clientes à cause des appels.",
     subheadline:
       "Le système qui répond aux appels entrants, informe les clientes et facilite la prise de rendez-vous, même lorsque votre équipe n'est pas disponible.",
-    ctaPrimary: "Réserver une démonstration",
+    ctaPrimary: "Contactez-nous",
     ctaSecondary: "Essayez la démo",
     trustedBy:
       "Pour les cliniques médico-esthétiques, cliniques beauté, salons d'esthétique et écoles de formation.",
@@ -294,7 +294,7 @@ export const fr: Dictionary = {
   finalCta: {
     title: "Découvrez Vocali dans votre établissement.",
     subtitle: "Parce qu'un appel manqué ne devrait jamais devenir une cliente perdue.",
-    cta: "Réserver une démonstration",
+    cta: "Contactez-nous",
     note: "Aucun engagement · Notre équipe analyse vos besoins et vous répond rapidement.",
   },
   footer: {
