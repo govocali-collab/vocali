@@ -82,6 +82,7 @@ export default function AdminBillingPage() {
   const [billing, setBilling] = useState<"month" | "year">("month")
   const [trial, setTrial] = useState(true)
   const [founderRate, setFounderRate] = useState(false)
+  const [preview, setPreview] = useState(false)
   const [creating, setCreating] = useState(false)
   const [createError, setCreateError] = useState("")
   const [checkoutUrl, setCheckoutUrl] = useState("")
@@ -92,8 +93,13 @@ export default function AdminBillingPage() {
     setPrice(String(p.price))
   }
 
-  async function handleCreate(e: React.FormEvent) {
+  function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
+    setCreateError("")
+    setPreview(true)
+  }
+
+  async function handleConfirm() {
     setCreateError("")
     setCheckoutUrl("")
     setCreating(true)
@@ -155,12 +161,50 @@ export default function AdminBillingPage() {
                   {copied ? "Copié" : "Copier"}
                 </button>
               </div>
-              <button onClick={() => { setCheckoutUrl(""); setClinicName(""); setFirstName(""); setLastName(""); setEmail("") }} className="mt-4 text-sm text-charcoal-500 hover:text-gold-600 transition-colors">
+              <button onClick={() => { setCheckoutUrl(""); setPreview(false); setClinicName(""); setFirstName(""); setLastName(""); setEmail("") }} className="mt-4 text-sm text-charcoal-500 hover:text-gold-600 transition-colors">
                 ← Créer une autre facture
               </button>
             </div>
+          ) : preview ? (
+            <div className="space-y-4">
+              <p className="text-charcoal-400 text-xs font-semibold uppercase tracking-widest">Aperçu avant envoi</p>
+              <div className="rounded-xl border border-ivory-200 bg-ivory-50 divide-y divide-ivory-200">
+                {[
+                  ["Cliente", `${firstName} ${lastName}`.trim() || "—"],
+                  ["Clinique", clinicName || "—"],
+                  ["Courriel", email],
+                  ["Forfait", (PLANS.find((p) => p.key === plan) ?? PLANS[0]).name],
+                  [
+                    "Prix",
+                    founderRate
+                      ? `${formatAmount(parseFloat(price) / 2, "CAD")} / ${billing === "month" ? "mois" : "an"} les 3 premiers mois, puis ${formatAmount(parseFloat(price), "CAD")} / ${billing === "month" ? "mois" : "an"}`
+                      : `${formatAmount(parseFloat(price), "CAD")} / ${billing === "month" ? "mois" : "an"}`,
+                  ],
+                  ["Option", founderRate ? "Tarif fondateur (50 % × 3 mois)" : trial ? "Essai gratuit 30 jours" : "Aucune"],
+                ].map(([label, value]) => (
+                  <div key={label} className="flex items-start justify-between gap-4 px-4 py-3">
+                    <span className="text-charcoal-400 text-sm">{label}</span>
+                    <span className="text-charcoal-800 text-sm font-medium text-right">{value}</span>
+                  </div>
+                ))}
+              </div>
+              <p className="text-charcoal-500 text-sm">
+                Un courriel avec le lien de paiement sécurisé sera envoyé à <strong className="text-charcoal-800">{email}</strong>.
+              </p>
+
+              {createError && <p className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg px-3 py-2">{createError}</p>}
+
+              <div className="flex items-center gap-3">
+                <button onClick={() => setPreview(false)} disabled={creating} className="text-sm text-charcoal-500 hover:text-gold-600 transition-colors px-3 py-2.5">
+                  ← Modifier
+                </button>
+                <button onClick={handleConfirm} disabled={creating} className="flex items-center justify-center gap-2 bg-gold-gradient disabled:opacity-60 text-white font-semibold text-sm rounded-lg px-6 py-3 hover:opacity-90 transition-opacity">
+                  {creating ? <><Loader2 size={15} className="animate-spin" /> Envoi…</> : <><Send size={15} /> Confirmer et envoyer par courriel</>}
+                </button>
+              </div>
+            </div>
           ) : (
-            <form onSubmit={handleCreate} className="space-y-5">
+            <form onSubmit={handleSubmit} className="space-y-5">
               {/* Forfaits */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {PLANS.map((p) => (
@@ -243,8 +287,8 @@ export default function AdminBillingPage() {
 
               {createError && <p className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg px-3 py-2">{createError}</p>}
 
-              <button type="submit" disabled={creating} className="flex items-center justify-center gap-2 bg-gold-gradient disabled:opacity-60 text-white font-semibold text-sm rounded-lg px-6 py-3 hover:opacity-90 transition-opacity">
-                {creating ? <><Loader2 size={15} className="animate-spin" /> Création…</> : <><Send size={15} /> Créer la facture et envoyer par courriel</>}
+              <button type="submit" className="flex items-center justify-center gap-2 bg-gold-gradient text-white font-semibold text-sm rounded-lg px-6 py-3 hover:opacity-90 transition-opacity">
+                Aperçu de la facture →
               </button>
               <p className="text-charcoal-300 text-xs">Astuce : pour le tarif fondateur des 3 premiers mois, ajuste le prix manuellement (ex. 123,50 $).</p>
             </form>
