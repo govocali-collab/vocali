@@ -4,9 +4,10 @@ import { useState } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { usePathname } from "next/navigation"
-import { LayoutDashboard, Users, Phone, Settings, Menu, X, Zap, Receipt } from "lucide-react"
+import { LayoutDashboard, Users, Phone, Settings, Menu, X, Zap, Receipt, LogOut } from "lucide-react"
 import { cn } from "@/lib/utils"
 import type { Clinic } from "@/lib/supabase/dashboard"
+import { signOut } from "@/app/actions/auth"
 
 const NAV = [
   { href: "/dashboard", label: "Accueil", icon: LayoutDashboard, exact: true },
@@ -66,7 +67,7 @@ export default function Sidebar({ clinic }: { clinic: Clinic }) {
 
       <div className="flex-1 py-4 overflow-y-auto">{navItems}</div>
 
-      <div className="px-5 py-4 border-t border-ivory-300">
+      <div className="px-5 py-4 border-t border-ivory-300 space-y-3">
         <div className="flex items-center gap-2.5">
           <div className="w-7 h-7 rounded-full bg-gold-100 border border-gold-300 flex items-center justify-center flex-shrink-0">
             <Zap size={12} className="text-gold-600" />
@@ -79,6 +80,16 @@ export default function Sidebar({ clinic }: { clinic: Clinic }) {
             </div>
           </div>
         </div>
+
+        <form action={signOut}>
+          <button
+            type="submit"
+            className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-body font-medium text-charcoal-400 hover:text-red-600 hover:bg-red-50 transition-colors"
+          >
+            <LogOut size={16} />
+            Déconnexion
+          </button>
+        </form>
       </div>
     </div>
   )
