@@ -3,6 +3,7 @@
 import { forwardRef } from "react"
 import { cn } from "@/lib/utils"
 import type { Slide, PostType, PostStyle } from "@/lib/supabase/social"
+import { renderRich } from "./richText"
 
 interface Props {
   slide: Slide
@@ -81,7 +82,7 @@ export const PostSlide = forwardRef<HTMLDivElement, Props>(
             )}
             style={{ fontFamily: "var(--font-playfair), serif" }}
           >
-            {slide.headline}
+            {renderRich(slide.headline)}
           </h2>
 
           {slide.body && (
@@ -94,7 +95,7 @@ export const PostSlide = forwardRef<HTMLDivElement, Props>(
               )}
               style={{ fontFamily: "var(--font-dm-sans), sans-serif" }}
             >
-              {slide.body}
+              {renderRich(slide.body)}
             </p>
           )}
 
@@ -106,7 +107,7 @@ export const PostSlide = forwardRef<HTMLDivElement, Props>(
             )}
               style={{ fontFamily: "var(--font-dm-sans), sans-serif" }}
             >
-              {slide.cta}
+              {renderRich(slide.cta)}
             </div>
           )}
         </div>

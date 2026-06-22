@@ -38,6 +38,36 @@ export default function PostCard({ post, onDelete }: Props) {
     setSlides(prev => prev.map((s, i) => i === index ? { ...s, [field]: value } : s))
   }
 
+  const headlineRef = useRef<HTMLInputElement>(null)
+  const bodyRef = useRef<HTMLTextAreaElement>(null)
+  const ctaRef = useRef<HTMLInputElement>(null)
+
+  // Entoure la sélection du champ avec un marqueur (**gras**, *italique*, ==or==).
+  function applyFormat(el: HTMLInputElement | HTMLTextAreaElement | null, field: keyof Slide, marker: string) {
+    if (!el) return
+    const start = el.selectionStart ?? 0
+    const end = el.selectionEnd ?? 0
+    const val = el.value
+    const sel = val.slice(start, end) || "texte"
+    const next = val.slice(0, start) + marker + sel + marker + val.slice(end)
+    updateSlide(activeSlide, field, next)
+    requestAnimationFrame(() => {
+      el.focus()
+      el.setSelectionRange(start + marker.length, start + marker.length + sel.length)
+    })
+  }
+
+  function FmtBtns({ getEl, field }: { getEl: () => HTMLInputElement | HTMLTextAreaElement | null; field: keyof Slide }) {
+    const b = "h-6 min-w-[26px] px-1.5 rounded border border-ivory-300 bg-white text-xs text-charcoal-600 hover:bg-ivory-100 transition-colors"
+    return (
+      <div className="flex gap-1 mb-1">
+        <button type="button" title="Gras" onMouseDown={e => e.preventDefault()} onClick={() => applyFormat(getEl(), field, "**")} className={cn(b, "font-bold")}>G</button>
+        <button type="button" title="Italique" onMouseDown={e => e.preventDefault()} onClick={() => applyFormat(getEl(), field, "*")} className={cn(b, "italic")}>I</button>
+        <button type="button" title="Mettre en or" onMouseDown={e => e.preventDefault()} onClick={() => applyFormat(getEl(), field, "==")} className={b} style={{ color: "#C9A864", fontWeight: 600 }}>Or</button>
+      </div>
+    )
+  }
+
   async function downloadSlide(index: number) {
     const el = slideRefs.current[index]
     if (!el) return
@@ -200,10 +230,15 @@ export default function PostCard({ post, onDelete }: Props) {
               <X size={14} />
             </button>
           </div>
+          <p className="text-[11px] text-charcoal-400 mb-2">
+            Sélectionnez du texte puis cliquez <b>G</b> (gras), <i>I</i> (italique) ou <span style={{ color: "#C9A864", fontWeight: 600 }}>Or</span>.
+          </p>
           <div className="space-y-2">
             <div>
               <label className="block text-xs text-charcoal-400 mb-1">Titre</label>
+              <FmtBtns getEl={() => headlineRef.current} field="headline" />
               <input
+                ref={headlineRef}
                 type="text"
                 value={slides[activeSlide].headline}
                 onChange={e => updateSlide(activeSlide, "headline", e.target.value)}
@@ -212,7 +247,9 @@ export default function PostCard({ post, onDelete }: Props) {
             </div>
             <div>
               <label className="block text-xs text-charcoal-400 mb-1">Corps</label>
+              <FmtBtns getEl={() => bodyRef.current} field="body" />
               <textarea
+                ref={bodyRef}
                 value={slides[activeSlide].body ?? ""}
                 onChange={e => updateSlide(activeSlide, "body", e.target.value)}
                 rows={3}
@@ -222,7 +259,9 @@ export default function PostCard({ post, onDelete }: Props) {
             {slides[activeSlide].cta !== undefined && (
               <div>
                 <label className="block text-xs text-charcoal-400 mb-1">CTA</label>
+                <FmtBtns getEl={() => ctaRef.current} field="cta" />
                 <input
+                  ref={ctaRef}
                   type="text"
                   value={slides[activeSlide].cta ?? ""}
                   onChange={e => updateSlide(activeSlide, "cta", e.target.value)}
