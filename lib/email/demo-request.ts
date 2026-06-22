@@ -23,7 +23,7 @@ export async function sendDemoRequestEmail(p: DemoRequestEmailParams) {
     : ""
   return resend.emails.send({
     from: "Vocali <support@vocali.ca>",
-    to: "contact@vocali.ca",
+    to: "govocali@gmail.com",
     subject: "Nouvelle demande de démonstration",
     html: `<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8" /></head>
 <body style="margin:0;padding:0;background:#FAF7F2;font-family:Helvetica,Arial,sans-serif;">
