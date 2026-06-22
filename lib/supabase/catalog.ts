@@ -123,6 +123,7 @@ export async function bulkCreateCatalogItems(clinicId: string, items: CatalogIte
       promotion: i.promotion ?? null,
       duration: i.duration ?? null,
       active: i.active ?? true,
+      published: i.published ?? true,
       sort_order: i.sort_order ?? idx,
     }))
   if (rows.length === 0) return 0
