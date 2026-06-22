@@ -236,7 +236,7 @@ export default function OnboardingForm({ prefill }: { prefill?: Prefill }) {
                     day.closed ? "bg-ivory-50 border-ivory-200" : "bg-white border-ivory-300"
                   )}>
                     <label className="flex items-center gap-2 cursor-pointer">
-                      <input type="checkbox" checked={day.closed} onChange={(e) => updateHours(key, "closed", e.target.checked)} className="w-3.5 h-3.5 accent-amber-600" />
+                      <input type="checkbox" checked={!day.closed} onChange={(e) => updateHours(key, "closed", !e.target.checked)} className="w-3.5 h-3.5 accent-amber-600" />
                       <span className={cn("text-sm font-body font-medium", day.closed ? "text-charcoal-400" : "text-charcoal-700")}>{label}</span>
                     </label>
                     {day.closed ? (
