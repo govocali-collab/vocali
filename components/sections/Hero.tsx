@@ -50,7 +50,7 @@ export function Hero({ dict, lang }: Props) {
             <>
               Arrêtez de perdre des{" "}
               <span className="gold-text">clientes</span>
-              {" "}à cause des appels.
+              {" "}à cause des appels manqués.
             </>
           ) : (
             <>
