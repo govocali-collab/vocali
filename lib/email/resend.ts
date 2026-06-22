@@ -82,7 +82,7 @@ export async function sendWelcomeEmail({
               <table width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 32px;">
                 <tr>
                   <td align="center">
-                    <a href="https://app.vocali.ca/dashboard"
+                    <a href="https://vocali.ca/dashboard"
                        style="display:inline-block;background:linear-gradient(135deg,#C9A864 0%,#A88840 50%,#8A6E2F 100%);color:#FEFDFB;text-decoration:none;font-size:15px;font-weight:600;padding:14px 36px;border-radius:8px;letter-spacing:0.02em;">
                       Accéder à mon tableau de bord →
                     </a>
@@ -394,7 +394,7 @@ export async function sendAgentPausedNotification({
               <table cellpadding="0" cellspacing="0">
                 <tr>
                   <td>
-                    <a href="https://app.vocali.ca/admin/clinics/${clinicId}"
+                    <a href="https://vocali.ca/admin/clinics/${clinicId}"
                        style="display:inline-block;background:linear-gradient(135deg,#C9A864 0%,#A88840 50%,#8A6E2F 100%);color:#FEFDFB;text-decoration:none;font-size:14px;font-weight:600;padding:12px 28px;border-radius:8px;letter-spacing:0.02em;">
                       Voir la clinique →
                     </a>
@@ -521,7 +521,7 @@ export async function sendPauseReminderNotification({
               <table cellpadding="0" cellspacing="0">
                 <tr>
                   <td>
-                    <a href="https://app.vocali.ca/admin/clinics/${clinicId}"
+                    <a href="https://vocali.ca/admin/clinics/${clinicId}"
                        style="display:inline-block;background:linear-gradient(135deg,#C9A864 0%,#A88840 50%,#8A6E2F 100%);color:#FEFDFB;text-decoration:none;font-size:14px;font-weight:600;padding:12px 28px;border-radius:8px;letter-spacing:0.02em;">
                       Voir la clinique →
                     </a>
@@ -605,7 +605,7 @@ export async function sendAdminNotification({
     <p style="margin:0;font-size:14px;color:#4C4C50;line-height:1.6;">${services.join(", ") || "—"}</p>
   </div>
 
-  <a href="https://app.vocali.ca/admin/clinics/${clinicId}" style="display:inline-block;background:linear-gradient(135deg,#C9A864 0%,#A88840 100%);color:#FFFFFF;text-decoration:none;font-size:13px;font-weight:600;padding:10px 24px;border-radius:8px;">
+  <a href="https://vocali.ca/admin/clinics/${clinicId}" style="display:inline-block;background:linear-gradient(135deg,#C9A864 0%,#A88840 100%);color:#FFFFFF;text-decoration:none;font-size:13px;font-weight:600;padding:10px 24px;border-radius:8px;">
     Configurer la clinique →
   </a>
 </div>
@@ -783,7 +783,7 @@ export async function sendPaymentFailedNotification({
           </td></tr>
         </table>
         <table cellpadding="0" cellspacing="0"><tr><td>
-          <a href="https://app.vocali.ca/admin/clinics/${clinicId}"
+          <a href="https://vocali.ca/admin/clinics/${clinicId}"
              style="display:inline-block;background:linear-gradient(135deg,#C9A864 0%,#A88840 50%,#8A6E2F 100%);color:#FEFDFB;text-decoration:none;font-size:14px;font-weight:600;padding:12px 28px;border-radius:8px;">
             Voir la clinique →
           </a>
@@ -836,7 +836,7 @@ export async function sendSubscriptionCancelledNotification({
           </td></tr>
         </table>
         <table cellpadding="0" cellspacing="0"><tr><td>
-          <a href="https://app.vocali.ca/admin/clinics/${clinicId}"
+          <a href="https://vocali.ca/admin/clinics/${clinicId}"
              style="display:inline-block;background:linear-gradient(135deg,#C9A864 0%,#A88840 50%,#8A6E2F 100%);color:#FEFDFB;text-decoration:none;font-size:14px;font-weight:600;padding:12px 28px;border-radius:8px;">
             Voir la clinique →
           </a>
@@ -874,7 +874,7 @@ export async function sendFounderApplicationEmail(p: FounderApplicationEmailPara
       ? `<tr><td style="padding:7px 16px 7px 0;font-size:13px;color:#8A8A8E;white-space:nowrap;vertical-align:top;width:170px;">${label}</td><td style="padding:7px 0;font-size:14px;color:#2A2A2E;font-weight:600;">${String(value).replace(/\n/g, "<br/>")}</td></tr>`
       : ""
   const cta = p.prospectId
-    ? `<a href="https://app.vocali.ca/admin/crm/${p.prospectId}" style="display:inline-block;background:linear-gradient(135deg,#C9A864 0%,#A88840 50%,#8A6E2F 100%);color:#FEFDFB;text-decoration:none;font-size:14px;font-weight:600;padding:12px 28px;border-radius:8px;">Voir dans le CRM</a>`
+    ? `<a href="https://vocali.ca/admin/crm/${p.prospectId}" style="display:inline-block;background:linear-gradient(135deg,#C9A864 0%,#A88840 50%,#8A6E2F 100%);color:#FEFDFB;text-decoration:none;font-size:14px;font-weight:600;padding:12px 28px;border-radius:8px;">Voir dans le CRM</a>`
     : ""
   return resend.emails.send({
     from: "Vocali <support@vocali.ca>",
@@ -930,7 +930,7 @@ export async function sendDemoProspectEmail(p: DemoProspectEmailParams) {
       ? `<tr><td style="padding:6px 0;font-size:13px;color:#8A8A8E;width:120px;">${label}</td><td style="padding:6px 0;font-size:14px;color:#2A2A2E;font-weight:600;">${value}</td></tr>`
       : ""
   const cta = p.prospectId
-    ? `<a href="https://app.vocali.ca/admin/crm/${p.prospectId}" style="display:inline-block;background:linear-gradient(135deg,#C9A864 0%,#A88840 50%,#8A6E2F 100%);color:#FEFDFB;text-decoration:none;font-size:14px;font-weight:600;padding:12px 28px;border-radius:8px;">Voir dans le CRM</a>`
+    ? `<a href="https://vocali.ca/admin/crm/${p.prospectId}" style="display:inline-block;background:linear-gradient(135deg,#C9A864 0%,#A88840 50%,#8A6E2F 100%);color:#FEFDFB;text-decoration:none;font-size:14px;font-weight:600;padding:12px 28px;border-radius:8px;">Voir dans le CRM</a>`
     : ""
   return resend.emails.send({
     from: "Vocali <support@vocali.ca>",
