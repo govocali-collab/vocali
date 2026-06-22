@@ -22,7 +22,7 @@ async function getFounderCoupon(stripe: Stripe): Promise<string> {
 
 export async function POST(req: Request) {
   try {
-    const { clinicName, firstName, lastName, email, price, description, billing, trial, founderRate } = await req.json()
+    const { clinicName, firstName, lastName, email, price, description, billing, trial, founderRate, productId } = await req.json()
 
     const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
     const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000"
@@ -36,10 +36,11 @@ export async function POST(req: Request) {
             currency: "cad",
             unit_amount: Math.round(price * 100),
             recurring: { interval: billing as "month" | "year" },
-            product_data: {
-              name: "Vocali — Secrétaire IA",
-              description,
-            },
+            // Si un produit Stripe est fourni (forfait sélectionné), on l'utilise
+            // pour un reporting propre ; sinon produit ad-hoc (rétrocompat).
+            ...(productId
+              ? { product: productId as string }
+              : { product_data: { name: "Vocali — Secrétaire IA", description } }),
           },
           quantity: 1,
         },

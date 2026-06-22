@@ -24,6 +24,7 @@ const PLANS = [
     price: 247,
     tagline: "Jusqu'à 60 appels / mois",
     desc: "Vocali Essentiel — réceptionniste IA (jusqu'à 60 appels par mois)",
+    productId: "prod_UkfmoPOlzPxMIJ",
   },
   {
     key: "illimite",
@@ -31,6 +32,7 @@ const PLANS = [
     price: 497,
     tagline: "Appels illimités · recommandé",
     desc: "Vocali Illimité — réceptionniste IA (appels illimités)",
+    productId: "prod_UkfmaJt73lcY47",
   },
 ] as const
 
@@ -115,6 +117,7 @@ export default function AdminBillingPage() {
           email,
           price: parseFloat(price),
           description: selected.desc,
+          productId: selected.productId,
           billing,
           trial,
           founderRate,
