@@ -45,6 +45,24 @@ export async function POST(req: Request) {
     // Frais d'installation : montant direct (250 $ fondateur / 500 $ régulier).
     const setupAmount = founderRate ? 25000 : 50000
 
+    // Récapitulatif clair affiché au-dessus du bouton de paiement (aujourd'hui vs récurrent).
+    const fmt = (n: number) => new Intl.NumberFormat("fr-CA", { style: "currency", currency: "CAD" }).format(n)
+    const interval = billing === "year" ? "an" : "mois"
+    const monthlyNow = founderRate ? price / 2 : price
+    const setup = founderRate ? 250 : 500
+    let recap: string
+    if (trial) {
+      recap = `Essai gratuit de 30 jours. ${setupFee ? `Frais d'installation unique de ${fmt(setup)} payés aujourd'hui. ` : "Aucun montant aujourd'hui. "}Ensuite ${fmt(price)}/${interval}.`
+    } else {
+      const todayTotal = monthlyNow + (setupFee ? setup : 0)
+      recap =
+        `À payer aujourd'hui : ${fmt(todayTotal)} — 1er ${interval} ${fmt(monthlyNow)}` +
+        `${founderRate ? " (tarif fondateur -50 %)" : ""}${setupFee ? ` + installation unique ${fmt(setup)}` : ""}. ` +
+        (founderRate
+          ? `Puis ${fmt(monthlyNow)}/${interval} pendant 3 mois, ensuite ${fmt(price)}/${interval}.`
+          : `Puis ${fmt(price)}/${interval}.`)
+    }
+
     const session = await stripe.checkout.sessions.create({
       mode: "subscription",
       customer_email: email,
@@ -75,6 +93,7 @@ export async function POST(req: Request) {
       cancel_url: `${appUrl}/checkout/cancelled`,
       locale: "fr",
       payment_method_types: ["card"],
+      custom_text: { submit: { message: recap } },
     })
 
     await sendPaymentLinkEmail({
