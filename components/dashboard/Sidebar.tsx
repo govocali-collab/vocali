@@ -4,7 +4,7 @@ import { useState } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { usePathname } from "next/navigation"
-import { LayoutDashboard, Users, Phone, Settings, Menu, X, Zap, Receipt, LogOut, Tag, GraduationCap } from "lucide-react"
+import { LayoutDashboard, Users, Phone, Settings, Menu, X, Zap, LogOut, Tag, GraduationCap } from "lucide-react"
 import { cn } from "@/lib/utils"
 import type { Clinic } from "@/lib/supabase/dashboard"
 import { signOut } from "@/app/actions/auth"
@@ -22,7 +22,6 @@ export default function Sidebar({ clinic }: { clinic: Clinic }) {
     ...(clinic.offers_trainings
       ? [{ href: "/dashboard/formations", label: "Formations", icon: GraduationCap }]
       : []),
-    { href: "/dashboard/billing", label: "Reçus", icon: Receipt },
     { href: "/dashboard/settings", label: "Paramètres", icon: Settings },
   ]
 
