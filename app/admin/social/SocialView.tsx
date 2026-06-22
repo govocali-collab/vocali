@@ -224,7 +224,7 @@ export default function SocialView({ initialPosts }: Props) {
           {/* Preview of latest */}
           <div>
             {latest ? (
-              <PostCard post={latest} onDelete={handleDelete} />
+              <PostCard key={latest.id} post={latest} onDelete={handleDelete} />
             ) : (
               <div className="bg-white border border-ivory-300 rounded-xl p-8 shadow-card flex items-center justify-center h-full min-h-[300px]">
                 <div className="text-center">
