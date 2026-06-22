@@ -305,7 +305,12 @@ export default function SocialView({ initialPosts }: Props) {
                     </button>
                   )}
                 </div>
-                <PostCard key={latest.id} post={latest} onDelete={handleDelete} />
+                <PostCard
+                  key={latest.id}
+                  post={latest}
+                  onDelete={handleDelete}
+                  onChange={(u) => setLatest(prev => (prev ? { ...prev, ...u } : prev))}
+                />
               </div>
             ) : (
               <div className="bg-white border border-ivory-300 rounded-xl p-8 shadow-card flex items-center justify-center h-full min-h-[300px]">
