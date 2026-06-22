@@ -8,7 +8,8 @@ import { sendAgentPausedNotification } from "@/lib/email/resend"
 export async function updatePassword(newPassword: string) {
   if (newPassword.length < 8) throw new Error("Le mot de passe doit contenir au moins 8 caractères")
   const supabase = await createClient()
-  const { error } = await supabase.auth.updateUser({ password: newPassword })
+  // Change le mot de passe ET efface le flag « mot de passe temporaire ».
+  const { error } = await supabase.auth.updateUser({ password: newPassword, data: { must_change_password: false } })
   if (error) throw new Error(error.message)
 }
 

@@ -322,7 +322,8 @@ export async function createAuthUser(
     email,
     password,
     email_confirm: true,
-    user_metadata: clinicName ? { full_name: clinicName } : undefined,
+    // must_change_password : force le changement du mot de passe temporaire à la 1re connexion.
+    user_metadata: { ...(clinicName ? { full_name: clinicName } : {}), must_change_password: true },
   })
   if (error) throw new Error(error.message)
   return data.user.id
