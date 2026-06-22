@@ -125,8 +125,14 @@ export const PostSlide = forwardRef<HTMLDivElement, Props>(
           />
           <div className={cn(
             "flex-1 rounded-full bg-[#C9A864]/40",
-            size === "preview" ? "h-[2px] ml-2" : "h-[6px] ml-6"
+            size === "preview" ? "h-[2px] mx-2" : "h-[6px] mx-6"
           )} />
+          <span className={cn(
+            "font-semibold text-[#C9A864] whitespace-nowrap",
+            s.text.logo
+          )}>
+            vocali.ca/demo
+          </span>
         </div>
 
         {/* Gold bottom bar */}
