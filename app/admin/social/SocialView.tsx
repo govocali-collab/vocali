@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { Sparkles, History, Loader2, TrendingUp } from "lucide-react"
+import { Sparkles, History, Loader2, TrendingUp, RotateCcw } from "lucide-react"
 import { cn } from "@/lib/utils"
 import type { SocialPost, PostType, PostStyle } from "@/lib/supabase/social"
 import PostCard from "./PostCard"
@@ -53,6 +53,15 @@ export default function SocialView({ initialPosts }: Props) {
     } finally {
       setGenerating(false)
     }
+  }
+
+  function handleReset() {
+    setTopic("")
+    setCustomContent("")
+    setPostType("single")
+    setStyle("light")
+    setUseTrends(false)
+    setLatest(null)
   }
 
   function handleDelete(id: string) {
@@ -209,16 +218,28 @@ export default function SocialView({ initialPosts }: Props) {
               </button>
             </div>
 
-            <button
-              onClick={handleGenerate}
-              disabled={!canGenerate}
-              className="w-full flex items-center justify-center gap-2 bg-gold-600 hover:bg-gold-700 disabled:opacity-60 text-white text-sm font-semibold py-3 rounded-lg transition-colors"
-            >
-              {generating
-                ? <><Loader2 size={15} className="animate-spin" />{useTrends ? "Recherche + génération…" : "Génération en cours…"}</>
-                : <><Sparkles size={15} /> Générer</>
-              }
-            </button>
+            <div className="flex gap-2">
+              <button
+                onClick={handleGenerate}
+                disabled={!canGenerate}
+                className="flex-1 flex items-center justify-center gap-2 bg-gold-600 hover:bg-gold-700 disabled:opacity-60 text-white text-sm font-semibold py-3 rounded-lg transition-colors"
+              >
+                {generating
+                  ? <><Loader2 size={15} className="animate-spin" />{useTrends ? "Recherche + génération…" : "Génération en cours…"}</>
+                  : <><Sparkles size={15} /> Générer</>
+                }
+              </button>
+              <button
+                type="button"
+                onClick={handleReset}
+                disabled={generating}
+                title="Réinitialiser"
+                className="flex items-center gap-1.5 px-4 py-3 rounded-lg border border-ivory-300 text-charcoal-500 hover:bg-ivory-100 disabled:opacity-50 text-sm font-medium transition-colors"
+              >
+                <RotateCcw size={14} />
+                Réinitialiser
+              </button>
+            </div>
           </div>
 
           {/* Preview of latest */}
