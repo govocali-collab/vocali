@@ -3,6 +3,7 @@
 import { useState } from "react"
 import { Mail } from "lucide-react"
 import { updateOwnerInfo } from "@/app/actions/settings"
+import SupportContact from "@/components/dashboard/SupportContact"
 
 function formatPhone(value: string): string {
   const digits = value.replace(/\D/g, "").slice(0, 10)
@@ -89,10 +90,10 @@ export default function OwnerForm({ firstName, lastName, phone, email }: Props) 
             <span className="text-charcoal-500 text-sm font-body">{email}</span>
           </div>
           <p className="text-charcoal-300 text-xs font-body mt-1">
-            Pour modifier le courriel, contactez{" "}
-            <a href="mailto:support@vocali.ca" className="text-gold-600 hover:text-gold-700 underline underline-offset-2 transition-colors">
-              support@vocali.ca
-            </a>
+            Pour modifier le courriel,{" "}
+            <SupportContact className="text-gold-600 hover:text-gold-700 underline underline-offset-2 transition-colors font-medium">
+              contactez le support
+            </SupportContact>
           </p>
         </div>
       </div>

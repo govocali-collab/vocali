@@ -117,7 +117,7 @@ export default function HoursEditor({ initialHours }: { initialHours: RawHours }
           type="button"
           onClick={handleSave}
           disabled={loading}
-          className="px-4 py-2 rounded-lg bg-charcoal-800 hover:bg-charcoal-700 text-white text-sm font-body font-medium transition-colors disabled:opacity-40"
+          className="bg-gold-gradient text-white font-body font-semibold text-sm rounded-lg px-5 py-2 hover:opacity-90 disabled:opacity-50 transition-opacity"
         >
           {loading ? "Enregistrement…" : "Enregistrer les heures"}
         </button>
