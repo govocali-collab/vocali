@@ -4,23 +4,27 @@ import { useState } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { usePathname } from "next/navigation"
-import { LayoutDashboard, Users, Phone, Settings, Menu, X, Zap, Receipt, LogOut } from "lucide-react"
+import { LayoutDashboard, Users, Phone, Settings, Menu, X, Zap, Receipt, LogOut, Tag, GraduationCap } from "lucide-react"
 import { cn } from "@/lib/utils"
 import type { Clinic } from "@/lib/supabase/dashboard"
 import { signOut } from "@/app/actions/auth"
-
-const NAV = [
-  { href: "/dashboard", label: "Accueil", icon: LayoutDashboard, exact: true },
-  { href: "/dashboard/leads", label: "Leads", icon: Users },
-  { href: "/dashboard/calls", label: "Appels", icon: Phone },
-  { href: "/dashboard/billing", label: "Facturation", icon: Receipt },
-  { href: "/dashboard/settings", label: "Paramètres", icon: Settings },
-]
 
 export default function Sidebar({ clinic }: { clinic: Clinic }) {
   const pathname = usePathname()
   const [open, setOpen] = useState(false)
   const agentName = (clinic.clinic_config?.agent_name as string | undefined) ?? "Sarah"
+
+  const NAV = [
+    { href: "/dashboard", label: "Accueil", icon: LayoutDashboard, exact: true },
+    { href: "/dashboard/leads", label: "Leads", icon: Users },
+    { href: "/dashboard/calls", label: "Appels", icon: Phone },
+    { href: "/dashboard/services", label: "Services", icon: Tag },
+    ...(clinic.offers_trainings
+      ? [{ href: "/dashboard/formations", label: "Formations", icon: GraduationCap }]
+      : []),
+    { href: "/dashboard/billing", label: "Facturation", icon: Receipt },
+    { href: "/dashboard/settings", label: "Paramètres", icon: Settings },
+  ]
 
   const navItems = (
     <nav className="flex flex-col gap-1 px-3">
