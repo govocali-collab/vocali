@@ -1,7 +1,8 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { ArrowRight, Play } from "lucide-react"
+import Link from "next/link"
+import { ArrowRight, Play, FileText } from "lucide-react"
 import { Button } from "@/components/ui/Button"
 import { DemoRequestButton } from "@/components/ui/DemoRequestButton"
 import type { Dictionary } from "@/lib/i18n"
@@ -84,6 +85,23 @@ export function Hero({ dict, lang }: Props) {
             <Play size={16} className="shrink-0" />
             {h.ctaSecondary}
           </Button>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.5 }}
+          className="mb-8"
+        >
+          <Link
+            href={lang === "en" ? "/guide?lang=en" : "/guide"}
+            className="inline-flex items-center gap-2 text-sm font-semibold text-gold-600 hover:text-gold-700 transition-colors"
+          >
+            <FileText size={16} />
+            {lang === "fr"
+              ? "Télécharger le guide complet (tarifs inclus)"
+              : "Download the full guide (pricing included)"}
+          </Link>
         </motion.div>
 
         <motion.p
