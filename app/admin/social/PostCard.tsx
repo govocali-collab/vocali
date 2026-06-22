@@ -13,13 +13,16 @@ const SLIDE_H = 423
 interface Props {
   post: SocialPost
   onDelete?: (id: string) => void
+  // Remonte les éditions (slides / caption) au parent — ex. pour les sauvegarder.
+  onChange?: (patch: { slides: Slide[]; caption: string }) => void
 }
 
-export default function PostCard({ post, onDelete }: Props) {
+export default function PostCard({ post, onDelete, onChange }: Props) {
   const [activeSlide, setActiveSlide] = useState(0)
   const [copied, setCopied] = useState(false)
   const [editing, setEditing] = useState(false)
   const [slides, setSlides] = useState<Slide[]>(post.slides)
+  const [caption, setCaption] = useState(post.caption)
   const slideRefs = useRef<(HTMLDivElement | null)[]>([])
   const previewRef = useRef<HTMLDivElement>(null)
   const [slideScale, setSlideScale] = useState(1)
@@ -34,6 +37,14 @@ export default function PostCard({ post, onDelete }: Props) {
     ro.observe(el)
     return () => ro.disconnect()
   }, [])
+
+  // Remonte les éditions au parent (après le montage initial).
+  const didMount = useRef(false)
+  useEffect(() => {
+    if (!didMount.current) { didMount.current = true; return }
+    onChange?.({ slides, caption })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [slides, caption])
 
   function updateSlide(index: number, field: keyof Slide, value: string) {
     setSlides(prev => prev.map((s, i) => i === index ? { ...s, [field]: value } : s))
@@ -71,7 +82,7 @@ export default function PostCard({ post, onDelete }: Props) {
   }
 
   function copyCaption() {
-    const full = `${post.caption}\n\n${post.hashtags.map(h => `#${h}`).join(" ")}`
+    const full = `${caption}\n\n${post.hashtags.map(h => `#${h}`).join(" ")}`
     navigator.clipboard.writeText(full)
     setCopied(true)
     setTimeout(() => setCopied(false), 2000)
@@ -233,12 +244,23 @@ export default function PostCard({ post, onDelete }: Props) {
               </div>
             )}
           </div>
+
+          <div className="mt-3 pt-3 border-t border-ivory-200">
+            <label className="block text-xs text-charcoal-400 mb-1">Caption (légende)</label>
+            <textarea
+              value={caption}
+              onChange={e => setCaption(e.target.value)}
+              rows={4}
+              placeholder="Légende du post…"
+              className="w-full bg-white border border-ivory-300 rounded-lg px-3 py-2 text-sm text-charcoal-800 font-body placeholder:text-charcoal-300 focus:outline-none focus:border-gold-400 resize-none"
+            />
+          </div>
         </div>
       )}
 
       {/* Caption */}
       <div className="px-4 py-3 border-t border-ivory-200">
-        <p className="text-xs text-charcoal-600 font-body leading-relaxed line-clamp-3">{post.caption}</p>
+        <p className="text-xs text-charcoal-600 font-body leading-relaxed line-clamp-3">{caption}</p>
         <p className="text-xs text-gold-600 mt-1 font-body">
           {post.hashtags.map(h => `#${h}`).join(" ")}
         </p>
@@ -255,7 +277,7 @@ export default function PostCard({ post, onDelete }: Props) {
         </button>
         <button
           onClick={() => setEditing(v => !v)}
-          title="Éditer les slides"
+          title="Éditer le texte (slides et caption)"
           className={cn(
             "w-8 h-8 flex items-center justify-center rounded-lg transition-colors",
             editing ? "bg-gold-100 text-gold-700" : "text-charcoal-400 hover:text-charcoal-800 hover:bg-ivory-100"
