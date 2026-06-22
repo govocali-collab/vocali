@@ -77,9 +77,9 @@ export default async function SettingsPage() {
         email={ownerEmail}
       />
 
-      <PasswordForm />
-
       <HoursEditor initialHours={hours} />
+
+      <PasswordForm />
 
       <section className="bg-gold-50 rounded-xl border border-gold-200 p-5">
         <div className="flex items-start gap-3">
