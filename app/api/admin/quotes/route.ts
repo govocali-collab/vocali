@@ -2,10 +2,13 @@ import { NextResponse } from "next/server"
 import Stripe from "stripe"
 import { sendPaymentLinkEmail } from "@/lib/email/resend"
 
-// Coupon « tarif fondateur » : 50 % de rabais pendant les 3 premiers mois.
-// Créé une seule fois puis réutilisé (id fixe).
+// Produits Stripe des forfaits (le coupon fondateur ne s'applique qu'à eux,
+// pas au frais d'installation — qui est, lui, déjà au bon montant).
+const PLAN_PRODUCTS = ["prod_UkfmoPOlzPxMIJ", "prod_UkfmaJt73lcY47"]
+
+// Coupon « tarif fondateur » : 50 % pendant 3 mois, UNIQUEMENT sur l'abonnement.
 async function getFounderCoupon(stripe: Stripe): Promise<string> {
-  const id = "fondateur-50-3mois"
+  const id = "fondateur-50-3mois-abo"
   try {
     await stripe.coupons.retrieve(id)
   } catch {
@@ -14,6 +17,7 @@ async function getFounderCoupon(stripe: Stripe): Promise<string> {
       percent_off: 50,
       duration: "repeating",
       duration_in_months: 3,
+      applies_to: { products: PLAN_PRODUCTS },
       name: "Tarif fondateur — 50 % (3 mois)",
     })
   }
@@ -27,9 +31,10 @@ export async function POST(req: Request) {
     const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
     const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000"
 
-    // Frais d'installation unique : prix one-time 500 $ ajouté à la 1re facture.
-    // Le coupon fondateur (50 %) s'applique aussi à cette ligne → 250 $ en fondateur.
-    const SETUP_PRICE = "price_1TlAXKG4TsDPIUvfQWxvzza1"
+    // Frais d'installation unique : montant direct (250 $ fondateur / 500 $ régulier).
+    // Le coupon ne s'y applique pas, donc le montant est déjà le bon et s'affiche tel quel.
+    const SETUP_PRODUCT = "prod_Ukft7xpIH4rttV"
+    const setupAmount = founderRate ? 25000 : 50000
 
     const session = await stripe.checkout.sessions.create({
       mode: "subscription",
@@ -48,7 +53,9 @@ export async function POST(req: Request) {
           },
           quantity: 1,
         },
-        ...(setupFee ? [{ price: SETUP_PRICE, quantity: 1 }] : []),
+        ...(setupFee
+          ? [{ price_data: { currency: "cad", product: SETUP_PRODUCT, unit_amount: setupAmount }, quantity: 1 }]
+          : []),
       ],
       subscription_data: trial ? { trial_period_days: 30 } : undefined,
       discounts: founderRate ? [{ coupon: await getFounderCoupon(stripe) }] : undefined,
