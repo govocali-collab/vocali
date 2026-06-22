@@ -90,8 +90,8 @@ export default function LoginPage() {
 
         <p className="text-center text-charcoal-400 text-xs mt-6">
           Problème de connexion ?{" "}
-          <a href="mailto:jonathan@vocali.ca" className="text-gold-600 hover:text-gold-500 transition-colors">
-            jonathan@vocali.ca
+          <a href="mailto:support@vocali.ca" className="text-gold-600 hover:text-gold-500 transition-colors">
+            support@vocali.ca
           </a>
         </p>
       </div>
