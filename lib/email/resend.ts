@@ -174,7 +174,7 @@ export async function sendPaymentLinkEmail({
     : `${fmt(price)} / ${billingLabel}`;
 
   return resend.emails.send({
-    from: "Vocali <support@vocali.ca>",
+    from: "Vocali — Paiement <paiement@vocali.ca>",
     // La facture/lien de paiement va TOUJOURS à la vraie cliente (pas de redirection).
     to: email,
     subject: `Votre accès à Vocali — Secrétaire IA`,
@@ -760,7 +760,7 @@ export async function sendPaymentFailedNotification({
 }: { clinicName: string; ownerEmail: string; clinicId: string; attemptCount: number; nextRetry: string | null }) {
   const year = new Date().getFullYear()
   return resend.emails.send({
-    from: "Vocali <support@vocali.ca>",
+    from: "Vocali — Paiement <paiement@vocali.ca>",
     to: mailTo("contact@peaklocals.com"),
     subject: `⚠️ Paiement échoué — ${clinicName}`,
     html: `
@@ -818,7 +818,7 @@ export async function sendSubscriptionCancelledNotification({
 }: { clinicName: string; ownerEmail: string; clinicId: string }) {
   const year = new Date().getFullYear()
   return resend.emails.send({
-    from: "Vocali <support@vocali.ca>",
+    from: "Vocali — Paiement <paiement@vocali.ca>",
     to: mailTo("contact@peaklocals.com"),
     subject: `❌ Abonnement annulé — ${clinicName}`,
     html: `
