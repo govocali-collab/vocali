@@ -1,22 +1,11 @@
-import { renderToBuffer, Document, Page, Text, View, Image, StyleSheet, Font } from "@react-pdf/renderer"
-import path from "path"
+import { renderToBuffer, Document, Page, Text, View, Image, StyleSheet } from "@react-pdf/renderer"
 
-Font.register({
-  family: "DM Sans",
-  fonts: [
-    {
-      src: "https://fonts.gstatic.com/s/dmsans/v15/rP2tp2ywxg089UriI5-g4vlH9VoD8Cmcqbu6-K6z9mXgjU0.woff2",
-      fontWeight: 400,
-    },
-    {
-      src: "https://fonts.gstatic.com/s/dmsans/v15/rP2tp2ywxg089UriI5-g4vlH9VoD8Cmcqbu6-K6z9mXujU0.woff2",
-      fontWeight: 600,
-    },
-  ],
-})
+// Police par défaut (Helvetica) : aucune dépendance réseau ni woff2 (non supporté par
+// @react-pdf), donc le rendu ne peut plus échouer à cause de la police.
+const LOGO_URL = "https://vocali.ca/vocali-logo-white.png"
 
 const styles = StyleSheet.create({
-  page: { fontFamily: "DM Sans", fontSize: 10, color: "#1C1C1E", backgroundColor: "#FFFFFF", padding: 0 },
+  page: { fontSize: 10, color: "#1C1C1E", backgroundColor: "#FFFFFF", padding: 0 },
   header: { backgroundColor: "#1C1C1E", paddingHorizontal: 48, paddingTop: 40, paddingBottom: 32, flexDirection: "row", justifyContent: "space-between", alignItems: "flex-start" },
   logo: { width: 90, height: 28, objectFit: "contain" },
   headerRight: { alignItems: "flex-end" },
@@ -75,7 +64,6 @@ function getPeriod(start: number | null): string {
 }
 
 export async function buildReceiptPDF(invoice: InvoicePDFData, clinicName: string): Promise<Buffer> {
-  const logoPath = path.join(process.cwd(), "public", "vocali-logo-white.png")
   const period = getPeriod(invoice.period_start)
   const invoiceRef = invoice.number ?? invoice.id.slice(-8).toUpperCase()
 
@@ -83,7 +71,7 @@ export async function buildReceiptPDF(invoice: InvoicePDFData, clinicName: strin
     <Document>
       <Page size="A4" style={styles.page}>
         <View style={styles.header}>
-          <Image src={logoPath} style={styles.logo} />
+          <Image src={LOGO_URL} style={styles.logo} />
           <View style={styles.headerRight}>
             <Text style={styles.receiptLabel}>REÇU DE PAIEMENT</Text>
             <Text style={styles.headerDate}>{formatDate(invoice.created)}</Text>
@@ -95,7 +83,7 @@ export async function buildReceiptPDF(invoice: InvoicePDFData, clinicName: strin
           <View style={styles.invoiceNumberRow}>
             <Text style={styles.invoiceNumber}>#{invoiceRef}</Text>
             <View style={styles.badge}>
-              <Text style={styles.badgeText}>✓  Payé</Text>
+              <Text style={styles.badgeText}>Payé</Text>
             </View>
           </View>
 
