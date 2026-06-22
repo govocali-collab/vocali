@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react"
 import { useConversation, ConversationProvider } from "@elevenlabs/react"
+import FounderForm from "./FounderForm"
 
 const AGENT_ID = "agent_3801kvc085yce259k5k87380shga"
 
@@ -223,6 +224,8 @@ export default function DemoClient() {
             </div>
           </div>
         </section>
+
+        <FounderForm />
 
         <section className="demo-info">
           <h2 className="demo-serif">Salon <span>Élégance</span></h2>
