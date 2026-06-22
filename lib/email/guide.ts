@@ -11,7 +11,7 @@ export async function sendGuideToVisitor(email: string, firstName?: string | nul
   const year = new Date().getFullYear()
   const hello = firstName ? `Bonjour ${firstName},` : "Bonjour,"
   return resend.emails.send({
-    from: "Vocali <support@vocali.ca>",
+    from: "Vocali <contact@vocali.ca>",
     // EXCEPTION : le guide va TOUJOURS au vrai courriel du prospect (pas de
     // redirection vers la boîte de test), sinon il ne le recevrait jamais.
     to: email,
@@ -66,7 +66,7 @@ export async function sendGuideLeadNotification(p: GuideLeadParams) {
     ? `<a href="https://vocali.ca/admin/crm/${p.prospectId}" style="display:inline-block;background:linear-gradient(135deg,#C9A864 0%,#A88840 100%);color:#FEFDFB;text-decoration:none;font-size:14px;font-weight:600;padding:12px 28px;border-radius:8px;">Voir dans le CRM</a>`
     : ""
   return resend.emails.send({
-    from: "Vocali <support@vocali.ca>",
+    from: "Vocali <contact@vocali.ca>",
     to: mailTo("contact@vocali.ca"),
     subject: "Nouveau téléchargement du guide",
     html: `<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8" /></head>

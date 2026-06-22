@@ -591,7 +591,7 @@ export async function sendAdminNotification({
 }: SendAdminNotificationParams) {
   return resend.emails.send({
     from: "Vocali <support@vocali.ca>",
-    to: mailTo("jonathan@vocali.ca"),
+    to: mailTo("contact@vocali.ca"),
     subject: `🆕 Nouvelle clinique : ${clinicName}`,
     html: `
 <div style="font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;max-width:600px;margin:0 auto;padding:32px;background:#FAF7F2;border-radius:12px;">
@@ -891,8 +891,8 @@ export async function sendFounderApplicationEmail(p: FounderApplicationEmailPara
     ? `<a href="https://vocali.ca/admin/crm/${p.prospectId}" style="display:inline-block;background:linear-gradient(135deg,#C9A864 0%,#A88840 50%,#8A6E2F 100%);color:#FEFDFB;text-decoration:none;font-size:14px;font-weight:600;padding:12px 28px;border-radius:8px;">Voir dans le CRM</a>`
     : ""
   return resend.emails.send({
-    from: "Vocali <support@vocali.ca>",
-    to: "govocali@gmail.com", // PHASE DE TEST (vrai destinataire : demo@vocali.ca)
+    from: "Vocali <contact@vocali.ca>",
+    to: mailTo("contact@vocali.ca"),
     subject: "Nouvelle demande Vocali",
     html: `<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8" /></head>
 <body style="margin:0;padding:0;background:#FAF7F2;font-family:Helvetica,Arial,sans-serif;">
@@ -947,7 +947,7 @@ export async function sendDemoProspectEmail(p: DemoProspectEmailParams) {
     ? `<a href="https://vocali.ca/admin/crm/${p.prospectId}" style="display:inline-block;background:linear-gradient(135deg,#C9A864 0%,#A88840 50%,#8A6E2F 100%);color:#FEFDFB;text-decoration:none;font-size:14px;font-weight:600;padding:12px 28px;border-radius:8px;">Voir dans le CRM</a>`
     : ""
   return resend.emails.send({
-    from: "Vocali <support@vocali.ca>",
+    from: "Vocali <contact@vocali.ca>",
     to: mailTo("contact@vocali.ca"),
     subject: `Nouveau prospect demo${p.clinicName ? " - " + p.clinicName : ""}`,
     html: `<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8" /></head>
