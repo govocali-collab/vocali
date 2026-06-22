@@ -10,7 +10,7 @@ export default async function FormationsPage() {
   // La clinique n'offre pas de formations → on renvoie à l'accueil.
   if (!clinic.offers_trainings) redirect("/dashboard")
 
-  const formationItems = await listCatalog(clinic.id, "formation").catch(() => [])
+  const formationItems = await listCatalog(clinic.id, "formation", { publishedOnly: true }).catch(() => [])
 
   return (
     <div className="px-5 py-6 lg:px-8 max-w-6xl">

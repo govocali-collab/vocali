@@ -1,8 +1,10 @@
 import { getClinicById } from "@/lib/supabase/clinics"
+import { listCatalog } from "@/lib/supabase/catalog"
 import { notFound } from "next/navigation"
 import Link from "next/link"
 import ClinicConfigForm from "./ClinicConfigForm"
 import NotesForm from "./NotesForm"
+import AdminCatalogManager from "./AdminCatalogManager"
 import { formatPhone } from "@/lib/utils"
 
 interface Props {
@@ -19,6 +21,12 @@ export default async function ClinicDetailPage({ params }: Props) {
   const config = (clinic.clinic_config ?? {}) as Record<string, unknown>
   const hours = (clinic.hours ?? {}) as Record<string, { open: string; close: string; closed: boolean }>
   const services = (clinic.services ?? []) as string[]
+
+  const offersTrainings = Boolean((clinic as { offers_trainings?: boolean }).offers_trainings)
+  const [serviceItems, formationItems] = await Promise.all([
+    listCatalog(clinic.id, "service").catch(() => []),
+    offersTrainings ? listCatalog(clinic.id, "formation").catch(() => []) : Promise.resolve([]),
+  ])
 
   return (
     <div className="max-w-5xl">
@@ -97,6 +105,16 @@ export default async function ClinicDetailPage({ params }: Props) {
 
         {/* Formulaire de configuration admin */}
         <ClinicConfigForm clinic={clinic} />
+
+        {/* Catalogue admin (brouillon → publication) */}
+        <div className="mt-5">
+          <AdminCatalogManager
+            clinicId={clinic.id}
+            offersTrainings={offersTrainings}
+            services={serviceItems}
+            formations={formationItems}
+          />
+        </div>
 
         {/* Notes internes */}
         <div className="mt-5">
