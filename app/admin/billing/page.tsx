@@ -84,6 +84,7 @@ export default function AdminBillingPage() {
   const [billing, setBilling] = useState<"month" | "year">("month")
   const [trial, setTrial] = useState(true)
   const [founderRate, setFounderRate] = useState(false)
+  const [setupFee, setSetupFee] = useState(true)
   const [preview, setPreview] = useState(false)
   const [creating, setCreating] = useState(false)
   const [createError, setCreateError] = useState("")
@@ -121,6 +122,7 @@ export default function AdminBillingPage() {
           billing,
           trial,
           founderRate,
+          setupFee,
         }),
       })
       const data = await res.json()
@@ -183,6 +185,7 @@ export default function AdminBillingPage() {
                       ? `${formatAmount(parseFloat(price) / 2, "CAD")} / ${billing === "month" ? "mois" : "an"} les 3 premiers mois, puis ${formatAmount(parseFloat(price), "CAD")} / ${billing === "month" ? "mois" : "an"}`
                       : `${formatAmount(parseFloat(price), "CAD")} / ${billing === "month" ? "mois" : "an"}`,
                   ],
+                  ["Frais d'installation", setupFee ? `${formatAmount(founderRate ? 250 : 500, "CAD")} (unique)` : "Aucun"],
                   ["Option", founderRate ? "Tarif fondateur (50 % × 3 mois)" : trial ? "Essai gratuit 30 jours" : "Aucune"],
                 ].map(([label, value]) => (
                   <div key={label} className="flex items-start justify-between gap-4 px-4 py-3">
@@ -269,6 +272,16 @@ export default function AdminBillingPage() {
                   <span className="text-sm text-charcoal-600">Essai 30 jours</span>
                 </label>
               </div>
+
+              {/* Frais d'installation */}
+              <label className="flex items-center gap-2.5 cursor-pointer">
+                <button type="button" role="switch" aria-checked={setupFee} onClick={() => setSetupFee(!setupFee)} className={`relative inline-flex h-6 w-11 flex-shrink-0 items-center rounded-full transition-colors ${setupFee ? "bg-gold-400" : "bg-ivory-300"}`}>
+                  <span className={`inline-block h-4 w-4 transform rounded-full bg-white shadow transition-transform ${setupFee ? "translate-x-6" : "translate-x-1"}`} />
+                </button>
+                <span className="text-sm text-charcoal-600">
+                  Frais d&apos;installation unique <span className="text-charcoal-400">({founderRate ? "250 $ fondateur" : "500 $"})</span>
+                </span>
+              </label>
 
               {/* Tarif fondateur */}
               <div className="rounded-xl border border-ivory-200 bg-ivory-50 p-4">

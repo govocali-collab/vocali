@@ -151,6 +151,7 @@ interface SendPaymentLinkParams {
   billing: "month" | "year";
   trial: boolean;
   founderRate?: boolean;
+  setupFee?: boolean;
   checkoutUrl: string;
 }
 
@@ -162,6 +163,7 @@ export async function sendPaymentLinkEmail({
   billing,
   trial,
   founderRate,
+  setupFee,
   checkoutUrl,
 }: SendPaymentLinkParams) {
   const billingLabel = billing === "month" ? "mois" : "an";
@@ -220,6 +222,11 @@ export async function sendPaymentLinkEmail({
                         <td style="padding:5px 0;font-size:15px;color:#6C6C70;">Facturation</td>
                         <td style="padding:5px 0;font-size:15px;color:#1C1C1E;font-weight:500;">${priceFormatted}</td>
                       </tr>
+                      ${setupFee ? `
+                      <tr>
+                        <td style="padding:5px 0;font-size:15px;color:#6C6C70;">Frais d'installation</td>
+                        <td style="padding:5px 0;font-size:15px;color:#1C1C1E;font-weight:500;">${fmt(founderRate ? 250 : 500)} (unique)</td>
+                      </tr>` : ""}
                       ${trial ? `
                       <tr>
                         <td style="padding:5px 0;font-size:15px;color:#6C6C70;">Essai gratuit</td>
