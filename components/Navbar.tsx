@@ -6,7 +6,7 @@ import { Menu, X } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
 import { LanguageSwitcher } from "./LanguageSwitcher"
 import { Button } from "./ui/Button"
-import { CalPopupButton } from "./ui/CalPopupButton"
+import { DemoRequestButton } from "./ui/DemoRequestButton"
 import type { Dictionary } from "@/lib/i18n"
 import { cn } from "@/lib/utils"
 
@@ -67,9 +67,9 @@ export function Navbar({ dict, lang }: Props) {
 
           <div className="hidden lg:flex items-center gap-4">
             <LanguageSwitcher currentLang={lang} />
-            <CalPopupButton size="sm" lang={lang}>
+            <DemoRequestButton size="sm" lang={lang}>
               {dict.nav.cta}
-            </CalPopupButton>
+            </DemoRequestButton>
           </div>
 
           <button
@@ -107,9 +107,9 @@ export function Navbar({ dict, lang }: Props) {
               <LanguageSwitcher currentLang={lang} />
             </div>
             <div className="mt-6 px-4">
-              <CalPopupButton size="lg" className="w-full" lang={lang}>
+              <DemoRequestButton size="lg" className="w-full" lang={lang}>
                 {dict.nav.cta}
-              </CalPopupButton>
+              </DemoRequestButton>
             </div>
           </motion.div>
         )}

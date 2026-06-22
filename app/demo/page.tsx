@@ -5,7 +5,7 @@ import DemoClient from "./DemoClient"
 // le site et non indexée par les moteurs de recherche.
 const DEMO_TITLE = "Démo : parlez en direct à notre réceptionniste virtuelle"
 const DEMO_DESC =
-  "Posez vos questions et prenez rendez-vous — elle vous répond instantanément, comme une vraie réceptionniste."
+  "Posez vos questions et prenez rendez-vous, elle vous répond instantanément, comme une vraie réceptionniste."
 
 export const metadata: Metadata = {
   title: DEMO_TITLE,
