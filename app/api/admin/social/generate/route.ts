@@ -82,6 +82,7 @@ ${slideCount === 6 ? "- Slide 1 : hook viral en titre (couverture, pas de body)\
 ${customContent ? "- Respecte les idées et le sens du texte fourni, mais ramène-le vers Vocali et adapte le format" : "- Applique les formats et angles viraux identifiés dans les tendances, au service du message Vocali"}
 - Tone : professionnel, chaleureux, crédible (B2B mais humain)
 - Langue : français québécois naturel et authentique
+- VOUVOIEMENT OBLIGATOIRE : adressez-vous TOUJOURS au lecteur avec « vous » (jamais « tu », « ton », « ta », « tes », « toi ») — dans TOUTES les slides ET la caption
 - Titres courts et impactants (max 8 mots)
 - Contenu des slides : 1-3 phrases max
 - Le call-to-action ramène TOUJOURS vers Vocali (ex. « Réservez une démo → », « Découvrez Vocali », « vocali.ca »)
