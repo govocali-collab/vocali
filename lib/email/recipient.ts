@@ -1,12 +1,13 @@
-// ⚠️ PHASE DE TEST — toutes les notifications courriel sont temporairement
-// redirigées vers une seule boîte de réception (catch-all).
+// Redirection optionnelle des courriels vers une seule boîte (catch-all).
+// Utile en développement/test pour ne JAMAIS écrire aux vrais destinataires.
 //
-// Pour RÉTABLIR les vrais destinataires (clients + notifications internes),
-// mettre REDIRECT_ALL_TO à "" (chaîne vide) :
-//   const REDIRECT_ALL_TO = ""
-const REDIRECT_ALL_TO = "govocali@gmail.com"
+// Par défaut (variable absente) : chaque courriel va à son VRAI destinataire.
+//   → En production (Vercel), ne PAS définir EMAIL_REDIRECT_TO.
+// Pour réactiver une redirection (ex. tests locaux), dans .env.local :
+//   EMAIL_REDIRECT_TO=govocali@gmail.com
+const REDIRECT_ALL_TO = process.env.EMAIL_REDIRECT_TO ?? ""
 
-/** Destinataire effectif d'un courriel (redirigé pendant la phase de test). */
+/** Destinataire effectif d'un courriel (redirigé seulement si EMAIL_REDIRECT_TO est défini). */
 export function mailTo(realRecipient: string): string {
   return REDIRECT_ALL_TO || realRecipient
 }
