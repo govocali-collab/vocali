@@ -26,6 +26,7 @@ export const PostSlide = forwardRef<HTMLDivElement, Props>(
     const isLight = style === "light"
     const isCover = index === 0 && total > 1
     const isLast  = index === total - 1 && total > 1
+    const hasNext = total > 1 && index < total - 1
 
     const fmt = isStory ? "story" : "square"
     const scale = size === "export" ? EXPORT_W[fmt] / PREVIEW_W[fmt] : 1
@@ -101,6 +102,16 @@ export const PostSlide = forwardRef<HTMLDivElement, Props>(
             vocali.ca/demo
           </span>
         </div>
+
+        {/* Flèche « slide suivante » — carousel, sauf la dernière slide */}
+        {hasNext && (
+          <div
+            className="absolute font-sans font-bold text-[#C9A864]"
+            style={{ right: px(10), top: "50%", transform: "translateY(-50%)", fontSize: px(22), lineHeight: 1 }}
+          >
+            →
+          </div>
+        )}
 
         {/* Gold bottom bar */}
         <div className="absolute bottom-0 left-0 right-0 opacity-30 bg-[#C9A864]" style={{ height: px(2) }} />
