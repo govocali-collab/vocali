@@ -27,6 +27,10 @@ const TREE: TNode = {
           { label: "PDF envoyé au visiteur (contact@)" },
           { label: "Notif lead → alerte@" },
         ] },
+        { label: "Démo vocale (/demo)", children: [
+          { label: "Prospect capturé (postcall)", children: [{ label: "Notif → contact@" }] },
+        ] },
+        { label: "Demande fondateur", children: [{ label: "Notif → contact@" }] },
         { label: "Scraper", href: "/admin/scraper", children: [
           { label: "Google Places API", href: "https://console.cloud.google.com", external: true, children: [
             { label: "Infos business (nom, tél, site)", children: [
@@ -52,14 +56,38 @@ const TREE: TNode = {
               { label: "Paiement confirmé (invoice.paid)", children: [
                 { label: "Redirigée au questionnaire d'embarquement", children: [
                   { label: "Compte créé", children: [
+                    { label: "Notif nouvelle clinique → contact@" },
                     { label: "Courriel d'accès + mot de passe (app@)", children: [
-                      { label: "Notif nouvelle clinique → contact@" },
+                      { label: "1re connexion → changement de mot de passe forcé", children: [
+                        { label: "Tableau de bord" },
+                      ] },
                     ] },
                   ] },
                 ] },
               ] },
             ] },
           ] },
+        ] },
+      ],
+    },
+    {
+      label: "Configuration de l'agent", color: "#a78bfa",
+      children: [
+        { label: "Numéro Twilio acheté", children: [
+          { label: "Import dans ElevenLabs", href: "https://elevenlabs.io/app/conversational-ai", external: true, children: [
+            { label: "Agent assigné au numéro" },
+          ] },
+        ] },
+        { label: "Catalogue (admin)", href: "/admin/clinics", children: [
+          { label: "Ajout services / formations → brouillon (invisible)", children: [
+            { label: "« Pousser vers la cliente »", children: [
+              { label: "Publié → visible cliente + agent" },
+            ] },
+          ] },
+        ] },
+        { label: "Extraction du site → brouillons", children: [{ label: "À pousser pour publier" }] },
+        { label: "Admin active / configure l'agent", children: [
+          { label: "Courriel « Agent en ligne » (app@) → cliente" },
         ] },
       ],
     },
@@ -82,6 +110,20 @@ const TREE: TNode = {
       ],
     },
     {
+      label: "Portail cliente", color: "#2dd4bf",
+      children: [
+        { label: "Modifie ses heures", children: [
+          { label: "Sync clinics + locations", children: [{ label: "Agent dit les bonnes heures" }] },
+        ] },
+        { label: "Gère son catalogue (visible agent)" },
+        { label: "Reçus PDF téléchargeables" },
+        { label: "Contacter le support (pop-up)", children: [
+          { label: "Courriel → support@ (reply-to cliente)" },
+        ] },
+        { label: "Active / met l'agent en pause (toggle)" },
+      ],
+    },
+    {
       label: "Facturation mensuelle", color: "#fb7185",
       children: [
         { label: "Paiement complété (invoice.paid)", children: [
@@ -98,6 +140,11 @@ const TREE: TNode = {
         { label: "Abonnement annulé", children: [
           { label: "Agent désactivé (is_active = false)", children: [
             { label: "Notif → alerte@" },
+          ] },
+        ] },
+        { label: "Agent mis en pause", children: [
+          { label: "Notif → alerte@", children: [
+            { label: "Rappel auto après X jours (cron) → alerte@" },
           ] },
         ] },
       ],
@@ -140,12 +187,12 @@ const rootStyle: React.CSSProperties = {
 }
 const catStyle = (color: string): React.CSSProperties => ({
   background: "#FFFFFF", color: "#2A2A2E", border: `2px solid ${color}`,
-  borderRadius: 12, padding: "9px 13px", fontSize: 13, fontWeight: 600, width: 165, textAlign: "center",
+  borderRadius: 12, padding: "9px 13px", fontSize: 13, fontWeight: 600, width: 168, textAlign: "center",
 })
 const stepStyle = (clickable: boolean): React.CSSProperties => ({
   background: "#FAF7F2", color: clickable ? "#8A6E2F" : "#5A5A5E",
   border: `1px solid ${clickable ? "#E4D4AE" : "#EDE3D4"}`, borderRadius: 9,
-  padding: "6px 10px", fontSize: 11, fontWeight: clickable ? 600 : 400, width: 200,
+  padding: "6px 10px", fontSize: 11, fontWeight: clickable ? 600 : 400, width: 205,
   textAlign: "left", lineHeight: 1.3, whiteSpace: "normal",
   cursor: clickable ? "pointer" : "default",
 })
@@ -206,14 +253,14 @@ export default function SystemMap() {
   }, [router])
 
   return (
-    <div className="border border-ivory-300 rounded-xl bg-ivory-50 overflow-hidden" style={{ height: "76vh", minHeight: 500 }}>
+    <div className="border border-ivory-300 rounded-xl bg-ivory-50 overflow-hidden" style={{ height: "78vh", minHeight: 520 }}>
       <ReactFlow
         nodes={nodes}
         edges={edges}
         onNodeClick={onNodeClick}
         fitView
-        fitViewOptions={{ padding: 0.1 }}
-        minZoom={0.15}
+        fitViewOptions={{ padding: 0.08 }}
+        minZoom={0.12}
         nodesConnectable={false}
         edgesFocusable={false}
       >
