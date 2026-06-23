@@ -107,7 +107,7 @@ export const PostSlide = forwardRef<HTMLDivElement, Props>(
         {hasNext && (
           <div
             className="absolute font-sans font-bold text-[#C9A864]"
-            style={{ right: px(2), bottom: px(40), fontSize: px(22), lineHeight: 1 }}
+            style={{ right: px(0), bottom: px(50), fontSize: px(22), lineHeight: 1 }}
           >
             →
           </div>
