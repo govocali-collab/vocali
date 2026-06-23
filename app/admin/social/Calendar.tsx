@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { ChevronLeft, ChevronRight, Check, Clock, X, CalendarDays, Loader2 } from "lucide-react"
+import { ChevronLeft, ChevronRight, Check, Clock, X, CalendarDays, Loader2, GripVertical } from "lucide-react"
 import { cn } from "@/lib/utils"
 import type { SocialPost, PostStatus } from "@/lib/supabase/social"
 import PostCard from "./PostCard"
@@ -33,6 +33,14 @@ export default function Calendar({
   const [month, setMonth] = useState(today.getMonth())
   const [busy, setBusy] = useState<string | null>(null)
   const [selectedId, setSelectedId] = useState<string | null>(null)
+  const [dragId, setDragId] = useState<string | null>(null)
+  const [dragOverDate, setDragOverDate] = useState<string | null>(null)
+
+  function handleDrop(dateKey: string) {
+    if (dragId) patch(dragId, { scheduled_date: dateKey })
+    setDragId(null)
+    setDragOverDate(null)
+  }
 
   const scheduled = posts.filter((p) => p.scheduled_date)
   const unscheduled = posts.filter((p) => !p.scheduled_date)
@@ -86,9 +94,22 @@ export default function Calendar({
           <p className="text-charcoal-700 font-body font-semibold text-sm mb-3">
             À planifier <span className="text-charcoal-300 font-normal">· {unscheduled.length}</span>
           </p>
+          <p className="text-charcoal-400 text-xs font-body mb-2">
+            Glissez un post sur une date du calendrier pour le planifier (ou utilisez le sélecteur).
+          </p>
           <div className="space-y-2 max-h-48 overflow-y-auto">
             {unscheduled.map((p) => (
-              <div key={p.id} className="flex items-center gap-3 py-1.5 border-b border-ivory-100 last:border-0">
+              <div
+                key={p.id}
+                draggable
+                onDragStart={() => setDragId(p.id)}
+                onDragEnd={() => { setDragId(null); setDragOverDate(null) }}
+                className={cn(
+                  "flex items-center gap-2 py-1.5 border-b border-ivory-100 last:border-0 cursor-grab active:cursor-grabbing rounded-lg",
+                  dragId === p.id && "opacity-50"
+                )}
+              >
+                <GripVertical size={14} className="text-charcoal-300 flex-shrink-0" />
                 <span className="flex-1 min-w-0 truncate text-sm text-charcoal-700 font-body">{labelOf(p)}</span>
                 <input
                   type="date"
@@ -144,9 +165,16 @@ export default function Calendar({
             return (
               <div
                 key={i}
+                onDragOver={(e) => { e.preventDefault(); setDragOverDate(key) }}
+                onDragLeave={() => setDragOverDate((d) => (d === key ? null : d))}
+                onDrop={() => handleDrop(key)}
                 className={cn(
-                  "min-h-[88px] rounded-lg border p-1.5 flex flex-col gap-1",
-                  isToday ? "border-gold-400 bg-gold-50/40" : "border-ivory-200 bg-white"
+                  "min-h-[88px] rounded-lg border p-1.5 flex flex-col gap-1 transition-colors",
+                  dragOverDate === key
+                    ? "border-gold-500 bg-gold-100/70 ring-2 ring-gold-300"
+                    : isToday
+                      ? "border-gold-400 bg-gold-50/40"
+                      : "border-ivory-200 bg-white"
                 )}
               >
                 <span className={cn("text-[11px] font-body", isToday ? "text-gold-700 font-semibold" : "text-charcoal-400")}>
@@ -156,14 +184,18 @@ export default function Calendar({
                   <button
                     key={p.id}
                     type="button"
+                    draggable
+                    onDragStart={(e) => { e.stopPropagation(); setDragId(p.id) }}
+                    onDragEnd={() => { setDragId(null); setDragOverDate(null) }}
                     onClick={() => setSelectedId(p.id)}
                     title={labelOf(p)}
                     className={cn(
-                      "text-left text-[11px] font-body rounded px-1.5 py-1 leading-tight truncate border transition-colors",
+                      "text-left text-[11px] font-body rounded px-1.5 py-1 leading-tight truncate border transition-colors cursor-grab active:cursor-grabbing",
                       p.status === "publie"
                         ? "bg-green-50 border-green-200 text-green-700 hover:bg-green-100"
                         : "bg-amber-50 border-amber-200 text-amber-700 hover:bg-amber-100",
-                      selectedId === p.id && "ring-2 ring-gold-400"
+                      selectedId === p.id && "ring-2 ring-gold-400",
+                      dragId === p.id && "opacity-50"
                     )}
                   >
                     {labelOf(p)}
