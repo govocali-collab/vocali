@@ -88,13 +88,16 @@ export const PostSlide = forwardRef<HTMLDivElement, Props>(
           <img
             src={isLight ? "/vocali-logo-black.png" : "/vocali-logo-white.png"}
             alt="Vocali"
-            style={{ height: px(14), objectFit: "contain" }}
+            style={{ height: px(14), objectFit: "contain", display: "block" }}
           />
           <div
             className="flex-1 rounded-full bg-[#C9A864]/40"
             style={{ height: px(2), marginLeft: px(8), marginRight: px(8) }}
           />
-          <span className="font-semibold text-[#C9A864] whitespace-nowrap" style={{ fontSize: px(10) }}>
+          <span
+            className="font-semibold text-[#C9A864] whitespace-nowrap"
+            style={{ fontSize: px(10), lineHeight: 1 }}
+          >
             vocali.ca/demo
           </span>
         </div>
