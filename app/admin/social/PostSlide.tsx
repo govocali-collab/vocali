@@ -14,119 +14,93 @@ interface Props {
   size?: "preview" | "export"
 }
 
-const SIZES = {
-  preview: {
-    square: "w-[338px] h-[423px]",
-    story:  "w-[238px] h-[423px]",
-    text:   { headline: "text-[22px]", body: "text-[14px]", logo: "text-[10px]", num: "text-[13px]" },
-    pad:    "p-6",
-  },
-  export: {
-    square: "w-[1080px] h-[1350px]",
-    story:  "w-[608px] h-[1080px]",
-    text:   { headline: "text-[54px]", body: "text-[36px]", logo: "text-[22px]", num: "text-[30px]" },
-    pad:    "p-20",
-  },
-}
+// Dimensions de RÉFÉRENCE (aperçu). L'export est un agrandissement PROPORTIONNEL
+// exact de l'aperçu → l'aperçu et l'image exportée sont identiques (WYSIWYG).
+const PREVIEW_W = { square: 338, story: 238 }
+const EXPORT_W = { square: 1080, story: 608 }
+const PREVIEW_H = 423
 
 export const PostSlide = forwardRef<HTMLDivElement, Props>(
   ({ slide, index, total, postType, style, size = "preview" }, ref) => {
-    const isStory  = postType === "story"
-    const isLight  = style === "light"
-    const s        = SIZES[size]
-    const isCover  = index === 0 && total > 1
-    const isLast   = index === total - 1 && total > 1
+    const isStory = postType === "story"
+    const isLight = style === "light"
+    const isCover = index === 0 && total > 1
+    const isLast  = index === total - 1 && total > 1
+
+    const fmt = isStory ? "story" : "square"
+    const scale = size === "export" ? EXPORT_W[fmt] / PREVIEW_W[fmt] : 1
+    const px = (n: number) => `${n * scale}px`
 
     return (
       <div
         ref={ref}
         className={cn(
           "relative flex flex-col justify-between font-sans overflow-hidden flex-shrink-0",
-          isStory ? s.story : s.square,
-          s.pad,
           isLight ? "bg-[#FAF7F2] text-[#1C1A16]" : "bg-[#1C1A16] text-[#FAF7F2]"
         )}
+        style={{ width: px(PREVIEW_W[fmt]), height: px(PREVIEW_H), padding: px(24) }}
       >
         {/* Gold top bar */}
-        <div className={cn(
-          "absolute top-0 left-0 right-0",
-          size === "preview" ? "h-[3px]" : "h-[10px]",
-          "bg-[#C9A864]"
-        )} />
+        <div className="absolute top-0 left-0 right-0 bg-[#C9A864]" style={{ height: px(3) }} />
 
         {/* Content */}
         <div className={cn("flex flex-col flex-1 justify-center", isCover && "items-center text-center")}>
           {/* Gold dot — centered, right above text */}
-          <div className={cn(
-            "rounded-full bg-[#C9A864] mb-2 mx-auto flex-shrink-0",
-            size === "preview" ? "w-[5px] h-[5px]" : "w-5 h-5"
-          )} />
+          <div
+            className="rounded-full bg-[#C9A864] mx-auto flex-shrink-0"
+            style={{ width: px(5), height: px(5), marginBottom: px(8) }}
+          />
           <h2
             className={cn(
               "font-serif font-bold leading-tight tracking-tight",
-              s.text.headline,
               isLight ? "text-[#1C1A16]" : "text-[#FAF7F2]",
               isCover && "text-center"
             )}
-            style={{ fontFamily: "var(--font-playfair), serif" }}
+            style={{ fontFamily: "var(--font-playfair), serif", fontSize: px(22) }}
             dangerouslySetInnerHTML={{ __html: safeHtml(slide.headline) }}
           />
 
           {slide.body && (
             <p
               className={cn(
-                "leading-relaxed mt-3 whitespace-pre-line",
-                s.text.body,
+                "leading-relaxed whitespace-pre-line",
                 isLight ? "text-[#4A4535]" : "text-[#C8C0AC]",
                 isCover && "text-center"
               )}
-              style={{ fontFamily: "var(--font-dm-sans), sans-serif" }}
+              style={{ fontFamily: "var(--font-dm-sans), sans-serif", fontSize: px(14), marginTop: px(12) }}
               dangerouslySetInnerHTML={{ __html: safeHtml(slide.body) }}
             />
           )}
 
           {/* CTA for last slide */}
           {isLast && slide.cta && (
-            <div className={cn(
-              "mt-4 font-semibold text-[#C9A864] flex items-center gap-1",
-              s.text.body
-            )}
-              style={{ fontFamily: "var(--font-dm-sans), sans-serif" }}
+            <div
+              className="font-semibold text-[#C9A864] flex items-center"
+              style={{ fontFamily: "var(--font-dm-sans), sans-serif", fontSize: px(14), marginTop: px(16), gap: px(4) }}
               dangerouslySetInnerHTML={{ __html: safeHtml(slide.cta) }}
             />
           )}
         </div>
 
         {/* Footer */}
-        <div className={cn(
-          "flex items-center justify-between",
-          size === "preview" ? "mt-2" : "mt-8"
-        )}>
+        <div className="flex items-center justify-between" style={{ marginTop: px(8) }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={isLight ? "/vocali-logo-black.png" : "/vocali-logo-white.png"}
             alt="Vocali"
-            className={size === "preview" ? "h-[14px]" : "h-[56px]"}
-            style={{ objectFit: "contain" }}
+            style={{ height: px(14), objectFit: "contain" }}
           />
-          <div className={cn(
-            "flex-1 rounded-full bg-[#C9A864]/40",
-            size === "preview" ? "h-[2px] mx-2" : "h-[6px] mx-6"
-          )} />
-          <span className={cn(
-            "font-semibold text-[#C9A864] whitespace-nowrap",
-            s.text.logo
-          )}>
+          <div
+            className="flex-1 rounded-full bg-[#C9A864]/40"
+            style={{ height: px(2), marginLeft: px(8), marginRight: px(8) }}
+          />
+          <span className="font-semibold text-[#C9A864] whitespace-nowrap" style={{ fontSize: px(10) }}>
             vocali.ca/demo
           </span>
         </div>
 
         {/* Gold bottom bar */}
-        <div className={cn(
-          "absolute bottom-0 left-0 right-0 opacity-30",
-          size === "preview" ? "h-[2px]" : "h-[6px]",
-          "bg-[#C9A864]"
-        )} />
+        <div className="absolute bottom-0 left-0 right-0 opacity-30 bg-[#C9A864]" style={{ height: px(2) }} />
       </div>
     )
   }
