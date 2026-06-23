@@ -103,11 +103,11 @@ export const PostSlide = forwardRef<HTMLDivElement, Props>(
           </span>
         </div>
 
-        {/* Flèche « slide suivante » — carousel, sauf la dernière slide */}
+        {/* Flèche « slide suivante » — bas-droite, au-dessus de vocali.ca/demo */}
         {hasNext && (
           <div
             className="absolute font-sans font-bold text-[#C9A864]"
-            style={{ right: px(10), top: "50%", transform: "translateY(-50%)", fontSize: px(22), lineHeight: 1 }}
+            style={{ right: px(2), bottom: px(20), fontSize: px(22), lineHeight: 1 }}
           >
             →
           </div>
