@@ -206,7 +206,12 @@ function buildKnowledge(loc: Record<string, unknown>): string {
 }
 
 function buildCustomInstructions(loc: Record<string, unknown>): string {
-  const parts: string[] = []
+  const parts: string[] = [
+    // Évite l'effet « robot / mitraillette » sur les numéros (la voix lit mal les chiffres bruts).
+    "PRONONCIATION DES NUMÉROS DE TÉLÉPHONE : ne lis JAMAIS un numéro d'un seul trait. Énonce-le chiffre par chiffre EN LETTRES, regroupé par segments séparés d'une virgule (l'indicatif, puis les trois chiffres, puis les quatre chiffres). Exemple pour 514-555-1234 : « cinq un quatre, cinq cinq cinq, un deux trois quatre ». Parle lentement et calmement sur les numéros, et ne répète un numéro qu'UNE seule fois, pour confirmer.",
+    // Fluidité générale (évite le rythme saccadé).
+    "Parle de façon fluide et naturelle, en phrases complètes.",
+  ]
   if (loc.tone) parts.push(`Ton à adopter : ${loc.tone}.`)
   if (loc.booking_mode) {
     const promise = loc.callback_promise || "dans les plus brefs délais"
