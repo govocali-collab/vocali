@@ -208,7 +208,7 @@ function buildKnowledge(loc: Record<string, unknown>): string {
 function buildCustomInstructions(loc: Record<string, unknown>): string {
   const parts: string[] = [
     // Évite l'effet « robot / mitraillette » sur les numéros (la voix lit mal les chiffres bruts).
-    "PRONONCIATION DES NUMÉROS DE TÉLÉPHONE : ne lis JAMAIS un numéro d'un seul trait. Énonce-le chiffre par chiffre EN LETTRES, regroupé par segments séparés d'une virgule (l'indicatif, puis les trois chiffres, puis les quatre chiffres). Exemple pour 514-555-1234 : « cinq un quatre, cinq cinq cinq, un deux trois quatre ». Parle lentement et calmement sur les numéros, et ne répète un numéro qu'UNE seule fois, pour confirmer.",
+    "PRONONCIATION DES NUMÉROS DE TÉLÉPHONE : ne lis JAMAIS un numéro d'un seul trait. Énonce-le chiffre par chiffre EN LETTRES, regroupé par segments séparés d'une virgule (l'indicatif, puis les trois chiffres, puis les quatre chiffres). IMPORTANT : pour le chiffre 6, écris « sis » (et non « six »), sinon la voix le prononce à l'anglaise. Exemple pour 514-666-1234 : « cinq un quatre, sis sis sis, un deux trois quatre ». Parle lentement et calmement sur les numéros, et ne répète un numéro qu'UNE seule fois, pour confirmer.",
     // Fluidité générale (évite le rythme saccadé).
     "Parle de façon fluide et naturelle, en phrases complètes.",
   ]
