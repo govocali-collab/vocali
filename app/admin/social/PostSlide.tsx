@@ -96,7 +96,7 @@ export const PostSlide = forwardRef<HTMLDivElement, Props>(
           />
           <span
             className="font-semibold text-[#C9A864] whitespace-nowrap"
-            style={{ fontSize: px(10), lineHeight: 1 }}
+            style={{ fontSize: px(10), lineHeight: 1, transform: "translateY(-0.2em)" }}
           >
             vocali.ca/demo
           </span>
