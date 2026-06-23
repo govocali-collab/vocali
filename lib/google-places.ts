@@ -41,7 +41,7 @@ export interface WebsiteScrapeResult {
   booking_platform: string | null
 }
 
-// ─── Text Search ──────────────────────────────────────────────────────────────
+// ─── Text Search (Places API New — v1) ─────────────────────────────────────────
 
 export async function searchPlaces(
   query: string,
@@ -49,82 +49,96 @@ export async function searchPlaces(
   language: string,
   pageToken?: string
 ): Promise<{ results: PlaceBasic[]; nextPageToken?: string }> {
-  const params = new URLSearchParams({
-    query,
-    key: apiKey,
-    language,
+  const body: Record<string, unknown> = {
+    textQuery: query,
+    languageCode: language,
+    regionCode: "CA",
+    pageSize: 20,
+  }
+  if (pageToken) body.pageToken = pageToken
+
+  const res = await fetch("https://places.googleapis.com/v1/places:searchText", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-Goog-Api-Key": apiKey,
+      "X-Goog-FieldMask": "places.id,places.displayName,places.formattedAddress,nextPageToken",
+    },
+    body: JSON.stringify(body),
   })
-  if (pageToken) params.set("pagetoken", pageToken)
 
-  const url = `https://maps.googleapis.com/maps/api/place/textsearch/json?${params.toString()}`
-  const res = await fetch(url)
-  if (!res.ok) throw new Error(`Places text search failed: ${res.status}`)
-
-  const json = await res.json() as {
-    results: Array<{ place_id: string; name: string; formatted_address: string }>
-    next_page_token?: string
-    status: string
-    error_message?: string
+  if (!res.ok) {
+    const err = (await res.json().catch(() => ({}))) as { error?: { status?: string; message?: string } }
+    throw new Error(`Places API error: ${err.error?.status ?? res.status} — ${err.error?.message ?? ""}`)
   }
 
-  if (json.status !== "OK" && json.status !== "ZERO_RESULTS") {
-    throw new Error(`Places API error: ${json.status} — ${json.error_message ?? ""}`)
+  const json = (await res.json()) as {
+    places?: Array<{ id: string; displayName?: { text: string }; formattedAddress?: string }>
+    nextPageToken?: string
   }
 
-  const results: PlaceBasic[] = (json.results ?? []).map((r) => ({
-    place_id: r.place_id,
-    name: r.name,
-    formatted_address: r.formatted_address,
+  const results: PlaceBasic[] = (json.places ?? []).map((p) => ({
+    place_id: p.id,
+    name: p.displayName?.text ?? "",
+    formatted_address: p.formattedAddress ?? "",
   }))
 
-  return {
-    results,
-    nextPageToken: json.next_page_token,
-  }
+  return { results, nextPageToken: json.nextPageToken }
 }
 
-// ─── Place Details ────────────────────────────────────────────────────────────
+// ─── Place Details (Places API New — v1) ────────────────────────────────────────
+
+const DETAILS_FIELD_MASK =
+  "id,displayName,formattedAddress,addressComponents,nationalPhoneNumber,websiteUri,googleMapsUri,rating,userRatingCount,reviews,businessStatus"
 
 export async function getPlaceDetails(
   placeId: string,
   apiKey: string,
   language: string
 ): Promise<PlaceDetails | null> {
-  const params = new URLSearchParams({
-    place_id: placeId,
-    fields:
-      "name,formatted_address,address_components,formatted_phone_number,website,url,rating,user_ratings_total,reviews,business_status",
-    key: apiKey,
-    language,
-    reviews_sort: "newest",
-  })
-
-  const url = `https://maps.googleapis.com/maps/api/place/details/json?${params.toString()}`
+  const url = `https://places.googleapis.com/v1/places/${encodeURIComponent(placeId)}?languageCode=${encodeURIComponent(language)}`
 
   try {
-    const res = await fetch(url)
+    const res = await fetch(url, {
+      headers: { "X-Goog-Api-Key": apiKey, "X-Goog-FieldMask": DETAILS_FIELD_MASK },
+    })
     if (!res.ok) return null
 
-    const json = await res.json() as {
-      result?: Partial<PlaceDetails> & { place_id?: string }
-      status: string
+    const r = (await res.json()) as {
+      id?: string
+      displayName?: { text: string }
+      formattedAddress?: string
+      addressComponents?: Array<{ longText: string; shortText: string; types: string[] }>
+      nationalPhoneNumber?: string
+      websiteUri?: string
+      googleMapsUri?: string
+      rating?: number
+      userRatingCount?: number
+      reviews?: Array<{ rating?: number; text?: { text: string }; authorAttribution?: { displayName: string }; publishTime?: string }>
+      businessStatus?: string
     }
 
-    if (json.status !== "OK" || !json.result) return null
-
-    const r = json.result
     return {
-      place_id: r.place_id ?? placeId,
-      name: r.name ?? "",
-      formatted_address: r.formatted_address ?? "",
-      address_components: r.address_components ?? [],
-      formatted_phone_number: r.formatted_phone_number ?? null,
-      website: r.website ?? null,
-      url: r.url ?? null,
+      place_id: r.id ?? placeId,
+      name: r.displayName?.text ?? "",
+      formatted_address: r.formattedAddress ?? "",
+      address_components: (r.addressComponents ?? []).map((c) => ({
+        long_name: c.longText,
+        short_name: c.shortText,
+        types: c.types,
+      })),
+      formatted_phone_number: r.nationalPhoneNumber ?? null,
+      website: r.websiteUri ?? null,
+      url: r.googleMapsUri ?? null,
       rating: r.rating ?? null,
-      user_ratings_total: r.user_ratings_total ?? null,
-      reviews: r.reviews ?? null,
-      business_status: r.business_status ?? null,
+      user_ratings_total: r.userRatingCount ?? null,
+      reviews: (r.reviews ?? []).map((rv) => ({
+        time: rv.publishTime ? Math.floor(Date.parse(rv.publishTime) / 1000) : 0,
+        rating: rv.rating ?? 0,
+        text: rv.text?.text ?? "",
+        author_name: rv.authorAttribution?.displayName ?? "",
+      })),
+      business_status: r.businessStatus ?? null,
     }
   } catch {
     return null
